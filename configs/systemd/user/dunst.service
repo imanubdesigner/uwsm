@@ -1,0 +1,10 @@
+[Unit]
+Description=Dunst notification daemon
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/dunst
+
+[Install]
+WantedBy=graphical-session.target

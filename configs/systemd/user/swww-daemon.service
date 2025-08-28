@@ -1,0 +1,11 @@
+[Unit]
+Description=Swww daemon
+After=graphical-session.target
+
+[Service]
+Type=simple
+# Il comando corretto per avviare il demone di swww.
+ExecStart=/usr/bin/swww-daemon --format xrgb
+
+[Install]
+WantedBy=graphical-session.target

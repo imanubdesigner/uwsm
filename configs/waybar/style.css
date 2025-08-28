@@ -1,0 +1,137 @@
+/* Stili globali */
+* {
+    font-family: "SFMono Nerd Font";
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Stili della barra */
+window#waybar {
+    background-color: transparent;
+}
+
+window > box {
+    margin: 1px 10px 0 10px;
+    padding: 0 4px;
+}
+
+/* Stili di base per i moduli */
+#window,
+#tray,
+#workspaces,
+#custom-mpris,
+#custom-weather,
+#custom-launcher,
+#custom-power,
+#cpu,
+#memory,
+#pulseaudio,
+#clock,
+#network {
+    background-color: #181825;
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin: 4px 0;
+}
+
+/* Stili specifici per ogni modulo */
+#window {
+    padding: 8px 12px 8px 8px;
+}
+
+window#waybar.empty #window {
+    background: rgba(12, 12, 12, 0);
+}
+
+.modules-left,
+.modules-right,
+.modules-center {
+    padding: 3px;
+}
+
+#workspaces {
+    padding: 4px 4px 4px 6px;
+}
+
+#workspaces button {
+    min-height: 0;
+    padding: 0 7px;
+    margin-right: 2px;
+    color: #a6e3a1;
+}
+
+#workspaces button.urgent {
+    color: #a6e3a1;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#workspaces button.empty {
+    color: #cdd6f4;
+}
+
+#workspaces button.visible {
+    color: #89dceb;
+}
+
+#workspaces button.active {
+    color: #fab387;
+}
+
+@keyframes blink {
+    to {
+        color: #181825;
+        background-color: #dcf5f3;
+    }
+}
+
+#custom-mpris {
+    color: #a6e3a1;
+}
+
+#custom-launcher {
+    padding: 8px 8px 8px 4px;
+    color: #89dceb;
+    font-size: 18px;
+}
+
+#custom-power {
+    padding: 8px 12px 8px 8px;
+}
+
+#cpu {
+    color: #f2cdcd;
+}
+
+#memory {
+    color: #fab387;
+}
+
+/* Stili per il modulo PulseAudio */
+#pulseaudio.headphones {
+    color: #f9e2af;
+}
+
+#pulseaudio.headphones.muted {
+    color: #f38ba8;
+}
+
+#pulseaudio.microphone {
+    color: #f9e2af;
+}
+
+#clock {
+    color: #94e2d5;
+}
+
+#network {
+    color: #cdd6f4;
+    margin: 4px;
+}
+
+#network.disabled {
+    color: #f38ba8;
+}

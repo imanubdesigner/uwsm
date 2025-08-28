@@ -1,0 +1,181 @@
+{
+    "layer": "top",
+    "position": "top",
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces",
+        "cpu",
+        "memory",
+        "custom/weather"
+    ],
+    "modules-center": [
+    "clock"
+    ],
+    "spacing": 4,
+    "modules-right": [
+        "tray",
+        "custom/mpris",
+        "network",
+        "pulseaudio#headphones",
+        "pulseaudio#microphone", 
+        "custom/power"
+    ],
+        "hyprland/workspaces": {
+        "format": "{name}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+    
+    // Using a nice app wattrbar -> https://github.com/bjesus/wttrbar
+    // yay -Syu wattrbar | If you don't want it, just delete the custom/weather
+
+    "custom/weather": {
+    "format": "{}°",
+    "tooltip": true,
+    "interval": 3600,
+    "exec": "wttrbar",
+    "return-type": "json"
+},
+
+  // CUSTOM MPRIS WITH TEXT SCROLLING AND MULTIMEDIA BUTTONS
+
+"custom/mpris": {
+    "exec": "python3 ~/.config/waybar/scripts/scrolling2.py",
+    "format": "{}",
+    "return-type": "json", 
+    "restart-interval": 1,
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next", 
+    "on-click-middle": "playerctl previous",
+    "on-scroll-up": "playerctl next",
+    "on-scroll-down": "playerctl previous"
+},
+
+
+    "hyprland/window": {
+        "max-length": 30,
+        "icon": true,
+        "separate-outputs": true,
+        "format": "{}",
+        "tooltip": false 
+       },
+
+    "tray": {
+        "icon-size": 20,
+        "spacing": 7
+    },
+
+    "clock": {
+        "format": "{:%H:%M}  ",
+        "format-alt": "{:%A, %d %B, %Y (%R)}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span color='#f5e0dc'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'><b>{}</b></span>",
+                "weeks": "<span color='#fab387'><b>W{}</b></span>",
+                "weekdays": "<span color='#f5c2e7'><b>{}</b></span>",
+                "today": "<span color='#cba6f7'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    "cpu": {
+        "interval": 1,
+        "format": "CPU {usage:>2}% {icon0}{icon1}{icon2}{icon3}",
+        "format-icons": [
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ],
+        "on-click": "kitty -e btop"
+    },
+    "memory": {
+        "interval": 30,
+        "format": "MEM  {used:0.1f}G/{total:0.1f}G"
+    },
+
+        "network": {
+        "format-wifi" : "{icon}",
+        "format-icons": [" 󰤯 "," 󰤟 "," 󰤢 "," 󰤥 "," 󰤨 "],
+        "format-ethernet": " 󰈀 ",
+	      "format-alt" : "  {bandwidthDownBytes}   {bandwidthUpBytes}",
+        "format-disconnected" : " 󱘖 ",
+	      "tooltip-format-alt" :"{ifname}",
+        "tooltip-format-wifi": "{icon} {essid}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
+        "tooltip-format-ethernet": "  {ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
+	      "tooltip-format-disconnected": "Disconnected",
+	      "on-click-right": "nm-connection-editor",
+	      "interval": 5,
+	      "nospacing": 1,
+    },
+
+    "custom/launcher": {
+        "format": " 󰣇 ",
+        "tooltip": false,
+        "on-click": "$HOME/.config/rofi/scripts/launcher_t1"
+    },
+    "custom/power": {
+        "format": "  ",
+        "on-click": "$HOME/.config/rofi/powermenu/type-1/powermenu.sh",
+        "tooltip": false
+    },
+  "pulseaudio#headphones": {
+      "format": "{icon} {volume}%",
+      "tooltip": false,
+      "format-muted": "  Muted",
+      "on-click": "pavucontrol",
+      "on-click-right": "amixer sset 'Master' toggle",
+      "on-scroll-up": "pamixer -i 1",
+      "on-scroll-down": "pamixer -d 1",
+      "scroll-step": 5,
+      "format-icons": {
+          "headphone": "",
+          "hands-free": "",
+          "headset": "",
+          "phone": "",
+          "portable": "",
+          "car": "",
+          "default": ["","", "", ""]
+      }
+  },
+
+   "pulseaudio#microphone": {
+      "format": "{format_source}",
+      "format-source": " {volume}%",
+      "format-source-muted": "  Muted",
+      "on-click": "pavucontrol -t 4",
+      "on-click-right": "amixer sset 'Capture' toggle",
+      "on-scroll-up": "pamixer --default-source -i 5",
+      "on-scroll-down": "pamixer --default-source -d 5",
+      "scroll-step": 5,
+      "tooltip": false
+  }
+  
+
+
+
+
+
+}

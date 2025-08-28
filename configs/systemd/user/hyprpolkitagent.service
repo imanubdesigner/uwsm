@@ -1,0 +1,10 @@
+[Unit]
+Description=Hyprland Polkit Agent
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/hyprpolkitagent/hyprpolkitagent
+
+[Install]
+WantedBy=graphical-session.target

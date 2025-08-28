@@ -1,0 +1,10 @@
+[Unit]
+Description=Hyprland sunset daemon
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hyprsunset
+
+[Install]
+WantedBy=graphical-session.target
