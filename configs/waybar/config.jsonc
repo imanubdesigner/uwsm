@@ -134,7 +134,7 @@
     "custom/launcher": {
         "format": " 󰣇 ",
         "tooltip": false,
-        "on-click": "$HOME/.config/rofi/scripts/launcher_t1"
+        "on-click": "$HOME/.config/rofi/launchers/type-1/launcher.sh"
     },
     "custom/power": {
         "format": "  ",
