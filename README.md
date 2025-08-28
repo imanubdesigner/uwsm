@@ -1,0 +1,2 @@
+# uwsm
+Hyprland in uwsm
