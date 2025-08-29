@@ -33,7 +33,7 @@ run_command "pacman -S --noconfirm pamixer pavucontrol" "Install audio utilities
 run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd ttf-jetbrains-mono ttf-droid ttf-iosevkaterm-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
 
 # -------------------- Applications --------------------
-run_command "pacman -S --noconfirm firefox obsidian neovim discord mpv yt-dlp" "Install Firefox, Obsidian, Neovim" "yes"
+run_command "pacman -S --noconfirm firefox obsidian neovim discord mpv yt-dlp spotify-launcher" "Install Firefox, Obsidian, Neovim" "yes"
 
 # -------------------- Display manager & Network --------------------
 run_command "pacman -S --noconfirm sddm && systemctl enable sddm.service" "Install and enable SDDM (Recommended)" "yes"
@@ -44,7 +44,7 @@ run_command "pacman -S --noconfirm wpa_supplicant && systemctl enable wpa_suppli
 run_command "pacman -S --noconfirm bluez bluez-utils blueman && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"
 
 # -------------------- Shell + Terminal & CLI tools --------------------
-run_command "pacman -S --noconfirm zsh zsh-completions zoxide fzf eza kitty imagemagick starship nano fastfetch" "Install shell, terminal, CLI tools and fastfetch" "yes"
+run_command "pacman -S --noconfirm zsh zsh-completions zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep" "Install shell, terminal, CLI tools and fastfetch" "yes"
 run_command "cp -r $BASE_DIR/configs/fastfetch /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fastfetch" "Copy Fastfetch folder" "yes" "no"
 
 # -------------------- Launchers --------------------
