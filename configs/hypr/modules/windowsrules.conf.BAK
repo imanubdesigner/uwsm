@@ -1,3 +1,4 @@
+
 ###########################
 #                         #
 # WINDOWS AND WORKSPACES  #
@@ -19,6 +20,7 @@ windowrule = float, class:^(jome)$
 # windowrulev2 = opacity 0.90 0.90,class:^(Thorium-browser)$
 # windowrulev2 = opacity 0.90 0.90,class:^(firefox)$
 windowrulev2 = opacity 0.80 0.80,class:^(chromium)$
+windowrulev2 = opacity 0.70 0.75,class:^(thunar)$
 windowrulev2 = opacity 0.80 0.80,class:^(Code)$
 windowrulev2 = opacity 0.80 0.80,class:^(Arduino IDE)$
 windowrulev2 = opacity 0.80 0.80,class:^(dev.warp.Warp)$
@@ -47,7 +49,7 @@ windowrulev2 = opacity 0.80 0.80,class:^(hyprpolkitagent)$
 windowrulev2 = opacity 0.80 0.80,class:^(org.gnome.FileRoller)$
 windowrulev2 = opacity 0.80 0.80,class:^(hyprland-dialog)$
 windowrulev2 = opacity 0.80 0.80,initialTitle:^(Attention)$ 
-
+windowrulev2 = opacity 0.80 0.80,initialTitle:^(Downloads - Thunar)$ 
 
 ###########################
 #                         #
@@ -58,7 +60,9 @@ windowrulev2 = opacity 0.80 0.80,initialTitle:^(Attention)$
 
 # Firefox Windows Rules -------------
 windowrule = float, initialTitle:^Library$
-windowrule = center, initialTitle:^Library$
+#windowrule = center, initialTitle:^Library$ # The better choice is turn off this rule
+
+windowrulev2 = float, size 1000 1000, opacity 0.80 0.80, class:^(Thunar)$, title:^(.*Downloads.*)$
 # Firefox Windows Rules -------------
 
 # qView Image Viewer
@@ -67,37 +71,9 @@ windowrulev2 = float, class:^(com.interversehq.qView)$
 # MPV Video Player
 windowrulev2 = float, class:^(mpv)$
 
-###########################
-#       THUNAR RULES      #
-###########################
-
-# Finestra principale di Thunar (normale)
-windowrulev2 = opacity 0.85 0.85, class:^(Thunar)$, title:^(.* - Thunar)$
-
-# Finestra dei Download (aperta da Firefox → "Downloads - Thunar")
-windowrulev2 = float, center, size 900 650, opacity 0.80 0.80, class:^(Thunar)$, title:^(Downloads - Thunar)$
-windowrulev2 = center, class:^(Thunar)$, title:^(Downloads - Thunar)$
-
-# Finestra di avviso/attenzione di Thunar
+#Thunar | Attention Message
 windowrule = float, initialTitle:^Attention$
 windowrule = center, initialTitle:^Attention$
-
-# Finestra "Modified - Thunar"
-windowrule = float, title:^(Modified - Thunar)$
-windowrule = center, title:^(Modified - Thunar)$
-
-# Finestra "Confirm to replace files"
-windowrule = float, title:^(Confirm to replace files)$
-windowrule = center, title:^(Confirm to replace files)$
-
-# Finestra "File Operation Progress"
-windowrule = float, title:^(File Operation Progress)$
-windowrule = center, title:^(File Operation Progress)$
-
-# Finestre di conferma/rename varie
-windowrule = float, title:(Confirm.*)$
-windowrule = float, title:(Rename.*)$
-
 
 # Pavucontrol Float
 windowrule = float, class:^(org.pulseaudio.pavucontrol)$
@@ -113,6 +89,8 @@ windowrule = center, title:^(File Operation Progress)$
 # Modified Files Diaolog
 windowrule = float, title:^(Modified - Thunar)$
 windowrule = center, title:^(Modified - Thunar)$
+windowrule = float, title:(Confirm.*)$
+windowrule = float, title:(Rename.*)$
 windowrulev2 = float,class:^(electron)$
 windowrulev2 = float, initialTitle:^(Save Image)$
 windowrulev2 = center, initialTitle:^(Save Image)$
@@ -172,4 +150,3 @@ windowrulev2 = opacity 1.0 override, title: ^Picture-in-Picture$
 layerrule = ignorezero,tofi
 layerrule = ignorezero, dunst
 layerrule = blur,dunst
-
