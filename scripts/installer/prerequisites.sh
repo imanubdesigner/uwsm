@@ -57,6 +57,7 @@ run_command "pacman -S --noconfirm thunar tumbler gvfs gvfs-mtp udisks2 xdg-user
 # -------------------- System tools --------------------
 run_command "pacman -S --noconfirm btop pacman-contrib" "Install btop and pacman-contrib" "yes"
 run_command "cp -r $BASE_DIR/configs/btop /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/btop" "Copy btop folder" "yes" "no"
+
 # -------------------- Archive tools --------------------
 run_command "pacman -S --noconfirm tar unzip unrar p7zip" "Install archive extraction tools (tar, zip, rar, 7z)" "yes"
 
