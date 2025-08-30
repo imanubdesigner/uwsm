@@ -1,4 +1,4 @@
-@import "macchiato.css"
+@import "mocha.css"
 
 /* Stili globali */
 * {
@@ -38,7 +38,7 @@ window > box {
 }
 
 #custom-cava-internal {
-color: @mauve;
+color: @lavender;
 }
 
 /* Stili specifici per ogni modulo */
