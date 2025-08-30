@@ -14,6 +14,7 @@
     "spacing": 4,
     "modules-right": [
         "tray",
+        "custom/cava-internal",
         "custom/mpris",
         "network",
         "pulseaudio#headphones",
@@ -56,6 +57,14 @@
     "on-scroll-down": "playerctl previous"
 },
 
+
+"custom/cava-internal": {
+    "exec": "sh ~/.config/waybar/scripts/Cava.sh",
+    "format": "{}",
+    "tooltip": false,
+    "layer": "below",
+    "output": "all"
+  },
 
     "hyprland/window": {
         "max-length": 30,
