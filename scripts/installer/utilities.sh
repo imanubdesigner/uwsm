@@ -33,6 +33,7 @@ run_command "pacman -S --noconfirm cliphist" "Install Cliphist - Clipboard Manag
 run_command "yay -S --sudoloop --noconfirm swww" "Install SWWW for wallpaper management" "yes" "no"
 run_command "yay -S --sudoloop --noconfirm wttrbar" "Install Wttrbar weather for waybar" "yes" "no"
 run_command "yay -S --sudoloop --noconfirm waypaper" "Install Waypaper - Wallpaper tool" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm gowall" "Install Gowall" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/waypaper /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/waypaper" "Copy Waypaper config" "yes" "no"
 
 # -------------------- Screenshot --------------------
