@@ -54,7 +54,7 @@ run_command "pacman -S --noconfirm rofi" "Install application launchers" "yes"
 run_command "cp -r $BASE_DIR/configs/rofi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/rofi && find /home/$SUDO_USER/.config/rofi -name '*.sh' -type f -exec chmod +x {} +" "Copy Rofi config and set permissions" "yes" "no"
 
 # -------------------- File manager & thumbnails --------------------
-run_command "pacman -S --noconfirm thunar tumbler gvfs gvfs-mtp udisks2 xdg-user-dirs thunar-archive-plugin file-roller ffmpegthumbnailer ffmpeg poppler-glib librsvg" "Install Thunar with full thumbnails support (PDF, video, images, SVG)" "yes"
+run_command "pacman -S --noconfirm thunar tumbler gvfs gvfs-mtp udisks2 xdg-user-dirs thunar-archive-plugin thunar-volman file-roller ffmpegthumbnailer ffmpeg poppler-glib librsvg" "Install Thunar with full thumbnails support (PDF, video, images, SVG)" "yes"
 
 # -------------------- System tools --------------------
 run_command "pacman -S --noconfirm btop pacman-contrib" "Install btop and pacman-contrib" "yes"
