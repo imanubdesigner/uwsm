@@ -17,6 +17,12 @@ run_command "mkdir -p /home/$SUDO_USER/.icons && tar -xvf $BASE_DIR/assets/icons
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
 run_command "yay -S --sudoloop --noconfirm kvantum-theme-catppuccin-git" "Install Catppuccin theme for Kvantum" "yes" "no"
 
+# -------------------- Fonts --------------------
+run_command "mkdir -p /usr/share/fonts/SFMonoNF && unzip -o $BASE_DIR/assets/fonts/SFMonoNF.zip -d /usr/share/fonts/SFMonoNF" \
+  "Install SF Mono Nerd Fonts (system-wide)" "yes" "no"
+
+run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
+
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
 print_bold_blue "Set themes and icons:"

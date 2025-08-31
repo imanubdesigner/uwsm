@@ -47,6 +47,7 @@ run_command "pacman -S --noconfirm bluez bluez-utils blueman && systemctl enable
 # -------------------- Shell + Terminal & CLI tools --------------------
 run_command "pacman -S --noconfirm zsh zsh-completions zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep" "Install shell, terminal, CLI tools and fastfetch" "yes"
 run_command "cp -r $BASE_DIR/configs/fastfetch /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fastfetch" "Copy Fastfetch folder" "yes" "no"
+run_command "cp -r $BASE_DIR/configs/kitty /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/kitty" "Copy Kitty Terminal folder" "yes" "no"
 
 # -------------------- Launchers --------------------
 run_command "pacman -S --noconfirm rofi" "Install application launchers" "yes"

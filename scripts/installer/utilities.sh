@@ -16,9 +16,6 @@ run_command "cp -r $BASE_DIR/configs/waybar /home/$SUDO_USER/.config/ && chown -
 run_command "yay -S --sudoloop --noconfirm tofi" "Install Tofi - Application Launcher" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/tofi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/tofi" "Copy Tofi config(s)" "yes" "no"
 
-#-------------------btop catppuccin theme --------------------------#
-run_command "cp -r $BASE_DIR/configs/btop /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/btop" "Copy btop catppuccin theme" "yes" "no"
-
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/applications && \
 cp $BASE_DIR/assets/nvim.desktop /home/$SUDO_USER/.local/share/applications/ && \
