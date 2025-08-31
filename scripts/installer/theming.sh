@@ -18,8 +18,6 @@ run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors
 run_command "yay -S --sudoloop --noconfirm kvantum-theme-catppuccin-git" "Install Catppuccin theme for Kvantum" "yes" "no"
 
 # -------------------- Fonts --------------------
-run_command "mkdir -p /usr/share/fonts/SFMonoNF && unzip -o $BASE_DIR/assets/fonts/SFMonoNF.zip -d /usr/share/fonts/SFMonoNF" \
-  "Install SF Mono Nerd Fonts (system-wide)" "yes" "no"
 
 run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
 
