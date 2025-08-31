@@ -1,10 +1,13 @@
 [Unit]
 Description=Hyprland Polkit Agent
 After=graphical-session.target
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 
 [Service]
 Type=simple
 ExecStart=/usr/lib/hyprpolkitagent/hyprpolkitagent
+Restart=on-failure
+Slice=background-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target

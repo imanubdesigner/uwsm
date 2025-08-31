@@ -1,11 +1,14 @@
 [Unit]
-Description=Swww daemon
+Description=Swww Daemon
 After=graphical-session.target
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 
 [Service]
 Type=simple
-# Il comando corretto per avviare il demone di swww.
 ExecStart=/usr/bin/swww-daemon --format xrgb
+Restart=on-failure
+Slice=background-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target
+

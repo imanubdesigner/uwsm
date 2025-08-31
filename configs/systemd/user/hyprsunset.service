@@ -1,10 +1,14 @@
 [Unit]
-Description=Hyprland sunset daemon
+Description=Hyprland Sunset Daemon
 After=graphical-session.target
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/hyprsunset
+Restart=on-failure
+Slice=background-graphical.slice
+RemainAfterExit=yes
 
 [Install]
 WantedBy=graphical-session.target

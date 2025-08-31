@@ -1,10 +1,15 @@
 [Unit]
 Description=Waybar
 After=graphical-session.target
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 
 [Service]
-Type=simple
+Type=exec
 ExecStart=/usr/bin/waybar
+ExecReload=kill -SIGUSR2 $MAINPID
+Restart=on-failure
+Slice=app-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target
+

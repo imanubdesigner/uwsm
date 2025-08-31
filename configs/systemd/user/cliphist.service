@@ -1,9 +1,13 @@
 [Unit]
-Description=Clipboard history daemon
+Description=Clipboard History Daemon
 After=graphical-session.target
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 
 [Service]
+Type=simple
 ExecStart=/bin/sh -c "/usr/bin/wl-paste --type text --watch cliphist store & /usr/bin/wl-paste --type image --watch cliphist store"
+Restart=on-failure
+Slice=background-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target
