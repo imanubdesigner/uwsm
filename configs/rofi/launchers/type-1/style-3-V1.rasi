@@ -36,11 +36,11 @@ configuration {
     active-background:           var(active);
     active-foreground:           var(background);
     selected-normal-background:  var(selected);
-    selected-normal-foreground:  var(foreground);
+    selected-normal-foreground:  var(background);
     selected-urgent-background:  var(active);
-    selected-urgent-foreground:  var(foreground);
+    selected-urgent-foreground:  var(background);
     selected-active-background:  var(urgent);
-    selected-active-foreground:  var(foreground);
+    selected-active-foreground:  var(background);
     alternate-normal-background: var(background);
     alternate-normal-foreground: var(foreground);
     alternate-urgent-background: var(urgent);
@@ -109,10 +109,8 @@ inputbar {
 
 prompt {
     enabled:                     true;
-    background-color:            transparent;
-    text-color:                  var(foreground);
-    padding:                     0px;
-    border-radius:               4px;
+    background-color:            inherit;
+    text-color:                  inherit;
 }
 textbox-prompt-colon {
     enabled:                     true;
@@ -126,7 +124,7 @@ entry {
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "Search...";
+    placeholder:                 "search...";
     placeholder-color:           inherit;
 }
 num-filtered-rows {
@@ -210,8 +208,8 @@ element normal.active {
     text-color:                  var(active-foreground);
 }
 element selected.normal {
-    background-color:            var(selected);
-    text-color:                  var(foreground);
+    background-color:            var(normal-foreground);
+    text-color:                  var(normal-background);
 }
 element selected.urgent {
     background-color:            var(selected-urgent-background);
@@ -270,8 +268,8 @@ button {
     cursor:                      pointer;
 }
 button selected {
-    background-color:            var(selected);
-    text-color:                  var(foreground);
+    background-color:            var(normal-foreground);
+    text-color:                  var(normal-background);
 }
 
 /*****----- Message -----*****/
