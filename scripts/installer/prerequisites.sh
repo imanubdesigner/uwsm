@@ -29,7 +29,7 @@ run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Instal
 run_command "pacman -S --noconfirm pipewire wireplumber pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer pavucontrol" "Install complete audio stack (PipeWire + utilities)" "yes"
 
 # -------------------- Fonts --------------------
-run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd ttf-jetbrains-mono ttf-droid ttf-iosevkaterm-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
+run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd ttf-jetbrains-mono ttf-droid noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
 
 # -------------------- Display manager & Network --------------------
 run_command "pacman -S --noconfirm sddm && systemctl enable sddm.service" "Install and enable SDDM (Recommended)" "yes"
