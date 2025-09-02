@@ -24,34 +24,18 @@
 
         // Simple Workspaces with numbers
    
-    //     "hyprland/workspaces": {
-    //     "format": "{name}",
-    //     "persistent-workspaces": {
-    //         "1": [],
-    //         "2": [],
-    //         "3": [],
-    //         "4": [],
-    //         "5": []
-    //     }
-    // },
-
-  // PACMAN AND GHOST VERSION OF WORKSPACES
-        
-        "hyprland/workspaces": {
-        "format": "{icon}",
-        "persistent-workspaces": {
+    "hyprland/workspaces": {
+    "format": "{name}",
+    "persistent-workspaces": {
         "1": [],
         "2": [],
         "3": [],
         "4": [],
         "5": []
-  },
-  "format-icons": {
-    "active": "󰮯",  
-    "default": "󰊠"  
-  }
-},
-    
+    }
+     },
+
+           
     // Using a nice app wattrbar -> https://github.com/bjesus/wttrbar
     // yay -Syu wattrbar | If you don't want it, just delete the custom/weather
 
