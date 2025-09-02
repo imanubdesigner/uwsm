@@ -1,10 +1,9 @@
 #!/bin/bash
+# Ferma il servizio Waybar
+systemctl --user stop waybar.service
 
-# Termina tutti i processi waybar in esecuzione
-killall waybar
-
-# Aspetta un attimo per essere sicuri che il processo sia stato terminato
+# Aspetta un attimo
 sleep 1
 
-# Avvia waybar di nuovo
-waybar &
+# Riavvia il servizio
+systemctl --user start waybar.service
