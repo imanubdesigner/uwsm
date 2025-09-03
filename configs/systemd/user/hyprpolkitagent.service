@@ -1,7 +1,7 @@
 [Unit]
 Description=Hyprland Polkit Agent
 After=graphical-session.target
-ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 
 [Service]
 Type=simple
