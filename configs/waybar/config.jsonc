@@ -147,11 +147,11 @@
     "custom/launcher": {
         "format": " 󰣇 ",
         "tooltip": false,
-        "on-click": "$HOME/.config/rofi/launchers/type-1/launcher.sh"
+        "on-click": "$HOME/.config/rofi/launcher/launcher.sh"
     },
     "custom/power": {
         "format": "  ",
-        "on-click": "$HOME/.config/rofi/powermenu/type-1/powermenu.sh",
+        "on-click": "$HOME/.config/rofi/powermenu/powermenu.sh",
         "tooltip": false
     },
   "pulseaudio#headphones": {
