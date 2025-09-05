@@ -21,6 +21,8 @@ run_command "yay -S --sudoloop --noconfirm kvantum-theme-catppuccin-git" "Instal
 
 run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
 run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "yes" "no"
+# -------------------- Set default shell --------------------
+run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
