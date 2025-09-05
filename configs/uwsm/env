@@ -6,11 +6,11 @@ export TERMINAL=kitty      # default terminal emulator
 # =========================
 # Cursor theme (Hyprland + Xwayland)
 # =========================
-export HYPRCURSOR_THEME=catppuccin-mocha-light-cursors
-export HYPRCURSOR_SIZE=24
-export XCURSOR_THEME=catppuccin-mocha-light-cursors
-export XCURSOR_SIZE=24
-
+export HYPRCURSOR_THEME=latte-light
+export HYPRCURSOR_SIZE=20
+export XCURSOR_THEME=latte-light
+export XCURSOR_SIZE=20
+export BAT_THEME="Catppuccin-mocha"
 # =========================
 # NVIDIA GPU settings
 # =========================
