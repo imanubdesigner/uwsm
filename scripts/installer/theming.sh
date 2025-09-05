@@ -20,6 +20,7 @@ run_command "yay -S --sudoloop --noconfirm kvantum-theme-catppuccin-git" "Instal
 # -------------------- Fonts --------------------
 
 run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
+run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
