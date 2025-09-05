@@ -18,9 +18,16 @@ run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors
 run_command "yay -S --sudoloop --noconfirm kvantum-theme-catppuccin-git" "Install Catppuccin theme for Kvantum" "yes" "no"
 
 # -------------------- Fonts --------------------
-
 run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
+
+# -------------------- Rebuild bat cache for catppuccin mocha theme --------------------
 run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "yes" "no"
+
+# -------------------- Firewall setup --------------------
+run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "yes"
+run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "yes"
+run_command "ufw enable" "Enable UFW firewall" "yes"
+
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "yes" "no"
 
