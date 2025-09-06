@@ -31,6 +31,11 @@ run_command "ufw enable" "Enable UFW firewall" "yes"
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "yes" "no"
 
+# -------------------- Neovim setup --------------------
+run_command "git clone https://github.com/LazyVim/starter /home/$SUDO_USER/.config/nvim" "Clone LazyVim starter" "yes" "no"
+run_command "rm -rf /home/$SUDO_USER/.config/nvim/.git" "Remove Git folder from LazyVim config" "yes" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set correct ownership for Neovim config" "yes" "no"
+
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
 print_bold_blue "Set themes and icons:"
