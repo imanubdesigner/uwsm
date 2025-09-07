@@ -68,7 +68,7 @@ window {
     border-radius:               10px;
     border-color:                @border-colour;
     cursor:                      "default";
-    background-color:            rgba(30, 30, 46, 0.88);
+    background-color:            rgba(30, 30, 46, 0.3);
 }
 
 /*****----- Main Box -----*****/
@@ -80,7 +80,7 @@ mainbox {
     border:                      0px solid;
     border-radius:               0px 0px 0px 0px;
     border-color:                @border-colour;
-    background-color:            rgba(30, 30, 46, 0.88);
+    background-color:            rgba(30, 30, 46, 0.3);
     children:                    [ "inputbar", "listview" ];
 }
 

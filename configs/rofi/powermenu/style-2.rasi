@@ -35,7 +35,7 @@ window {
     border-radius:               10px;
     border-color:                #89b4f4;
     cursor:                      "default";
-    background-color:            rgba(30, 30, 46, 0.88);
+    background-color:            rgba(30, 30, 46, 0.6);
     }
 
 /*****----- Main Box -----*****/
@@ -47,7 +47,7 @@ mainbox {
     border:                      0px solid;
     border-radius:               0px;
     border-color:                #89b4f4;
-    background-color:            rgba(30, 30, 46, 0.88);
+    background-color:            rgba(30, 30, 46, 0.6);
     children:                    [ /*"inputbar",*/ "message", "listview" ];
 }
 
