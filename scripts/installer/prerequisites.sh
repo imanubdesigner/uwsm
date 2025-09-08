@@ -51,6 +51,7 @@ run_command "cp -r $BASE_DIR/configs/fastfetch /home/$SUDO_USER/.config/ && chow
 run_command "cp -r $BASE_DIR/configs/rofi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/rofi && find /home/$SUDO_USER/.config/rofi -name '*.sh' -type f -exec chmod +x {} +" "Copy Rofi config and set permissions" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/yazi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/yazi" "Copy yazi folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/bat /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/bat" "Copy bat folder" "yes" "no"
+run_command "cp -r $BASE_DIR/configs/fzf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fzf" "Copy fzf folder" "yes" "no"
 
 echo "------------------------------------------------------------------------"
 print_info "Prerequisites setup completed successfully!"
