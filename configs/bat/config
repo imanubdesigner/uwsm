@@ -3,7 +3,7 @@
 # -------------------------
 
 # Tema Catppuccin
---theme="Catppuccin-mocha"
+--theme="mocha"
 
 # Stile del file
 # numbers = numeri di riga
