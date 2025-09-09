@@ -10,7 +10,7 @@ export HYPRCURSOR_THEME=latte-light
 export HYPRCURSOR_SIZE=20
 export XCURSOR_THEME=latte-light
 export XCURSOR_SIZE=20
-export BAT_THEME="Catppuccin-mocha"
+
 # =========================
 # NVIDIA GPU settings
 # =========================
