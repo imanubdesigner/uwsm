@@ -37,6 +37,16 @@ run_command "git clone https://github.com/LazyVim/starter /home/$SUDO_USER/.conf
 run_command "rm -rf /home/$SUDO_USER/.config/nvim/.git" "Remove Git folder from LazyVim config" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set correct ownership for Neovim config" "yes" "no"
 
+# -------------------- SDDM Configuration --------------------
+run_command "cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf to /etc for manu user" "yes" "no"
+run_command "chown root:root /etc/sddm.conf" "Set correct ownership for sddm.conf" "yes" "no"
+run_command "chmod 644 /etc/sddm.conf" "Set correct permissions for sddm.conf" "yes" "no"
+
+# -------------------- Thunar Configuration --------------------
+run_command "mkdir -p /home/$SUDO_USER/.config/xfce4" "Create XFCE4 config directory" "yes" "no"
+run_command "cp $BASE_DIR/assets/helpers.rc /home/$SUDO_USER/.config/xfce4/helpers.rc" "Copy helpers.rc to ~/.config/xfce4" "yes" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
+
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
 print_bold_blue "Set themes and icons:"
