@@ -12,7 +12,7 @@ NC='\033[0m' # No Color
 BASE_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../../")
 
 # Log file
-LOG_FILE="$BASE_DIR/scripts/installer/simple_hyprland_install.log"
+LOG_FILE="$BASE_DIR/scripts/installer/hyprland-uwsm.log"
 
 function trap_message {
     print_error "\n\nScript interrupted. Exiting.....\n"
