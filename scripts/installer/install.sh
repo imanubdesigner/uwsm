@@ -11,7 +11,7 @@ trap 'trap_message' INT TERM
 
 # Script start
 log_message "Installation started"
-print_bold_blue "\nSimple Hyprland"
+print_bold_blue "\nHyprland-UWSM"
 echo "---------------"
 
 # Check if running as root
