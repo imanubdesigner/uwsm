@@ -1,0 +1,100 @@
+/**
+ *
+ * Rofi Theme File - Cliphist dmenu
+ * Based on rofi-emoji theme
+ * Modified for clipboard history view
+ *
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    modi:                       "emoji";
+    show-icons:                 false;
+    display-emoji:              "";    
+}
+
+/*****----- Global Properties -----*****/
+@import                          "shared/colors.rasi"
+@import                          "shared/fonts.rasi"
+
+* {
+    background-colour:           var(background);
+    foreground-colour:           var(foreground);
+}
+
+/*****----- Main Window -----*****/
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       600px;
+    border:                      2px solid;
+    border-radius:               10px;
+    border-color:                #a6adc8;
+    background-color:            rgba(30, 30, 46, 0.6);
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    spacing:                     10px;
+    padding:                     30px;
+    children:                    [ "inputbar", "listview" ];
+    background-color:            rgba(30, 30, 46, 0.6);
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    spacing:                     10px;
+    padding:                     0px 0px 10px 0px;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    children:                    [ "entry" ]; 
+}
+
+entry {
+    background-color:            inherit;
+    text-color:                  #ffffff33;
+    cursor:                      text;
+    placeholder:                 "󰗚  Search";
+    placeholder-color:           @inherit;
+}
+
+/*****----- Listview -----*****/
+listview {
+    columns:                     1;
+    lines:                       12;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+
+/*****----- Elements -----*****/
+element {
+    padding:                     0px 0px 5px 0px;
+    background-color:            transparent;
+    text-color:                  #a6adc8;
+    cursor:                      pointer;
+}
+
+element selected.normal {
+    background-color:            transparent;
+    text-color:                  #89b4f4;
+}
+
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/*****----- Message / Errors (optional) -----*****/
+message, textbox, error-message {
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+

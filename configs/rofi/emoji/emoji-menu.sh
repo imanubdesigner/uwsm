@@ -3,12 +3,12 @@
 ## Author : Manuel B. (manu)
 ## Github : @imanubdesigner
 
-## Rofi   : Launcher for Apps
+## Rofi   : Launcher for Emoji
 
-dir="$HOME/.config/rofi/launcher/"
-theme='apps-menu'
+dir="$HOME/.config/rofi/emoji/"
+theme='emoji'
 
 ## Run
 rofi \
-  -show drun \
+  -show emoji \
   -theme ${dir}/${theme}.rasi
