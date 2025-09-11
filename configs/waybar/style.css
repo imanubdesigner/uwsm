@@ -31,14 +31,14 @@ window > box {
 #pulseaudio,
 #clock,
 #network {
-    background-color: #181825;
+    background-color: @mantle;
     border-radius: 8px;
     padding: 8px 16px;
     margin: 4px 0;
 }
 
 #custom-cava-internal {
-color: @lavender;
+color: @green;
 }
 
 /* Stili specifici per ogni modulo */
@@ -64,11 +64,11 @@ window#waybar.empty #window {
     min-height: 0;
     padding: 0 7px;
     margin-right: 2px;
-    color: #a6e3a1;
+    color: @green;
 }
 
 #workspaces button.urgent {
-    color: #a6e3a1;
+    color: @green;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -77,31 +77,31 @@ window#waybar.empty #window {
 }
 
 #workspaces button.empty {
-    color: #cdd6f4;
+    color: @text;
 }
 
 #workspaces button.visible {
-    color: #89dceb;
+    color: @blue;
 }
 
 #workspaces button.active {
-    color: #fab387;
+    color: @blue;
 }
 
 @keyframes blink {
     to {
-        color: #181825;
-        background-color: #dcf5f3;
+        color: @mantle;
+        background-color: @subtext0;
     }
 }
 
 #custom-mpris {
-    color: #a6e3a1;
+    color: @green;
 }
 
 #custom-launcher {
     padding: 8px 8px 8px 4px;
-    color: #89dceb;
+    color: @blue;
     font-size: 18px;
 }
 
@@ -110,35 +110,35 @@ window#waybar.empty #window {
 }
 
 #cpu {
-    color: #f2cdcd;
+    color: @rosewater;
 }
 
 #memory {
-    color: #fab387;
+    color: @peach;
 }
 
 /* Stili per il modulo PulseAudio */
 #pulseaudio.headphones {
-    color: #f9e2af;
+    color: @yellow;
 }
 
 #pulseaudio.headphones.muted {
-    color: #f38ba8;
+    color: @red;
 }
 
 #pulseaudio.microphone {
-    color: #f9e2af;
+    color: @yellow;
 }
 
 #clock {
-    color: #94e2d5;
+    color: @teal;
 }
 
 #network {
-    color: #cdd6f4;
+    color: @text;
     margin: 4px;
 }
 
 #network.disabled {
-    color: #f38ba8;
+    color: @red;
 }
