@@ -23,7 +23,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       350px;
+    width:                       300px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -145,7 +145,7 @@ element {
     border-radius:               100%;
     border-color:                @selected;
     background-color:            transparent;
-    text-color:                  @foreground;
+    text-color:                  #a6adc8;
     cursor:                      pointer;
 }
 element-text {
@@ -156,7 +156,7 @@ element-text {
     horizontal-align:            0.0;
 }
 element selected.normal {
-    background-color:            #a6adc8;
-    text-color:                  #1e1e2e;
+    background-color:            transparent;
+    text-color:                  #89b4fa;
   //text-color:                  var(background);
 }

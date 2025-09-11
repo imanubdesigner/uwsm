@@ -56,7 +56,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       450px;
+    width:                       350px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -113,9 +113,9 @@ textbox-prompt-colon {
 entry {
     enabled:                     true;
     background-color:            inherit;
-    text-color:                  inherit;
+    text-color:                  #ffffff33;
     cursor:                      text;
-    placeholder:                 "󰵆  Search...";
+    placeholder:                 "󰀻  Search";
     placeholder-color:           inherit;
 }
 
@@ -164,7 +164,7 @@ element {
 }
 element normal.normal {
     background-color:            transparent;
-    text-color:                  var(normal-foreground);
+    text-color:                  #a6adc8;
 }
 element normal.urgent {
     background-color:            var(urgent-background);
@@ -175,9 +175,8 @@ element normal.active {
     text-color:                  var(active-foreground);
 }
 element selected.normal {
-    background-color:            #a6adc8;
-    text-color:                  #1e1e2e;
-    border-radius:               50px;
+    background-color:            transparent;
+    text-color:                  #89b4f4;
 }
 element selected.urgent {
     background-color:            var(selected-urgent-background);
@@ -189,7 +188,7 @@ element selected.active {
 }
 element alternate.normal {
     background-color:            transparent;
-    text-color:                  var(alternate-normal-foreground);
+    text-color:                  #a6adc8;
 }
 element alternate.urgent {
     background-color:            var(alternate-urgent-background);
