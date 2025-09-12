@@ -1,13 +1,16 @@
 [Unit]
 Description=Waybar
 After=graphical-session.target
+PartOf=graphical-session.target
 ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 
 [Service]
 Type=exec
 ExecStart=/usr/bin/waybar
 ExecReload=kill -SIGUSR2 $MAINPID
-Restart=on-failure
+Restart=always
+RestartSec=3
+KillMode=mixed
 Slice=app-graphical.slice
 
 [Install]
