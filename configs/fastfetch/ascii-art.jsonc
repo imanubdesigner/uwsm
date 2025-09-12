@@ -11,8 +11,9 @@
     "logo": {
         "source": "~/.config/fastfetch/images/ascii/cat.txt",
         "padding": {
-            "top": 2,
-            "right": 6
+            "top": 1,
+            "right": 8,
+            "left" : 0
         }
     },
     "display": {
