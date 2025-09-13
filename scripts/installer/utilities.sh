@@ -10,7 +10,6 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "pacman -S --noconfirm cliphist waybar" "Install Waybar and cliphist" "yes"
 # run_command "yay -S --sudoloop --noconfirm tofi" "Install Tofi - Application Launcher" "yes" "no"
 run_command "yay -S --sudoloop --noconfirm swww" "Install SWWW for wallpaper management" "yes" "no"
 run_command "yay -S --sudoloop --noconfirm wttrbar" "Install Wttrbar weather for waybar" "yes" "no"
