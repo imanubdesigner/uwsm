@@ -22,7 +22,7 @@ else
 fi
 
 # -------------------- Drivers --------------------
-run_command "pacman -S --noconfirm linux-headers nvidia-open-dkms nvidia-utils libva libva-utils libva-nvidia-driver lib32-nvidia-utils egl-wayland" "Install Nvidia Open DKMS" "yes"
+run_command "pacman -S --noconfirm linux-headers nvidia-open-dkms nvidia-utils libva libva-utils libva-nvidia-driver egl-wayland" "Install Nvidia Open DKMS" "yes"
 run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
 
 # -------------------- Audio --------------------
