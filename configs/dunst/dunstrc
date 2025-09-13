@@ -1,73 +1,98 @@
 [global]
+    # Monitor to display notifications on.
     monitor = 0
+    # Notification follow mode. 'mouse' follows the mouse, 'keyboard' follows the keyboard focus, 'none' uses 'origin'.
     follow = none
-    width = 300
-    height = 145
+    # Notification dimensions.
+    width = 350
+    height = 150
+    class = Dunst
+
+    # Notification position and alignment.
     origin = top-right
     alignment = "left"
     vertical_alignment = "center"
     ellipsize = "middle"
     offset = "15x15"
+    
+    # Padding and spacing.
     padding = 15
     horizontal_padding = 15
     text_icon_padding = 15
+    
+    # Font and icon settings.
+    font = "Liga SFMono Nerd Font 10"
     icon_position = "left"
     min_icon_size = 48
     max_icon_size = 64
+    
+    # Progress bar settings.
     progress_bar = true
     progress_bar_height = 8
     progress_bar_frame_width = 1
     progress_bar_min_width = 150
     progress_bar_max_width = 300
+    
+    # Visual style.
+    background = "#1E1E2E99" 
     separator_height = 2
+    separator_color = "frame"
     frame_width = 2
-    frame_color = "#313244" 
-    separator_color = "frame" 
-    corner_radius = 8 
-    transparency = 0 
-    gap_size = 8 
-    line_height = 0 
-    notification_limit = 0 
-    idle_threshold = 120 
-    history_length = 20 
-    show_age_threshold = 60 
-    markup = "full" 
-    font = "monospace 10" 
-    format = "<b>%s</b>\n%b: 
-    word_wrap = "yes" 
-    sort = "yes" 
-    shrink = "no" 
-    indicate_hidden = "yes" 
-    sticky_history = "yes" 
-    ignore_newline = "no" 
-    show_indicators = "no" 
-    stack_duplicates = true 
-    always_run_script = true 
-    hide_duplicate_count = false 
-    ignore_dbusclose = false 
-    force_xwayland = false 
-    force_xinerama = false 
-    mouse_left_click = "do_action" 
-    mouse_middle_click = "close_all" 
-    mouse_right_click = "close_current" 
+    frame_color = "#a6adc833" 
+    corner_radius = 8
+    gap_size = 8
+    
+    # Other settings.
+    line_height = 4
+    notification_limit = 0
+    idle_threshold = 120
+    history_length = 20
+    show_age_threshold = 60
+    markup = "full"
+    format = "<span weight='Heavy'>%s</span>\n%b"
+    word_wrap = "yes"
+    sort = "yes"
+    shrink = "no"
+    indicate_hidden = "yes"
+    sticky_history = "yes"
+    ignore_newline = "no"
+    show_indicators = "no"
+    stack_duplicates = true
+    always_run_script = true
+    hide_duplicate_count = false
+    ignore_dbusclose = false
+    force_xwayland = false
+    force_xinerama = false
+    
+    # Mouse actions.
+    mouse_left_click = "do_action"
+    mouse_middle_click = "close_all"
+    mouse_right_click = "close_current"
+
 [experimental]
     per_monitor_dpi = false
 
-
+# Urgency rules with Catppuccin Mocha colors.
 [urgency_low]
-    background = "#1e1e2e"
-    foreground = "#cdd6f4"
-    highlight = "#cba6f7"
+    # Background and border are set globally, but can be overridden here.
+    background = "#1E1E2E99"
+    frame_color = "#f5e0dc"  
+    foreground = "#a6adc8"   
+    highlight = "#f5e0dc"    
     timeout = 4
 
 [urgency_normal]
-    background = "#1e1e2e"
-    foreground = "#cdd6f4"
-    highlight = "#cba6f7"
+    # Background and border are set globally, but can be overridden here.
+    background = "#1E1E2E99"
+    frame_color = "#a6adc8"  
+    foreground = "#a6adc8"   
+    highlight = "#a6adc8"    
     timeout = 6
 
 [urgency_critical]
-    background = "#1e1e2e"
-    foreground = "#cdd6f4"
-    highlight = "#cba6f7"
+    # Background and border are set globally, but can be overridden here.
+    background = "#1E1E2E99"
+    frame_color = "#f38ba8"  
+    foreground = "#f38ba8"   
+    highlight = "#f38ba8"    
     timeout = 0
