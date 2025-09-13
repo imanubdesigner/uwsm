@@ -4,7 +4,7 @@
     # Notification follow mode. 'mouse' follows the mouse, 'keyboard' follows the keyboard focus, 'none' uses 'origin'.
     follow = none
     # Notification dimensions.
-    width = 350
+    width = 300
     height = 150
     class = Dunst
 
@@ -43,7 +43,7 @@
     gap_size = 8
     
     # Other settings.
-    line_height = 4
+    line_height = 6
     notification_limit = 0
     idle_threshold = 120
     history_length = 20

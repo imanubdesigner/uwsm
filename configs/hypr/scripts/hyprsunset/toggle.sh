@@ -21,10 +21,10 @@ CURRENT_TEMP=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+')
 
 if [[ "$CURRENT_TEMP" == "$OFF_TEMP" ]]; then
   hyprctl hyprsunset temperature $ON_TEMP
-  notify-send "  Nightlight screen temperature"
+  notify-send "Hyprsunset" "  Night Mode ON"
   restart_nightlighted_waybar
 else
   hyprctl hyprsunset temperature $OFF_TEMP
-  notify-send "   Daylight screen temperature"
+  notify-send "Hyprsunset" "  Night Mode OFF"
   restart_nightlighted_waybar
 fi
