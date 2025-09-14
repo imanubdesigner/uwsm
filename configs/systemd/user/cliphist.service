@@ -1,10 +1,10 @@
 [Unit]
 Description=Clipboard History Daemon
 After=graphical-session.target
-ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 
 [Service]
 Type=simple
+ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 ExecStart=/bin/sh -c "/usr/bin/wl-paste --type text --watch cliphist store & /usr/bin/wl-paste --type image --watch cliphist store"
 Restart=on-failure
 Slice=background-graphical.slice

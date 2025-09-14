@@ -1,10 +1,10 @@
 [Unit]
 Description=Hyprland Polkit Agent
 After=graphical-session.target
-ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 
 [Service]
 Type=simple
+ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 ExecStart=/usr/lib/hyprpolkitagent/hyprpolkitagent
 Restart=on-failure
 Slice=background-graphical.slice
