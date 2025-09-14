@@ -17,8 +17,8 @@ export XCURSOR_SIZE=20
 export LIBVA_DRIVER_NAME=nvidia             # VAAPI hardware video decoding
 export __GLX_VENDOR_LIBRARY_NAME=nvidia     # GLX/OpenGL apps use NVIDIA
 export GBM_BACKEND=nvidia-drm               # GBM renderer for wlroots/Wayland
-export __GL_GSYNC_ALLOWED=1                 # enable G-Sync on compatible monitors
-export __GL_VRR_ALLOWED=1                   # enable VRR on compatible monitors
+export __GL_GSYNC_ALLOWED=0                 # enable G-Sync on compatible monitors
+export __GL_VRR_ALLOWED=0                   # enable VRR on compatible monitors
 export NVD_BACKEND=direct                   # hardware decoding (PipeWire, Firefox)
 
 # =========================
