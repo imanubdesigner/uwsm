@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-## Author : Manuel B. (manu)
-## Github : @imanubdesigner
-
-## Rofi   : Power Menu
+#  ┏┓┏┓┓ ┏┏┓┳┓┳┳┓┏┓┳┓┳┳
+#  ┃┃┃┃┃┃┃┣ ┣┫┃┃┃┣ ┃┃┃┃
+#  ┣┛┗┛┗┻┛┗┛┛┗┛ ┗┗┛┛┗┗┛
+#               by Manu
 
 # Current Theme
 dir="$HOME/.config/rofi/powermenu/"

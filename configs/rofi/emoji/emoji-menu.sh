@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-## Author : Manuel B. (manu)
-## Github : @imanubdesigner
-
-## Rofi   : Launcher for Emoji
+#  ┏┓┳┳┓┏┓┏┳┳
+#  ┣ ┃┃┃┃┃ ┃┃
+#  ┗┛┛ ┗┗┛┗┛┻
+#     by Manu
 
 dir="$HOME/.config/rofi/emoji/"
 theme='emoji'
