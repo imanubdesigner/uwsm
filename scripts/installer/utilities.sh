@@ -10,14 +10,10 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-# run_command "yay -S --sudoloop --noconfirm tofi" "Install Tofi - Application Launcher" "yes" "no"
-run_command "yay -S --sudoloop --noconfirm swww" "Install SWWW for wallpaper management" "yes" "no"
-run_command "yay -S --sudoloop --noconfirm wttrbar" "Install Wttrbar weather for waybar" "yes" "no"
-run_command "yay -S --sudoloop --noconfirm waypaper" "Install Waypaper - Wallpaper tool" "yes" "no"
-run_command "yay -S --sudoloop --noconfirm gowall" "Install Gowall" "yes" "no"
-
+run_command "yay -S --sudoloop --noconfirm swww wttrbar waypaper gowall" "Install SWWW for wallpaper management" "yes" "no"
 # -------------------- Screenshot --------------------
-run_command "yay -S --sudoloop --noconfirm grimblast" "Install Grimblast - Screenshot tool" "yes" "no"
+# run_command "yay -S --sudoloop --noconfirm grimblast" "Install Grimblast - Screenshot tool" "yes" "no"
+# run_command "yay -S --sudoloop --noconfirm tofi" "Install Tofi - Application Launcher" "yes" "no"
 
 # -------------------- Other utilities --------------------
 run_command "yay -S --sudoloop --noconfirm qview" "Install qView - Image Viewer" "yes" "no"
