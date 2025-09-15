@@ -1,22 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Definisce il tipo di screenshot dall'argomento (es. "screen", "active", "area")
-SCREENSHOT_TYPE=$1
+# Flags:
 
-# Definisce la directory di salvataggio all'interno di Pictures
-SAVE_DIR="$HOME/Pictures/Screenshot"
+# r: region
+# s: screen
+#
+# c: clipboard
+# f: file
+# i: interactive
 
-# Controlla se il tipo di screenshot è stato passato come argomento
-if [ -z "$1" ]; then
-  echo "Errore: specificare il tipo di screenshot (screen, active, area)."
-  exit 1
+# p: pixel
+
+if [[ $1 == rc ]]; then
+  grim -g "$(slurp -b '#000000b0' -c '#00000000')" - | wl-copy
+  notify-send 'Copied to Clipboard' Screenshot
+
+elif [[ $1 == rf ]]; then
+  mkdir -p ~/Pictures/Screenshots
+  filename=~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
+  grim -g "$(slurp -b '#000000b0' -c '#00000000')" $filename
+  notify-send 'Screenshot Taken' $filename
+
+elif [[ $1 == ri ]]; then
+  grim -g "$(slurp -b '#000000b0' -c '#00000000')" - | swappy -f -
+
+elif [[ $1 == sc ]]; then
+  filename=~/Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png
+  grim - | wl-copy
+  notify-send 'Copied to Clipboard' Screenshot
+
+elif [[ $1 == sf ]]; then
+  mkdir -p ~/Pictures/Screenshots
+  filename=~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
+  grim $filename
+  notify-send 'Screenshot Taken' $filename
+
+elif [[ $1 == si ]]; then
+  grim - | swappy -f -
+
+elif [[ $1 == p ]]; then
+  color=$(hyprpicker -a)
+  wl-copy $color
+  notify-send 'Copied to Clipboard' $color
 fi
-
-# Crea la directory se non esiste, usando l'opzione -p per evitare errori
-mkdir -p "$SAVE_DIR"
-
-# Genera un nome di file compatibile senza due punti (:)
-FILENAME="screenshot-$(date '+%Y-%m-%d_%H-%M-%S').png"
-
-# Esegue grimblast per salvare e copiare l'immagine
-grimblast --notify copysave "$SCREENSHOT_TYPE" "$SAVE_DIR/$FILENAME"
