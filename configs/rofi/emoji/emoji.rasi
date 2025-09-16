@@ -1,10 +1,12 @@
 /**
- *
- * Rofi Theme File - Adapted for rofi-emoji
- * Based on theme by Aditya Shakya (adi1090x)
- * Modified for minimal emoji view
- *
- **/
+ *    ┏┓┳┳┓┏┓┏┳┳
+ *    ┣ ┃┃┃┃┃ ┃┃
+ *    ┗┛┛ ┗┗┛┗┛┻
+ *    ┳┓┏┓┏┓┳   
+ *    ┣┫┣┫┗┓┃   
+ *    ┛┗┛┗┗┛┻   
+ *       by Manu     
+ */
 
 /*****----- Configuration -----*****/
 configuration {
