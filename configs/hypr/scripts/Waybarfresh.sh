@@ -1,9 +1,15 @@
 #!/bin/bash
-# Ferma il servizio Waybar
+
+#    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┳┓┏┓┏┓┳┓┏┓┏┓┓┏
+#    ┃┃┃┣┫┗┫┣┫┣┫┣┫  ┣┫┣ ┣ ┣┫┣ ┗┓┣┫
+#    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┛┗┗┛┻ ┛┗┗┛┗┛┛┗
+#                          by Manu
+
+# Waybar Service STOP
 systemctl --user stop waybar.service
 
-# Aspetta un attimo
+# Waiting
 sleep 1
 
-# Riavvia il servizio
+# Service Restart
 systemctl --user start waybar.service

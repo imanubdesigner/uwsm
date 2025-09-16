@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓ ┏┏┓┓ ┓ ┏┓┏┓┏┓┏┓┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
+#    ┃┃┃┣┫┃ ┃ ┃┃┣┫┃┃┣ ┣┫  ┗┓┃ ┣┫┃┃┃ ┃
+#    ┗┻┛┛┗┗┛┗┛┣┛┛┗┣┛┗┛┛┗  ┗┛┗┛┛┗┻┣┛ ┻
+#                              by Manu
+
 # Cartella dei wallpaper
 DIR=$HOME/Pictures/wallpapers/
 PICS=($(ls ${DIR}))
@@ -29,4 +34,3 @@ swww query || swww-daemon
 
 # Imposta il wallpaper normale con transizioni
 swww img "$IMAGE_PATH" --transition-fps 60 --transition-type any --transition-duration 3
-

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#    ┏┓┏┓┳┓┏┓  ┳┓┏┓┏┳┓┏┓┳┓
+#    ┗┓┃┃┃┃┃┓  ┃┃┣  ┃ ┣┫┃┃
+#    ┗┛┗┛┛┗┗┛  ┻┛┗┛ ┻ ┛┗┻┗┛
+#        ┏┓┏┓┳┓┳┏┓┏┳┓
+#        ┗┓┃ ┣┫┃┃┃ ┃
+#        ┗┛┗┛┛┗┻┣┛ ┻
+#                   by Manu
+
 if [[ $(playerctl -p spotify status 2>/dev/null) == "Playing" ]]; then
   status='  '
 else

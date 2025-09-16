@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#    ┏┓┳┓┳┏┓┏┓┏┓┳┓  ┏┓┏┓┳┓┏┓
+#    ┗┓┃┃┃┣ ┣ ┣ ┣┫  ┗┓┃┃┃┃┃┓
+#    ┗┛┛┗┻┻ ┻ ┗┛┛┗  ┗┛┗┛┛┗┗┛
+#          ┏┓┏┓┳┓┳┏┓┏┳┓
+#          ┗┓┃ ┣┫┃┃┃ ┃
+#          ┗┛┗┛┛┗┻┣┛ ┻
+#                    by Manu
+
 # Get the first available player
 player=$(playerctl -l 2>/dev/null | head -n1)
 

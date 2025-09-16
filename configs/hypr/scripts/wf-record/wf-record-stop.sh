@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓ ┏┏┓  ┳┓┏┓┏┓┏┓┳┓┏┓┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
+#    ┃┃┃┣ ━━┣┫┣ ┃ ┃┃┃┃┣ ┣┫  ┗┓┃ ┣┫┃┃┃ ┃
+#    ┗┻┛┻   ┛┗┗┛┗┛┗┛┻┛┗┛┛┗  ┗┛┗┛┛┗┻┣┛ ┻
+#                                by Manu
+
 if pgrep -x wl-screenrec >/dev/null || pgrep -x wf-recorder >/dev/null; then
   pkill -x wl-screenrec
   pkill -x wf-recorder

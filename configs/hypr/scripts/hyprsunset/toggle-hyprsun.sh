@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓┏┓┏┏┓┳┓┏┓┳┳┳┓┏┓┏┓┏┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
+#    ┣┫┗┫┃┃┣┫┗┓┃┃┃┃┗┓┣  ┃   ┗┓┃ ┣┫┃┃┃ ┃
+#    ┛┗┗┛┣┛┛┗┗┛┗┛┛┗┗┛┗┛ ┻   ┗┛┗┛┛┗┻┣┛ ┻
+#                                by Manu
+
 ICON_DIR="$HOME/.config/dunst/icons"
 
 if pgrep -x hyprsunset >/dev/null; then

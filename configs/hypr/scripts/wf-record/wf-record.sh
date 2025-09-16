@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓ ┏┏┓  ┳┓┏┓┏┓┏┓┳┓┏┓┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
+#    ┃┃┃┣ ━━┣┫┣ ┃ ┃┃┃┃┣ ┣┫  ┗┓┃ ┣┫┃┃┃ ┃
+#    ┗┻┛┻   ┛┗┗┛┗┛┗┛┻┛┗┛┛┗  ┗┛┗┛┛┗┻┣┛ ┻
+#                                by Manu
+
 ICON_DIR="$HOME/.config/dunst/icons"
 
 [[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
