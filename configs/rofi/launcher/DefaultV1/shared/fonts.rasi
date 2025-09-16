@@ -1,12 +1,11 @@
 /**
- *
- * Author : Aditya Shakya (adi1090x)
- * Github : @adi1090x
- * 
- * Fonts
- *
- **/
+ *    ┏┓┏┓┳┓┏┳┓┏┓  ┳┓┏┓┏┓┳
+ *    ┣ ┃┃┃┃ ┃ ┗┓  ┣┫┣┫┗┓┃
+ *    ┻ ┗┛┛┗ ┻ ┗┛  ┛┗┛┗┗┛┻
+ *                 by Manu
+ */
+
 
 * {
-    font: "SFMono Nerd Font 12";
+    font: "Liga SF Mono Nerd Font 12";
 }

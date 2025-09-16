@@ -1,10 +1,12 @@
 /**
- *
- * Rofi Theme File - Cliphist dmenu
- * Based on rofi-emoji theme
- * Modified for clipboard history view
- *
- **/
+ *    ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
+ *    ┃ ┃ ┃┃┃┣┫┃┗┓ ┃ 
+ *    ┗┛┗┛┻┣┛┛┗┻┗┛ ┻ 
+ *    ┳┓┏┓┏┓┳        
+ *    ┣┫┣┫┗┓┃        
+ *    ┛┗┛┗┗┛┻        
+ *            by Manu
+ */
 
 /*****----- Configuration -----*****/
 configuration {
