@@ -87,7 +87,7 @@
     frame_color = "#a6adc8"  
     foreground = "#a6adc8"   
     highlight = "#a6adc8"    
-    timeout = 6
+    timeout = 4
 
 [urgency_critical]
     # Background and border are set globally, but can be overridden here.
@@ -95,4 +95,4 @@
     frame_color = "#f38ba8"  
     foreground = "#f38ba8"   
     highlight = "#f38ba8"    
-    timeout = 0
+    timeout = 4
