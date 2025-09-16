@@ -8,7 +8,7 @@
 #          ┗┛┗┛┛┗┻┣┛ ┻
 #                    By Manu
 
-OUTPUT_DIR="$HOME/Video/wf-recorder"
+OUTPUT_DIR="$HOME/Videos/wf-recorder"
 mkdir -p "$OUTPUT_DIR"
 
 if [[ ! -d "$OUTPUT_DIR" ]]; then
