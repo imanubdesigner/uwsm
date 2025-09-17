@@ -44,6 +44,9 @@ run_command "mkdir -p /home/$SUDO_USER/.config/xfce4" "Create XFCE4 config direc
 run_command "cp $BASE_DIR/assets/helpers.rc /home/$SUDO_USER/.config/xfce4/helpers.rc" "Copy helpers.rc to ~/.config/xfce4" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
 
+# -------------------- Wallpapers --------------------
+run_command "cp $BASE_DIR/assets/wallpapers /home/$SUDO_USER/Pictures/" "Copy wallpapers folder" "yes" "no"
+
 # -------------------- Swww current Wallpaper --------------------
 run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a swww cache folder for current wallpaper" "yes" "no"
 run_command "cp $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
