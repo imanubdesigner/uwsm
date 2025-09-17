@@ -45,13 +45,14 @@ run_command "cp $BASE_DIR/assets/helpers.rc /home/$SUDO_USER/.config/xfce4/helpe
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
 
 # -------------------- Wallpapers --------------------
-run_command "cp -r $BASE_DIR/assets/wallpapers /home/$SUDO_USER/Pictures/" "Copy wallpapers folder" "yes" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers" "Set correct ownership on wallpapers folder"
+run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
+run_command "cp $BASE_DIR/assets/wallpapers/wallhaven-3qzvr6.png /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "yes" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers" "Set correct ownership for wallpapers directory" "yes" "no"
 
 # -------------------- Swww current Wallpaper --------------------
 run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww/" "Set correct ownership on swww folder" "yes" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"

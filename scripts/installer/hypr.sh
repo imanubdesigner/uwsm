@@ -16,5 +16,4 @@ run_command "cp -r $BASE_DIR/configs/dunst /home/$SUDO_USER/.config/ && chown -R
 run_command "cp -r $BASE_DIR/configs/hypr /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/hypr" "Copy Hyprland config folder (Must)" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/systemd /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/systemd" "Copy systemd config folder (Must)" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/uwsm /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/uwsm" "Copy UWSM config folder (Must)" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/swappy /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/swappy" "Copy Swappy config folder (Must)" "yes" "no"
 echo "------------------------------------------------------------------------"
