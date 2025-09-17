@@ -174,11 +174,11 @@
     "custom/launcher": {
         "format": " 󰣇 ",
         "tooltip": false,
-        "on-click": "$HOME/.config/rofi/launcher/launcher.sh"
+        "on-click": "$HOME/.config/rofi/launcher/launcher"
     },
     "custom/power": {
         "format": "  ",
-        "on-click": "$HOME/.config/rofi/powermenu/powermenu.sh",
+        "on-click": "$HOME/.config/rofi/powermenu/powermenu",
         "tooltip": false
     },
   "pulseaudio#headphones": {
