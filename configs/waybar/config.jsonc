@@ -64,15 +64,16 @@
   // Using a nice app wattrbar -> https://github.com/bjesus/wttrbar
     // yay -Syu wattrbar | If you don't want it, just delete the custom/weather
 
-    "custom/weather": {
-    "format": "{}°",
-    "tooltip": true,
-    "interval": 3600,
-    "exec": "wttrbar --location Montesilvano --nerd",
-    "return-type": "json"
-},
+"custom/weather": {
+"format": "{}°",
+"tooltip": true,
+"interval": 3600,
+"exec": "wttrbar --location Montesilvano --nerd",
+"return-type": "json"
+ },
 
   // CUSTOM MPRIS WITH TEXT SCROLLING AND MULTIMEDIA BUTTONS
+
 
 "custom/mpris": {
     "exec": "python3 ~/.config/waybar/scripts/static-scroll.py",
