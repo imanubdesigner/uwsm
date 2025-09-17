@@ -46,6 +46,7 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpe
 
 # -------------------- Wallpapers --------------------
 run_command "cp -r $BASE_DIR/assets/wallpapers /home/$SUDO_USER/Pictures/" "Copy wallpapers folder" "yes" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers" "Set correct ownership on wallpapers folder"
 
 # -------------------- Swww current Wallpaper --------------------
 run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a swww cache folder for current wallpaper" "yes" "no"
