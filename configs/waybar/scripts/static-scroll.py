@@ -1,36 +1,33 @@
+#!/usr/bin/env python3
+
 import subprocess
 import time
 import json
-import sys
 import signal
 
-# Customization settings (easy to modify)
-GLYPH_FONT_FAMILY="Symbols Nerd Font Mono" # Set to your desired symbols font
-# Those are glyphs that will be always visible at left side of module.
+# Customization settings
+GLYPH_FONT_FAMILY = "Symbols Nerd Font Mono"
 GLYPHS = {
     "paused": "",
     "playing": "",
     "stopped": ""
 }
-DEFAULT_GLYPH = "▶"  # Glyph when status is unknown or default
-TEXT_WHEN_STOPPED = "No music "  # Text to display when nothing is playing
-SCROLL_TEXT_LENGTH = 25  # Length of the song title part (excludes glyph and space)
-REFRESH_INTERVAL = 0.4  # How often the script updates (in seconds)
-PLAYERCTL_PATH = "/usr/bin/playerctl" # Path to playerctl, use which playerctl to find yours.
+DEFAULT_GLYPH = "▶"
+TEXT_WHEN_STOPPED = "No music "
+SCROLL_TEXT_LENGTH = 25
+REFRESH_INTERVAL = 0.4
+PLAYERCTL_PATH = "/usr/bin/playerctl"
 
-
-# Function to get player status using playerctl
 def get_player_status():
     try:
         result = subprocess.run([PLAYERCTL_PATH, 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         status = result.stdout.decode('utf-8').strip().lower()
         if result.returncode != 0 or not status:
-            return "stopped"  # Default to stopped if no status
+            return "stopped"
         return status
     except Exception:
         return "stopped"
 
-# Function to get currently playing song using playerctl
 def get_current_song():
     try:
         title_result = subprocess.run([PLAYERCTL_PATH, 'metadata', 'title'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -49,21 +46,18 @@ def get_current_song():
     except Exception:
         return None
 
-# Function to generate scrolling text with fixed length
 def scroll_text(text, length=SCROLL_TEXT_LENGTH):
     padded_text = text + "   "
     full_text = padded_text + text
     for i in range(len(padded_text)):
         yield full_text[i:i + length].ljust(length)
 
-# Function to handle media control commands
 def handle_media_control(action):
     try:
         subprocess.run([PLAYERCTL_PATH, action], check=True)
     except subprocess.CalledProcessError:
         pass
 
-# Signal handlers
 def signal_handler(signum, frame):
     if signum == signal.SIGUSR1:
         handle_media_control('previous')
@@ -76,39 +70,33 @@ signal.signal(signal.SIGUSR2, signal_handler)
 if __name__ == "__main__":
     scroll_generator = None
     current_text = ""
-    
+
     while True:
         output = {}
-        
+
         try:
             status = get_player_status()
             song = get_current_song()
 
-            glyph = GLYPHS.get(status, DEFAULT_GLYPH)
+            if status in ["playing", "paused"] and song:
+                # Scroll the song title
+                if current_text != song or scroll_generator is None:
+                    current_text = song
+                    scroll_generator = scroll_text(song)
 
-            # Se non c'è musica in riproduzione, mostra testo statico senza animazione
-            if status != "playing":
-                display_text = TEXT_WHEN_STOPPED
-                scroll_generator = None  # Disabilita lo scroll
-                song_text = display_text  # Mostra il testo intero
-            else:
-                # Musica in riproduzione, scroll normale
-                if song:
-                    display_text = song
-                else:
-                    display_text = TEXT_WHEN_STOPPED
-
-                if current_text != display_text or scroll_generator is None:
-                    current_text = display_text
-                    scroll_generator = scroll_text(display_text)
-                
                 try:
                     song_text = next(scroll_generator)
                 except StopIteration:
-                    scroll_generator = scroll_text(display_text)
+                    scroll_generator = scroll_text(song)
                     song_text = next(scroll_generator)
 
-            output['text'] = f"<span font_family='{GLYPH_FONT_FAMILY}'>{glyph}</span> {song_text}"
+                glyph = GLYPHS.get(status, DEFAULT_GLYPH)
+                output['text'] = f"<span font_family='{GLYPH_FONT_FAMILY}'>{glyph}</span> {song_text}"
+
+            else:
+                # Stopped or no song: show only "No music "
+                output['text'] = TEXT_WHEN_STOPPED
+                scroll_generator = None
 
         except Exception as e:
             output['text'] = f"⏹ Error: {str(e)}".ljust(SCROLL_TEXT_LENGTH + 2)

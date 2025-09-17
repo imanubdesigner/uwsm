@@ -13,6 +13,7 @@
     ],
     "spacing": 4,
     "modules-right": [
+        "custom/pacman",
         "tray",
         "custom/cava-internal",
         "custom/mpris",
@@ -85,9 +86,19 @@
     "on-scroll-down": "playerctl previous"
 },
 
+"custom/pacman": {
+    "format": "  {}",
+    "interval": "once",
+    "exec": "checkupdates | wc -l",
+    "on-click": "update-system",
+    "signal": 8,
+    "tooltip-format": "{} updates available"
+  },
+
+
 
 "custom/cava-internal": {
-    "exec": "sh ~/.config/waybar/scripts/Cava.sh",
+    "exec": "sh ~/.config/waybar/scripts/cava.sh",
     "format": "{}",
     "tooltip": false,
     "layer": "below",
@@ -135,22 +146,13 @@
     },
     "cpu": {
         "interval": 1,
-        "format": "CPU {usage:>2}% {icon0}{icon1}{icon2}{icon3}",
-        "format-icons": [
-            "▁",
-            "▂",
-            "▃",
-            "▄",
-            "▅",
-            "▆",
-            "▇",
-            "█"
-        ],
+        "format": "  {usage:>0}%",
         "on-click": "kitty -e btop"
     },
     "memory": {
         "interval": 30,
-        "format": "MEM  {used:0.1f}G/{total:0.1f}G"
+        "format": "  {used:0.1f} GB",
+        "tooltip": false
     },
 
         "network": {
@@ -189,12 +191,7 @@
       "scroll-step": 5,
       "format-icons": {
           "headphone": "",
-          "hands-free": "",
-          "headset": "",
-          "phone": "",
-          "portable": "",
-          "car": "",
-          "default": ["","", "", ""]
+          "default": [" "," ", " ", " "]
       }
   },
 
