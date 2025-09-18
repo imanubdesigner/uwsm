@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm swww wttrbar waypaper gowall qview" "Install Utilities" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm swww wttrbar waypaper-git gowall qview" "Install Utilities" "yes" "no"
 
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/applications && \
