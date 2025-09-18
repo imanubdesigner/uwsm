@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm swww wttrbar waytrogen gowall qview" "Install Utilities" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm swww wttrbar waypaper gowall qview" "Install Utilities" "yes" "no"
 
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/applications && \
@@ -20,5 +20,6 @@ chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/share/applications" \
   "Create applications folder and copy Neovim desktop files from assets" "yes" "no"
 
 run_command "cp -r $BASE_DIR/configs/waybar /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/waybar" "Copy Waybar config" "yes" "no"
+run_command "cp -r $BASE_DIR/configs/waypaper /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/waypaper" "Copy Waypaper config" "yes" "no"
 
 echo "------------------------------------------------------------------------"
