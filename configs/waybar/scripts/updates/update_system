@@ -1,11 +1,19 @@
 #!/bin/bash
 
+#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┓┏┏┓┏┳┓┏┓┳┳┓
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┗┓┗┫┗┓ ┃ ┣ ┃┃┃
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┗┛┗┛ ┻ ┗┛┛ ┗
+#            ┏┓┏┓┳┓┳┏┓┏┳┓
+#            ┗┓┃ ┣┫┃┃┃ ┃
+#            ┗┛┗┛┛┗┻┣┛ ┻
+#                          by Manu
+
 # update-system: script to update system packages (pacman + AUR) on Arch Linux
 
-# Se non è in esecuzione in un terminale, aprilo
+# If there is no terminal open, open it for me
 if [ ! -t 1 ]; then
-    # Cambia 'kitty' con il tuo terminale preferito (alacritty, foot, gnome-terminal, etc.)
-    exec kitty -e bash "$0" "$@"
+  # Change 'kitty' with your favorite terminal (alacritty, foot, gnome-terminal, etc.)
+  exec kitty -e bash "$0" "$@"
 fi
 
 # Commands
@@ -20,15 +28,15 @@ RESET="\e[0m"
 
 # Functions for colored output
 print_info() {
-    echo -e "${YELLOW}[$(date '+%H:%M:%S')] $1${RESET}"
+  echo -e "${YELLOW}[$(date '+%H:%M:%S')] $1${RESET}"
 }
 
 print_ok() {
-    echo -e "${GREEN}✓ $1${RESET}"
+  echo -e "${GREEN}✓ $1${RESET}"
 }
 
 print_err() {
-    echo -e "${RED}✗ $1${RESET}"
+  echo -e "${RED}✗ $1${RESET}"
 }
 
 # Start
@@ -37,31 +45,31 @@ print_info "Starting system update..."
 # Step 1: Update official pacman packages
 print_info "Updating official packages..."
 if $PACMAN; then
-    print_ok "Pacman update completed."
+  print_ok "Pacman update completed."
 else
-    print_err "Pacman update failed."
-    exit 1
+  print_err "Pacman update failed."
+  exit 1
 fi
 
 # Step 2: Update AUR packages if yay is available
 print_info "Updating AUR packages..."
 if command -v yay &>/dev/null; then
-    if $AUR; then
-        print_ok "AUR update completed."
-    else
-        print_err "AUR update failed."
-    fi
+  if $AUR; then
+    print_ok "AUR update completed."
+  else
+    print_err "AUR update failed."
+  fi
 else
-    print_info "AUR helper 'yay' not found, skipping AUR update."
+  print_info "AUR helper 'yay' not found, skipping AUR update."
 fi
 
 print_ok "System successfully updated!"
 
-# Aggiorna il cache di waybar
+# Waybar cache update
 rm -f /tmp/waybar-updates-cache 2>/dev/null
 pkill -SIGRTMIN+8 waybar 2>/dev/null
 
-# Tieni aperto il terminale per vedere il risultato
+# Keep terminal open to see the result
 echo
 echo -e "${GREEN}Press Enter to close...${RESET}"
 read
