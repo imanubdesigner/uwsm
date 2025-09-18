@@ -88,14 +88,14 @@
 },
 
 "custom/pacman": {
-    "format": "  {}",
-    "interval": "once",
-    "exec": "checkupdates | wc -l",
-    "on-click": "update-system",
-    "signal": 8,
-    "tooltip-format": "{} updates available"
-  },
-
+  "format": "  {}",
+  "interval": 14400,
+  "exec": "/home/manu/.config/waybar/scripts/updates/check_updates",
+  "on-click": "/home/manu/.config/waybar/scripts/updates/update_system",
+  "on-right-click": "/home/manu/.config/waybar/scripts/updates/check_updates",
+  "signal": 8,
+  "tooltip-format": "{} updates available"
+},
 
 
 "custom/cava-internal": {

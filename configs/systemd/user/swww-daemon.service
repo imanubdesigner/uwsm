@@ -5,7 +5,7 @@ After=graphical-session.target
 [Service]
 Type=simple
 ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
-ExecStart=/usr/bin/swww-daemon --format xrgb
+ExecStart=/usr/bin/swww-daemon --format argb
 Restart=on-failure
 Slice=background-graphical.slice
 
