@@ -25,6 +25,7 @@ window > box {
 #custom-mpris,
 #custom-weather,
 #custom-launcher,
+#custom-screenrecording-indicator,
 #custom-power,
 #cpu,
 #custom-pacman,
@@ -36,6 +37,10 @@ window > box {
     border-radius: 8px;
     padding: 8px 16px;
     margin: 4px 0;
+}
+
+#custom-screenrecording-indicator {
+color: @red;
 }
 
 #custom-cava-internal {

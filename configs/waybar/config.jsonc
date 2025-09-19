@@ -9,7 +9,8 @@
         "custom/weather"
     ],
     "modules-center": [
-    "clock"
+    "clock",
+    "custom/screenrecording-indicator"
     ],
     "spacing": 4,
     "modules-right": [
@@ -194,6 +195,13 @@
           "headphone": "",
           "default": [" "," ", " ", " "]
       }
+  },
+    
+    "custom/screenrecording-indicator": {
+    "on-click": "/home/manu/.config/hypr/scripts/wf-record/wf-record",
+    "exec": "/home/manu/.config/waybar/scripts/screen-recording.sh",
+    "signal": 8,
+    "return-type": "json"
   },
 
    "pulseaudio#microphone": {

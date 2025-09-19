@@ -16,31 +16,58 @@ if [[ ! -d "$OUTPUT_DIR" ]]; then
   exit 1
 fi
 
-if [[ $2 == "audio" ]]; then
-  AUDIO="--audio"
+# primo argomento: output | region
+SCOPE="$1"
+shift # sposta tutti gli altri parametri, ora $@ contiene solo le sorgenti audio
+AUDIO_OPTS=("$@")
+
+# Configurazione audio
+if [[ " ${AUDIO_OPTS[*]} " =~ " mic " && " ${AUDIO_OPTS[*]} " =~ " system " ]]; then
+  # entrambi
+  if ! pactl list short sinks | grep -q combined_out; then
+    pactl load-module module-null-sink sink_name=combined_out >/dev/null
+    pactl load-module module-loopback source=alsa_input.usb-Samson_Technologies_Samson_Meteor_Mic-00.analog-stereo sink=combined_out >/dev/null
+    pactl load-module module-loopback source=alsa_output.pci-0000_07_00.0.analog-stereo.monitor sink=combined_out >/dev/null
+  fi
+  AUDIO="--audio=combined_out.monitor"
+elif [[ " ${AUDIO_OPTS[*]} " =~ " mic " ]]; then
+  AUDIO="--audio=alsa_input.usb-Samson_Technologies_Samson_Meteor_Mic-00.analog-stereo"
+elif [[ " ${AUDIO_OPTS[*]} " =~ " system " ]]; then
+  AUDIO="--audio=alsa_output.pci-0000_07_00.0.analog-stereo.monitor"
 else
   AUDIO=""
 fi
 
-screenrecording() {
+start_screenrecording() {
   filename="$OUTPUT_DIR/screenrecording-$(date +'%Y-%m-%d_%H-%M-%S').mp4"
-  notify-send "Screen recording starting..." -t 1000
-  sleep 1
 
-  if lspci | grep -Eqi 'nvidia|intel.*graphics'; then
-    wf-recorder $AUDIO -f "$filename" -c libx264 -p crf=23 -p preset=medium -p movflags=+faststart "$@"
-  else
-    wl-screenrec $AUDIO -f "$filename" --ffmpeg-encoder-options="-c:v libx264 -crf 23 -preset medium -movflags +faststart" "$@"
-  fi
+  notify-send "Screen recording starting ($SCOPE, audio: ${AUDIO_OPTS[*]})" -t 1200
+  sleep 0.5
+
+  wf-recorder $AUDIO -f "$filename" -c libx264 -p crf=23 -p preset=medium -p movflags=+faststart "$@" &
+  toggle_screenrecording_indicator
 }
 
-if pgrep -x wl-screenrec >/dev/null || pgrep -x wf-recorder >/dev/null; then
-  pkill -x wl-screenrec
+stop_screenrecording() {
   pkill -x wf-recorder
   notify-send "Screen recording saved to $OUTPUT_DIR" -t 2000
-elif [[ "$1" == "output" ]]; then
-  screenrecording
+  sleep 0.2
+  toggle_screenrecording_indicator
+}
+
+toggle_screenrecording_indicator() {
+  pkill -RTMIN+8 waybar
+}
+
+screenrecording_active() {
+  pgrep -x wf-recorder >/dev/null
+}
+
+if screenrecording_active; then
+  stop_screenrecording
+elif [[ "$SCOPE" == "output" ]]; then
+  start_screenrecording
 else
   region=$(slurp) || exit 1
-  screenrecording -g "$region"
+  start_screenrecording -g "$region"
 fi
