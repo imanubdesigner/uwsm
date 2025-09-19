@@ -29,7 +29,7 @@ run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Instal
 run_command "pacman -S --noconfirm pipewire wireplumber pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer pavucontrol" "Install complete audio stack (PipeWire + utilities)" "yes"
 
 # -------------------- Fonts --------------------
-run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd ttf-jetbrains-mono ttf-droid noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
+run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
 
 # -------------------- Display manager & Network --------------------
 run_command "pacman -S --noconfirm sddm && systemctl enable sddm.service" "Install and enable SDDM (Recommended)" "yes"
@@ -40,7 +40,7 @@ run_command "pacman -S --noconfirm wpa_supplicant && systemctl enable wpa_suppli
 run_command "pacman -S --noconfirm bluez bluez-utils blueman && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"
 
 # -------------------- Applications Installation --------------------
-run_command "pacman -S --noconfirm nautilus ufw swww luarocks woff2-font-awesome firefoxpwa curl nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi firefox obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar xarchiver p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
+run_command "pacman -S --noconfirm nautilus ufw swww luarocks firefoxpwa curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi firefox obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar xarchiver p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
 
 # -------------------- Configuration Files --------------------
 
