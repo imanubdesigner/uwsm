@@ -8,7 +8,7 @@
 #            ┗┛┗┛┛┗┻┣┛ ┻
 #                          by Manu
 
-# update-system: script to update system packages (pacman + AUR) on Arch Linux
+# update-system: script to update system packages (only pacman) on Arch Linux
 
 # If there is no terminal open, open it for me
 if [ ! -t 1 ]; then
@@ -16,9 +16,8 @@ if [ ! -t 1 ]; then
   exec kitty -e bash "$0" "$@"
 fi
 
-# Commands
+# Command
 PACMAN="sudo pacman -Syu"
-AUR="yay -Sua --noconfirm"
 
 # Colors
 GREEN="\e[32m"
@@ -42,25 +41,13 @@ print_err() {
 # Start
 print_info "Starting system update..."
 
-# Step 1: Update official pacman packages
+# Update official pacman packages only
 print_info "Updating official packages..."
 if $PACMAN; then
   print_ok "Pacman update completed."
 else
   print_err "Pacman update failed."
   exit 1
-fi
-
-# Step 2: Update AUR packages if yay is available
-print_info "Updating AUR packages..."
-if command -v yay &>/dev/null; then
-  if $AUR; then
-    print_ok "AUR update completed."
-  else
-    print_err "AUR update failed."
-  fi
-else
-  print_info "AUR helper 'yay' not found, skipping AUR update."
 fi
 
 print_ok "System successfully updated!"

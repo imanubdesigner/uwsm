@@ -8,8 +8,7 @@
 #            ┗┛┗┛┛┗┻┣┛ ┻
 #                       by Manu
 
-updates=$(($(checkupdates | wc -l) + $(yay -Qum | wc -l)))
+updates=$(checkupdates | wc -l)
 echo "$updates"
 
-# Refresh waybar module by sending signal 8
 pkill -SIGRTMIN+8 waybar
