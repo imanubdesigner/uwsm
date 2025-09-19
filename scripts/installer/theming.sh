@@ -45,27 +45,22 @@ run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf 
 # run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
 
 # -------------------- Nautilus Open Any Terminal --------------------
-NAUTILUS_DIR="/tmp/nautilus-open-any-terminal"
 
-# Clona il repository in una cartella temporanea
-run_command "git clone https://github.com/Stunkymonkey/nautilus-open-any-terminal.git $NAUTILUS_DIR" \
-  "Clone Nautilus Open Any Terminal repo" "yes" "no"
+# Definisce la directory target nella home dell'utente
+USER_HOME=$(eval echo "~$SUDO_USER")
+TARGET_DIR="$USER_HOME/nautilus-open-any-terminal"
 
-# Compila il progetto nella cartella clonata
-run_command "cd $NAUTILUS_DIR && make" \
-  "Build Nautilus Open Any Terminal" "yes" "no"
+# Clona il repository nella home dell'utente normale
+run_command "sudo -u \"$SUDO_USER\" git clone https://github.com/Stunkymonkey/nautilus-open-any-terminal.git \"$TARGET_DIR\"" \
+  "Clone Nautilus Open Any Terminal repo into $TARGET_DIR" "yes" "no"
 
-# Installa solo per Nautilus (user install) come utente normale
-run_command "cd $NAUTILUS_DIR && sudo -u $SUDO_USER make install-nautilus schema" \
-  "Install Nautilus Open Any Terminal extension for $SUDO_USER" "yes" "no"
+# Compila e installa nella stessa riga, come utente normale
+run_command "sudo -u \"$SUDO_USER\" bash -c 'cd \"$TARGET_DIR\" && make && make install-nautilus schema'" \
+  "Build and install Nautilus Open Any Terminal for $SUDO_USER" "yes" "no"
 
 # Imposta Kitty come terminale predefinito per l’utente normale
-run_command "sudo -u $SUDO_USER gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty" \
+run_command "sudo -u \"$SUDO_USER\" gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty" \
   "Set Kitty as default terminal for $SUDO_USER" "yes" "no"
-
-# (Opzionale) pulizia della cartella temporanea
-run_command "rm -rf $NAUTILUS_DIR" \
-  "Remove temporary Nautilus Open Any Terminal folder" "yes" "no"
 
 # -------------------- Wallpapers --------------------
 run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
