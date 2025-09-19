@@ -39,10 +39,33 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set 
 # -------------------- SDDM Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf to /etc for manu user" "yes" "no"
 
-# -------------------- Thunar Configuration --------------------
-run_command "mkdir -p /home/$SUDO_USER/.config/xfce4" "Create XFCE4 config directory" "yes" "no"
-run_command "cp $BASE_DIR/assets/helpers.rc /home/$SUDO_USER/.config/xfce4/helpers.rc" "Copy helpers.rc to ~/.config/xfce4" "yes" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
+# # -------------------- Thunar Configuration --------------------
+# run_command "mkdir -p /home/$SUDO_USER/.config/xfce4" "Create XFCE4 config directory" "yes" "no"
+# run_command "cp $BASE_DIR/assets/helpers.rc /home/$SUDO_USER/.config/xfce4/helpers.rc" "Copy helpers.rc to ~/.config/xfce4" "yes" "no"
+# run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
+
+# -------------------- Nautilus Open Any Terminal --------------------
+NAUTILUS_DIR="/tmp/nautilus-open-any-terminal"
+
+# Clona il repository in una cartella temporanea
+run_command "git clone https://github.com/Stunkymonkey/nautilus-open-any-terminal.git $NAUTILUS_DIR" \
+  "Clone Nautilus Open Any Terminal repo" "yes" "no"
+
+# Compila il progetto nella cartella clonata
+run_command "cd $NAUTILUS_DIR && make" \
+  "Build Nautilus Open Any Terminal" "yes" "no"
+
+# Installa solo per Nautilus (user install) come utente normale
+run_command "cd $NAUTILUS_DIR && sudo -u $SUDO_USER make install-nautilus schema" \
+  "Install Nautilus Open Any Terminal extension for $SUDO_USER" "yes" "no"
+
+# Imposta Kitty come terminale predefinito per l’utente normale
+run_command "sudo -u $SUDO_USER gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty" \
+  "Set Kitty as default terminal for $SUDO_USER" "yes" "no"
+
+# (Opzionale) pulizia della cartella temporanea
+run_command "rm -rf $NAUTILUS_DIR" \
+  "Remove temporary Nautilus Open Any Terminal folder" "yes" "no"
 
 # -------------------- Wallpapers --------------------
 run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
