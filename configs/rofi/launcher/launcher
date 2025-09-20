@@ -11,4 +11,5 @@ theme='apps-menu'
 ## Run
 rofi \
   -show drun \
+  -run-command "uwsm app -- {cmd}" \
   -theme ${dir}/${theme}.rasi
