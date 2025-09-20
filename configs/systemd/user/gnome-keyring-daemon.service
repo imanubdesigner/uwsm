@@ -1,0 +1,14 @@
+[Unit]
+Description=GNOME Keyring Daemon
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+Environment=SSH_AUTH_SOCK=%t/gkr-ssh-agent
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
