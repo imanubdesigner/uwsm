@@ -77,16 +77,16 @@
     # Background and border are set globally, but can be overridden here.
     background = "#1E1E2E99"
     frame_color = "#f5e0dc"  
-    foreground = "#a6adc8"   
+    foreground = "#89b4fa"   
     highlight = "#f5e0dc"    
     timeout = 4
 
 [urgency_normal]
     # Background and border are set globally, but can be overridden here.
     background = "#1E1E2E99"
-    frame_color = "#a6adc8"  
-    foreground = "#a6adc8"   
-    highlight = "#a6adc8"    
+    frame_color = "#89b4fa"  
+    foreground = "#89b4fa"   
+    highlight = "#89b4fa"    
     timeout = 4
 
 [urgency_critical]
