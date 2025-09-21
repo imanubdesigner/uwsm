@@ -1,3 +1,9 @@
+# =========================
+# Cursor theme Hyprland
+# =========================
+export HYPRCURSOR_THEME=catppuccin-mocha-light-cursors
+export HYPRCURSOR_SIZE=20
+
 # Uncomment if needed
 # export HYPRLAND_TRACE=1
 # export HYPRLAND_NO_RT=1

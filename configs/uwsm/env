@@ -1,13 +1,12 @@
 # =========================
 # Default terminal emulator
 # =========================
-export TERMINAL=kitty      # default terminal emulator
+export TERMINAL=ghostty     # default terminal emulator
+export EDITOR=nvim
 
 # =========================
-# Cursor theme (Hyprland + Xwayland)
+# Cursor theme (Xwayland)
 # =========================
-export HYPRCURSOR_THEME=catppuccin-mocha-light-cursors
-export HYPRCURSOR_SIZE=20
 export XCURSOR_THEME=catppuccin-mocha-light-cursors
 export XCURSOR_SIZE=20
 
@@ -24,7 +23,7 @@ export NVD_BACKEND=direct                   # hardware decoding (PipeWire, Firef
 # =========================
 # Hyprland-specific rendering
 # =========================
-# export WLR_RENDERER=vulkan                  # Vulkan renderer for wlroots
+export WLR_RENDERER=vulkan                  # Vulkan renderer for wlroots
 export WLR_NO_HARDWARE_CURSORS=1            # fixes invisible/flickering cursors
 # export WLR_DRM_DEVICES=/dev/dri/card0     # use only if you have multiple GPUs
 
