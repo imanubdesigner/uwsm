@@ -39,29 +39,6 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set 
 # -------------------- SDDM Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf to /etc for manu user" "yes" "no"
 
-# # -------------------- Thunar Configuration --------------------
-# run_command "mkdir -p /home/$SUDO_USER/.config/xfce4" "Create XFCE4 config directory" "yes" "no"
-# run_command "cp $BASE_DIR/assets/helpers.rc /home/$SUDO_USER/.config/xfce4/helpers.rc" "Copy helpers.rc to ~/.config/xfce4" "yes" "no"
-# run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xfce4/helpers.rc" "Set correct ownership for helpers.rc" "yes" "no"
-
-# -------------------- Nautilus Open Any Terminal --------------------
-
-# Definisce la directory target nella home dell'utente
-USER_HOME=$(eval echo "~$SUDO_USER")
-TARGET_DIR="$USER_HOME/nautilus-open-any-terminal"
-
-# Clona il repository nella home dell'utente normale
-run_command "sudo -u \"$SUDO_USER\" git clone https://github.com/Stunkymonkey/nautilus-open-any-terminal.git \"$TARGET_DIR\"" \
-  "Clone Nautilus Open Any Terminal repo into $TARGET_DIR" "yes" "no"
-
-# Compila e installa nella stessa riga, come utente normale
-run_command "sudo -u \"$SUDO_USER\" bash -c 'cd \"$TARGET_DIR\" && make && make install-nautilus schema'" \
-  "Build and install Nautilus Open Any Terminal for $SUDO_USER" "yes" "no"
-
-# Imposta Kitty come terminale predefinito per l’utente normale
-run_command "sudo -u \"$SUDO_USER\" gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty" \
-  "Set Kitty as default terminal for $SUDO_USER" "yes" "no"
-
 # -------------------- Wallpapers --------------------
 run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
 run_command "cp $BASE_DIR/assets/wallpapers/wallhaven-3qzvr6.png /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "yes" "no"
