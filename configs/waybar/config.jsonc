@@ -149,7 +149,7 @@
     "cpu": {
         "interval": 1,
         "format": "  {usage:>0}%",
-        "on-click": "kitty -e btop"
+        "on-click": "ghostty -e btop"
     },
     "memory": {
         "interval": 30,
