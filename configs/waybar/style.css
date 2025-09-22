@@ -1,150 +1,290 @@
-@import "mocha.css";
+/**
+ *    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┓┏┓┏┓
+ *    ┃┃┃┣┫┗┫┣┫┣┫┣┫  ┃ ┗┓┗┓
+ *    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛
+ *                  by Manu
+ */
 
-/* Stili globali */
+
+/*------------Defining Colors---------------*/
+@define-color background      #1e1e2e;
+@define-color background-alt  #313244;
+@define-color foreground      #cdd6f4;
+@define-color foreground-alt  #1e1e2e;
+@define-color red             #f38ba8;
+@define-color green           #a6e3a1;
+@define-color yellow          #f9e2af;
+@define-color blue            #89b4fa;
+@define-color magenta         #f5c2e7;
+@define-color cyan            #94e2d5;
+
+
+/*------------Global Properties-----------------*/
 * {
-    font-family: "Liga SFMono Nerd Font, JetBrains Mono Nerd Font";
-    font-weight: bold;
-    font-size: 13px;
-}
-
-/* Stili della barra */
-window#waybar {
-    background-color: transparent;
-}
-
-window > box {
-    margin: 1px 10px 0 10px;
-    padding: 0 4px;
-}
-
-/* Stili di base per i moduli */
-#window,
-#tray,
-#custom-cava-internal,
-#workspaces,
-#custom-mpris,
-#custom-weather,
-#custom-launcher,
-#custom-screenrecording-indicator,
-#custom-power,
-#cpu,
-#custom-pacman,
-#memory,
-#pulseaudio,
-#clock,
-#network {
-    background-color: @mantle;
-    border-radius: 8px;
-    padding: 8px 16px;
-    margin: 4px 0;
-}
-
-#custom-screenrecording-indicator {
-color: @red;
-}
-
-#custom-cava-internal {
-color: @green;
-}
-
-/* Stili specifici per ogni modulo */
-#window {
-    padding: 8px 12px 8px 8px;
-}
-
-window#waybar.empty #window {
-    background: rgba(12, 12, 12, 0);
-}
-
-.modules-left,
-.modules-right,
-.modules-center {
-    padding: 3px;
-}
-
-#workspaces {
-    padding: 4px 4px 4px 6px;
-}
-
-#workspaces button {
+    border: none;
+    border-radius: 0px;
+    font-family: "Liga SFMono Nerd Font";
+    font-weight: 600;
+    font-size: 14px;
     min-height: 0;
-    padding: 0 7px;
-    margin-right: 2px;
-    color: @green;
 }
 
-#workspaces button.urgent {
-    color: @green;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+/*------------Window--------------------*/
+#window{
+    background: @background;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-style: normal;
 }
 
-#workspaces button.empty {
-    color: @text;
+/*----------Waybar Window------------*/
+window#waybar {
+    background: alpha(@background, 0.5);
 }
 
-#workspaces button.visible {
-    color: @blue;
+/*-----------Tooltip--------------*/
+tooltip {
+  background: @background;
+  border: 2px solid @blue;
+  border-radius: 12px;
+}
+tooltip label {
+  color: @foreground;
+  padding: 6px;
+}
+
+/*---------Workspaces-----------------*/
+#workspaces {
+    background: @background;
+    margin: 5px 5px;
+    padding: 8px 5px;
+    border-radius: 16px;
+    color: @foreground;
+}
+#workspaces button {
+    font-weight: bold;
+    padding: 0px 5px;
+    margin: 0px 3px;
+    border-radius: 16px;
+    color: transparent;
+    background: @background-alt;
+    transition: all 0.3s ease-in-out;
 }
 
 #workspaces button.active {
+    font-weight: bold;
+    background-color: @blue;
+    color: @foreground-alt;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button:hover {
+    font-weight: bold;
+    background-color: @cyan;
+    color: @foreground-alt;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+}
+
+#workspaces button.urgent {
+    font-weight: bold;
+    background-color: @red;
+    color: @foreground-alt;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+    transition: all 0.3s ease-in-out;
+}
+
+
+/*-----------Weather, Pacman & Screenrecording-indicator------------*/
+#custom-swaync, #custom-weather, #custom-screenrecording-indicator, #custom-pacman {
+
+    font-weight: bold;
+    background: @background;
+    margin: 5px; 
+    padding: 8px 20px;
+    color: @magenta;
+}
+#custom-weather {
+    border-radius: 24px 10px 24px 10px;
+}
+
+#custom-pacman {
+    border-radius: 24px 10px 24px 10px;
+}
+
+#custom-screenrecording-indicator {
+   color: @red; 
+   border-radius: 24px 10px 24px 10px;
+}
+
+
+/* #custom-swaync { */
+/*     border-radius: 10px 24px 10px 24px; */
+/* } */
+
+/*---------------Tray, Clock, Playerctl, Cpu, Temperature, Memory, Idle_inhibitor----------------------*/
+#tray, #pulseaudio, #network, #cpu, #temperature, #memory, #idle_inhibitor,
+#custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
+    background: @background;
+    font-weight: bold;
+    margin: 5px 0px;
+}
+#tray, #pulseaudio, #network {
+    color: @foreground;
+    border-radius: 10px 24px 10px 24px;
+    padding: 0 20px;
+    margin-left: 7px;
+}
+#clock {
     color: @blue;
+    background: @background;
+    border-radius: 0px 0px 0px 40px;
+    padding: 10px 10px 15px 25px;
+    margin-left: 7px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
-@keyframes blink {
-    to {
-        color: @mantle;
-        background-color: @subtext0;
-    }
+#tray menu * {
+    padding: 0px 5px;
+    transition: all .3s ease; 
 }
 
-#custom-mpris {
-    color: @green;
+#tray menu separator {
+    padding: 0px 5px;
+    transition: all .3s ease; 
 }
 
+
+/*-----------Playerctl-------------------*/
+#custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
+    background: @background;
+    font-size: 22px;
+}
+#custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
+    color: @foreground;
+}
+#custom-playerctl.backward {
+    color: @blue;
+    border-radius: 24px 0px 0px 10px;
+    padding-left: 16px;
+    margin-left: 10px;
+}
+#custom-playerctl.play {
+    color: @magenta;
+    padding: 0 5px;
+}
+#custom-playerctl.foward {
+    color: @blue;
+    border-radius: 0px 10px 24px 0px;
+    padding-right: 6px;
+    margin-right: 7px
+}
+#custom-playerlabel {
+    background: @background;
+    color: @foreground;
+    padding: 0 20px;
+    border-radius: 24px 10px 24px 10px;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+/* #custom-screenrecording-indicator { */
+/*     background: @background; */
+/*     color: @red; */
+/*     padding-left: 20px; */
+/*     border-radius: 24px 10px 24px 10px; */
+/*     margin: 5px 0; */
+/*     margin-left: 7px; */
+/*     font-weight: bold; */
+/* } */
+
+
+/*-----------Group--------------*/
+#group-utility {
+    padding: 0px 5px;
+    transition: all .3s ease; 
+}
+
+/*-------------Launcher--------------*/
 #custom-launcher {
-    padding: 8px 8px 8px 4px;
     color: @blue;
-    font-size: 18px;
+    background: @background;
+    margin: 0px 5px 0px 0px;
+    padding: 0px 35px 0px 15px;
+    border-radius: 0px 0px 40px 0px;
+    font-size: 28px;
 }
 
-#custom-power {
-    padding: 8px 12px 8px 8px;
+/*--------------Cpu, Termperature, Colorpicker, Memory, Idle_inhibitor----------------*/
+#cpu, #temperature, #memory,#idle_inhibitor {
+    background: @background;
+    font-size: 16px;
 }
 
 #cpu {
-    color: @rosewater;
+    color: @blue;
 }
 
 #memory {
-    color: @peach;
+    color: @cyan;
 }
 
-/* Stili per il modulo PulseAudio */
-#pulseaudio.headphones {
+#temperature {
     color: @yellow;
 }
 
-#pulseaudio.headphones.muted {
+#custom-pacman {
+    color: @magenta;
+}
+
+#idle_inhibitor {
+    color: @foreground;
+}
+
+#idle_inhibitor.activated {
     color: @red;
 }
 
-#pulseaudio.microphone {
-    color: @yellow;
+#cpu {
+    border-radius: 24px 0px 0px 10px;
+    padding-left: 16px;
+    padding-right: 7px;
+    margin-left: 7px;
 }
 
-#clock {
-    color: @teal;
+#temperature, #memory{
+    padding-left: 7px;
+    padding-right: 7px;
 }
 
-#network {
-    color: @text;
-    margin: 4px;
+#idle_inhibitor {
+    border-radius: 0px 10px 24px 0px;
+    padding-left: 7px;
+    padding-right: 16px;
+    margin-right: 9px
 }
 
-#network.disabled {
-    color: @red;
+/*---------------Expand---------------*/
+#custom-expand {
+    background: transparent;
+    color: @foreground;
+    margin: 1px;
+    padding-left: 16px;
+    font-size: 22px;
 }
+
+#custom-expand:hover {
+    color: @cyan;
+}
+

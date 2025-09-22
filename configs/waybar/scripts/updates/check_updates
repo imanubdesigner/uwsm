@@ -8,7 +8,33 @@
 #            ┗┛┗┛┛┗┻┣┛ ┻
 #                       by Manu
 
-updates=$(checkupdates | wc -l)
+# Function to count updates with error handling
+count_updates() {
+  # Try checkupdates first
+  if command -v checkupdates >/dev/null 2>&1; then
+    updates=$(checkupdates 2>/dev/null | wc -l)
+    if [ $? -eq 0 ] && [ "$updates" != "" ]; then
+      echo "$updates"
+      return 0
+    fi
+  fi
+
+  # Fallback: use pacman directly (slower but more reliable)
+  updates=$(pacman -Qu 2>/dev/null | wc -l)
+  if [ $? -eq 0 ]; then
+    echo "$updates"
+    return 0
+  fi
+
+  # If everything fails, show 0
+  echo "0"
+}
+
+# Execute the check
+updates=$(count_updates)
+
+# Output for waybar
 echo "$updates"
 
-pkill -SIGRTMIN+8 waybar
+# Update waybar
+pkill -SIGRTMIN+8 waybar 2>/dev/null

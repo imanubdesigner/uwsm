@@ -1,33 +1,52 @@
-{
-    "layer": "top",
-    "position": "top",
-    "modules-left": [
-        "custom/launcher",
-        "hyprland/workspaces",
-        "cpu",
-        "memory",
-        "custom/weather"
-    ],
-    "modules-center": [
-    "clock",
-    "custom/screenrecording-indicator"
-    ],
-    "spacing": 4,
-    "modules-right": [
-        "custom/pacman",
-        "tray",
-        "custom/cava-internal",
-        "custom/mpris",
-        "network",
-        "pulseaudio#headphones",
-        "pulseaudio#microphone", 
-        "custom/power"
-    ],
+/**
+ *    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┓┏┓┳┓┏┓
+ *    ┃┃┃┣┫┗┫┣┫┣┫┣┫  ┃ ┃┃┃┃┣ 
+ *    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┛┗┻ 
+ *                    by Manu
+ */
 
-    // Simple Workspaces with numbers
-   
-    // "hyprland/workspaces": {
-    // "format": "{name}",
+ 
+ {
+
+	/*----------Global Properties-------------*/
+	"layer": "top",
+	"position": "top",
+	"spacing": 0,
+	"height": 44,
+	"margin-top": 0,
+	"margin-right": 0,
+	"margin-bottom": 0,
+	"margin-left": 0,
+	/*----------Modules Left----------------*/
+	"modules-left": [
+		"custom/launcher",
+		"group/utility",
+		"custom/playerctl#backward",
+		"custom/playerctl#play",
+		"custom/playerctl#foward",
+		"custom/playerlabel",
+    "custom/screenrecording-indicator"
+	],
+	/*----------Modules Center--------------*/
+	"modules-center": [
+		"custom/weather",
+		"hyprland/workspaces",
+    "custom/pacman"
+	],
+	/*----------Modules Center--------------*/
+	"modules-right": [
+		"tray",
+		"pulseaudio",
+		"network",
+		"clock"
+	],
+
+	/*----------Hyprland Workspace----------*/
+	"hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "on-scroll-down": "hyprctl dispatch workspace e+1",
+    "on-scroll-up": "hyprctl dispatch workspace e-1",
     // "persistent-workspaces": {
     //     "1": [],
     //     "2": [],
@@ -35,190 +54,175 @@
     //     "4": [],
     //     "5": []
     // }
-    //  },
-
-  "hyprland/workspaces": {
-  "on-click": "activate",
-  "format": "{icon}",
-  "format-icons": {
-    "default": "",
-    "1": "󰊠",
-    "2": "󰊠",
-    "3": "󰊠",
-    "4": "󰊠",
-    "5": "󰊠",
-    "6": "󰊠",
-    "7": "󰊠",
-    "8": "󰊠",
-    "9": "󰊠", 
-    "active": "󰮯"
-  },
-  "persistent-workspaces": {
-    "1": [],
-    "2": [],
-    "3": [],
-    "4": [],
-    "5": []
-  }
-   },    
-
-  // Using a nice app wattrbar -> https://github.com/bjesus/wttrbar
-    // yay -Syu wattrbar | If you don't want it, just delete the custom/weather
-
-"custom/weather": {
-"format": "{}°",
-"tooltip": true,
-"interval": 3600,
-"exec": "wttrbar --location Montesilvano --nerd",
-"return-type": "json"
- },
-
-  // CUSTOM MPRIS WITH TEXT SCROLLING AND MULTIMEDIA BUTTONS
-
-
-"custom/mpris": {
-    "exec": "python3 ~/.config/waybar/scripts/static-scroll.py",
-    "format": "{}",
-    "return-type": "json", 
-    "restart-interval": 1,
-    "on-click": "playerctl play-pause",
-    "on-click-right": "playerctl next", 
-    "on-click-middle": "playerctl previous",
-    "on-scroll-up": "playerctl next",
-    "on-scroll-down": "playerctl previous"
 },
 
-"custom/pacman": {
-  "format": "  {}",
-  "interval": 14400,
-  "exec": "/home/manu/.config/waybar/scripts/updates/check_updates",
-  "on-click": "/home/manu/.config/waybar/scripts/updates/update_system",
-  "on-right-click": "/home/manu/.config/waybar/scripts/updates/check_updates",
-  "signal": 8,
-  "tooltip-format": "{} updates available"
-},
+	/*-----------Weather---------------*/
+	"custom/weather": {
+		"format": "{}",
+		"format-alt": "{alt}: {}",
+		"format-alt-click": "click",
+		"interval": 3600,
+		"return-type": "json",
+		"exec": "/home/manu/.config/waybar/scripts/Weather.py",
+	    	//"exec": "/home/manu/.config/waybar/scripts/Weather.sh",
+	  "exec-if": "ping wttr.in -c1",
+	    	"tooltip": true
+	},	
 
+	/*---------------Launcher-------------*/
+	"custom/launcher": {
+		"format": "󰣇",
+		"tooltip": false,
+		"on-click": "/home/manu/.config/rofi/launcher/launcher"
+	},
 
-"custom/cava-internal": {
-    "exec": "sh ~/.config/waybar/scripts/cava.sh",
-    "format": "{}",
-    "tooltip": false,
-    "layer": "below",
-    "output": "all"
-  },
+	/*--------------Pacman--------------------*/
+	"custom/pacman": {
+		"format": "󰅢 {}",
+		"interval": 3600,
+    "exec": "/home/manu/.config/waybar/scripts/updates/check_updates",
+    "on-click": "/home/manu/.config/waybar/scripts/updates/update_system",
+    "on-right-click": "/home/manu/.config/waybar/scripts/updates/check_updates",	
+		"signal": 8,
+		"tooltip": false
+	},
 
-    "hyprland/window": {
-        "max-length": 30,
-        "icon": true,
-        "separate-outputs": true,
-        "format": "{}",
-        "tooltip": false 
-       },
+	/*-----------Cpu, Memory, Colorpicker, Temperature, Idle-inhibitor------*/
+	"cpu": {
+		"format": "󰻠 ",
+		"tooltip": true
+	},
+	"memory": {
+		"format": " "
+	},
+	"temperature": {
+		"critical-threshold": 80,
+		"format": " "
+	},
+		"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": " ",
+			"deactivated": " "
+		}
+	},
 
-    "tray": {
-        "icon-size": 20,
-        "spacing": 7
-    },
+	/*----------------Expand---------------*/
+	"custom/expand": {
+		"format": " ",
+		"tooltip": true,
+		"tooltip-format": "Show utilities"
+	},
 
-    "clock": {
-        "format": "{:%H:%M}  󰥔",
-        "format-alt": "{:%A, %d %B, %Y (%R)}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode": "year",
-            "mode-mon-col": 3,
-            "weeks-pos": "right",
-            "on-scroll": 1,
-            "on-click-right": "mode",
-            "format": {
-                "months": "<span color='#f5e0dc'><b>{}</b></span>",
-                "days": "<span color='#cdd6f4'><b>{}</b></span>",
-                "weeks": "<span color='#fab387'><b>W{}</b></span>",
-                "weekdays": "<span color='#f5c2e7'><b>{}</b></span>",
-                "today": "<span color='#cba6f7'><b><u>{}</u></b></span>"
-            }
-        },
-        "actions": {
-            "on-click-right": "mode",
-            "on-click-forward": "tz_up",
-            "on-click-backward": "tz_down",
-            "on-scroll-up": "shift_up",
-            "on-scroll-down": "shift_down"
-        }
-    },
-    "cpu": {
-        "interval": 1,
-        "format": "  {usage:>0}%",
-        "on-click": "ghostty -e btop"
-    },
-    "memory": {
-        "interval": 30,
-        "format": "  {used:0.1f} GB",
-        "tooltip": false
-    },
+	/*-----------Group-------------------*/
+	"group/utility": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 600,
+			"children-class": "child-utility",
+			"transition-left-to-right": true,
+			"click-to-reveal": true
+		},
+		"modules": [
+			"custom/expand",
+			"cpu",
+			"memory",
+			"temperature",
+			"idle_inhibitor",
+		]
+	},
 
-        "network": {
-        "format-wifi" : "{icon}",
-        "format-icons": [" 󰤯 "," 󰤟 "," 󰤢 "," 󰤥 "," 󰤨 "],
-        "format-ethernet": " 󰈀 ",
-	      "format-alt" : "  {bandwidthDownBytes}   {bandwidthUpBytes}",
-        "format-disconnected" : " 󱘖 ",
-	      "tooltip-format-alt" :"{ifname}",
-        "tooltip-format-wifi": "{icon} {essid}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
-        "tooltip-format-ethernet": "  {ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
-	      "tooltip-format-disconnected": "Disconnected",
-	      "on-click-right": "nm-connection-editor",
-	      "interval": 5,
-	      "nospacing": 1,
-    },
+	/*---------------Playerctl---------------*/
+	"custom/playerctl#backward": {
+		"format": "󰙣 ",
+		"on-click": "playerctl previous",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"tooltip": false
+	},
+	"custom/playerctl#foward": {
+		"format": "󰙡 ",
+		"on-click": "playerctl next",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"tooltip": false
+	},
+	"custom/playerctl#play": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "{icon}",
+		"format-icons": {
+			"Paused": "<span> </span>",
+			"Playing": "<span>󰏥 </span>",
+			"Stopped": "<span> </span>"
+		},
+		"on-click": "playerctl play-pause",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"return-type": "json"
+	},
+	"custom/playerlabel": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "<span>󰎈 {} 󰎈</span>",
+		"max-length": 40,
+		"on-click": "",
+		"return-type": "json"
+	},
+	
+	/*---------------Pulseaudio------------*/
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-icons": {
+			"default": [
+				"󰕿",
+				"󰖀",
+				"󰕾"
+			]
+		},
+		"format-muted": "󰝟 ",
+		"on-click": "pavucontrol",
+		"scroll-step": 1
+	},
 
-    "custom/launcher": {
-        "format": " 󰣇 ",
-        "tooltip": false,
-        "on-click": "$HOME/.config/rofi/launcher/launcher"
-    },
-    "custom/power": {
-        "format": "  ",
-        "on-click": "$HOME/.config/rofi/powermenu/powermenu",
-        "tooltip": false
-    },
-  "pulseaudio#headphones": {
-      "format": "{icon} {volume}%",
-      "tooltip": false,
-      "format-muted": "  Muted",
-      "on-click": "pavucontrol",
-      "on-click-right": "amixer sset 'Master' toggle",
-      "on-scroll-up": "pamixer -i 1",
-      "on-scroll-down": "pamixer -d 1",
-      "scroll-step": 5,
-      "format-icons": {
-          "headphone": "",
-          "default": [" "," ", " ", " "]
-      }
-  },
-    
-    "custom/screenrecording-indicator": {
+	/*--------------Network-----------------*/
+	"network": {
+		"format-disconnected": "󰖪 0% ",
+		"format-ethernet": "󰈀 100% ",
+		"format-linked": "{ifname} (No IP)",
+		"format-wifi": "  {signalStrength}%",
+		"tooltip-format": "{ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
+		"on-click": "ghostty --title=TermNmtui -e 'sleep 0.1; nmtui'"
+	},
+
+	/*------------Tray--------------------*/
+	"tray": {
+		"icon-size": 20,
+		"spacing": 8
+	},
+
+/*------------Screen Indicator--------------------*/
+
+"custom/screenrecording-indicator": {
     "on-click": "/home/manu/.config/hypr/scripts/wf-record/wf-record",
     "exec": "/home/manu/.config/waybar/scripts/screen-recording.sh",
     "signal": 8,
     "return-type": "json"
   },
 
-   "pulseaudio#microphone": {
-      "format": "{format_source}",
-      "format-source": " {volume}%",
-      "format-source-muted": "  Muted",
-      "on-click": "pavucontrol -t 4",
-      "on-click-right": "amixer sset 'Capture' toggle",
-      "on-scroll-up": "pamixer --default-source -i 5",
-      "on-scroll-down": "pamixer --default-source -d 5",
-      "scroll-step": 5,
-      "tooltip": false
-  }
-  
+	/*------------Clock------------------*/
 
-
-
-
-
+	"clock": {
+    "format": "󰥔  {:%H:%M:%S %p} ",
+    "format-alt": "󰥔  {:%A, %d %B, %Y (%R)}",
+    "interval": 1,
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+        "format": {
+            "today": "<span color='#d699b6'><b>{}</b></span>"
+        }
+    },
+    "actions": {
+        "on-scroll-down": "shift_up",
+        "on-scroll-up": "shift_down",
+    }
 }
+ }

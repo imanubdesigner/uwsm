@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+#    ┏┓┏┓┳┓┏┓┓ ┓ ┳┳┓┏┓  ┏┳┓┏┓┏┓┏┓┏┳┓  ┏┓┏┓┳┓┏┓    ┏┓
+#    ┗┓┃ ┣┫┃┃┃ ┃ ┃┃┃┃┓   ┃ ┣  ┃┃  ┃   ┗┓┃┃┃┃┃┓  ┓┏┏┛
+#    ┗┛┗┛┛┗┗┛┗┛┗┛┻┛┗┗┛   ┻ ┗┛┗┛┗┛ ┻   ┗┛┗┛┛┗┗┛  ┗┛┗━
+#    with static text before the songs   |   by Manu
+
 import subprocess
 import time
 import json

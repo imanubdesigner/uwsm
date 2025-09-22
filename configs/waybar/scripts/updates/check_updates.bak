@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#    ┏┓┓┏┏┓┏┓┓┏┓  ┳┳┏┓┳┓┏┓┏┳┓┏┓
+#    ┃ ┣┫┣ ┃ ┃┫   ┃┃┃┃┃┃┣┫ ┃ ┣
+#    ┗┛┛┗┗┛┗┛┛┗┛  ┗┛┣┛┻┛┛┗ ┻ ┗┛
+#            ┏┓┏┓┳┓┳┏┓┏┳┓
+#            ┗┓┃ ┣┫┃┃┃ ┃
+#            ┗┛┗┛┛┗┻┣┛ ┻
+#                       by Manu
+
+updates=$(checkupdates | wc -l)
+echo "$updates"
+
+pkill -SIGRTMIN+8 waybar
