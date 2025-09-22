@@ -99,9 +99,9 @@ prediction = html_data("section[aria-label='Hourly Forecast']")(
 # format hourly rain predictions, each on new line
 if prediction:
     prediction_lines = prediction.split("%")
-    prediction_lines = [p.strip() + "%" for p in prediction_lines if p.strip()]
+    prediction_lines = [p.strip() + " %" for p in prediction_lines if p.strip()]
     predictions = "\n".join(prediction_lines)
-    predictions = f"\n Hourly rain:\n{predictions}"
+    predictions = f"\n<big> </big> Hourly rain:\n{predictions}"
 else:
     predictions = ""
 
