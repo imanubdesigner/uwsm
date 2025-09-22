@@ -78,7 +78,7 @@
 
 	/*--------------Pacman--------------------*/
 	"custom/pacman": {
-		"format": "󰅢 {}",
+		"format": "󰅢  {}",
 		"interval": 3600,
     "exec": "/home/manu/.config/waybar/scripts/updates/check_updates",
     "on-click": "/home/manu/.config/waybar/scripts/updates/update_system",
