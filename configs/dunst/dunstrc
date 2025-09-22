@@ -1,19 +1,21 @@
 [global]
     # Monitor to display notifications on.
     monitor = 0
+
     # Notification follow mode. 'mouse' follows the mouse, 'keyboard' follows the keyboard focus, 'none' uses 'origin'.
     follow = none
+
     # Notification dimensions.
     width = 300
-    height = 150
+    height = (0, 150)
     class = Dunst
 
     # Notification position and alignment.
     origin = top-right
-    alignment = "left"
-    vertical_alignment = "center"
-    ellipsize = "middle"
-    offset = "15x15"
+    alignment = left
+    vertical_alignment = center
+    ellipsize = middle
+    offset = (15, 15)
     
     # Padding and spacing.
     padding = 15
@@ -21,8 +23,8 @@
     text_icon_padding = 15
     
     # Font and icon settings.
-    font = "Liga SFMono Nerd Font 10"
-    icon_position = "left"
+    font = Liga SFMono Nerd Font 10
+    icon_position = left
     min_icon_size = 48
     max_icon_size = 64
     
@@ -36,9 +38,9 @@
     # Visual style.
     background = "#1E1E2E99" 
     separator_height = 2
-    separator_color = "frame"
+    separator_color = frame
     frame_width = 2
-    frame_color = "#a6adc833" 
+    frame_color = "#89b4fa33" 
     corner_radius = 8
     gap_size = 8
     
@@ -48,15 +50,15 @@
     idle_threshold = 120
     history_length = 20
     show_age_threshold = 60
-    markup = "full"
-    format = "<span weight='Heavy'>%s</span>\n%b"
-    word_wrap = "yes"
-    sort = "yes"
-    shrink = "no"
-    indicate_hidden = "yes"
-    sticky_history = "yes"
-    ignore_newline = "no"
-    show_indicators = "no"
+    markup = full
+    format = "<span weight='Bold' foreground='#89b4fa'>%s</span>\n<span foreground='#cdd6f4'>%b</span>"
+    word_wrap = yes
+    sort = yes
+    shrink = no
+    indicate_hidden = yes
+    sticky_history = yes
+    ignore_newline = no
+    show_indicators = no
     stack_duplicates = true
     always_run_script = true
     hide_duplicate_count = false
@@ -65,9 +67,9 @@
     force_xinerama = false
     
     # Mouse actions.
-    mouse_left_click = "do_action"
-    mouse_middle_click = "close_all"
-    mouse_right_click = "close_current"
+    mouse_left_click = do_action
+    mouse_middle_click = close_all
+    mouse_right_click = close_current
 
 [experimental]
     per_monitor_dpi = false
@@ -77,7 +79,7 @@
     # Background and border are set globally, but can be overridden here.
     background = "#1E1E2E99"
     frame_color = "#89b4fa"  
-    foreground = "#89b4fa"   
+    foreground = "#cdd6f4"   
     highlight = "#89b4fa"    
     timeout = 4
 
@@ -85,7 +87,7 @@
     # Background and border are set globally, but can be overridden here.
     background = "#1E1E2E99"
     frame_color = "#89b4fa"  
-    foreground = "#89b4fa"   
+    foreground = "#cdd6f4"   
     highlight = "#89b4fa"    
     timeout = 4
 
