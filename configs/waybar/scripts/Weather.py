@@ -5,6 +5,8 @@
 #    ┗┻┛┗┛┛┗ ┻ ┛┗┗┛┛┗•┣┛┗┛
 #                  by Manu
 
+import time
+time.sleep(3) # Wait 3 seconds before running the script to prevent startup issues
 import requests
 import json
 import os
