@@ -87,7 +87,7 @@
 		"tooltip": false
 	},
 
-	/*-----------Cpu, Memory, Colorpicker, Temperature, Idle-inhibitor------*/
+	/*-----------Cpu, Memory, Temperature, Idle-inhibitor------*/
 	"cpu": {
 		"format": "󰻠 ",
 		"tooltip": true
