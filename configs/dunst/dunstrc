@@ -76,9 +76,9 @@
 [urgency_low]
     # Background and border are set globally, but can be overridden here.
     background = "#1E1E2E99"
-    frame_color = "#f5e0dc"  
+    frame_color = "#89b4fa"  
     foreground = "#89b4fa"   
-    highlight = "#f5e0dc"    
+    highlight = "#89b4fa"    
     timeout = 4
 
 [urgency_normal]
