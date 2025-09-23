@@ -6,13 +6,21 @@
 #                  by Manu
 
 import time
-time.sleep(3) # Wait 3 seconds before running the script to prevent startup issues
 import requests
 import json
 import os
+import logging
+import re
 from pyquery import PyQuery  # install using `pip install pyquery`
 
-# weather icons
+# === WAIT before starting ===
+time.sleep(3)  # Wait 3 seconds before running the script to prevent startup issues
+
+# === LOGGING CONFIGURATION ===
+log_path = os.path.expanduser("~/.cache/weather_error.log")
+logging.basicConfig(filename=log_path, level=logging.DEBUG)
+
+# === WEATHER ICONS ===
 weather_icons = {
     "sunnyDay": "󰖙",
     "clearNight": "󰖔",
@@ -26,89 +34,100 @@ weather_icons = {
     "default": "",
 }
 
-# Get current location based on IP address
-def get_location():
-    response = requests.get("https://ipinfo.io")
-    data = response.json()
-    loc = data["loc"].split(",")
-    return float(loc[0]), float(loc[1])
+# === GET LOCATION WITH RETRIES ===
+def get_location(retries=3, delay=2):
+    for i in range(retries):
+        try:
+            response = requests.get("https://ipinfo.io", timeout=5)
+            data = response.json()
+            loc = data["loc"].split(",")
+            return float(loc[0]), float(loc[1])
+        except Exception as e:
+            logging.warning(f"[get_location] Attempt {i+1} failed: {e}")
+            time.sleep(delay)
+    raise RuntimeError("Failed to get location after retries")
 
-# Get latitude and longitude
-latitude, longitude = get_location()
+# === MAIN EXECUTION ===
+try:
+    # Get latitude and longitude
+    latitude, longitude = get_location()
 
-# Open-Meteo API endpoint
-url = f"https://weather.com/en-PH/weather/today/l/{latitude},{longitude}"
+    # Build weather.com URL
+    url = f"https://weather.com/en-PH/weather/today/l/{latitude},{longitude}"
 
-# get html page
-html_data = PyQuery(url=url)
+    # Load HTML
+    html_data = PyQuery(url=url)
 
-# current temperature
-temp = html_data("span[data-testid='TemperatureValue']").eq(0).text()
+    # Current temperature
+    temp = html_data("span[data-testid='TemperatureValue']").eq(0).text()
 
-# current status phrase
-status = html_data("div[data-testid='wxPhrase']").text()
-status = f"{status[:16]}.." if len(status) > 17 else status
+    # Current weather status
+    status = html_data("div[data-testid='wxPhrase']").text()
+    status = f"{status[:16]}.." if len(status) > 17 else status
 
-# status code
-status_code = html_data("#regionHeader").attr("class").split(" ")[1].split("-")[0]
+    # Status code for icon
+    status_code = html_data("#regionHeader").attr("class").split(" ")[1].split("-")[0]
+    icon = weather_icons.get(status_code, weather_icons["default"])
 
-# status icon
-icon = (
-    weather_icons[status_code]
-    if status_code in weather_icons
-    else weather_icons["default"]
-)
+    # Feels like
+    temp_feel = html_data(
+        "div[data-testid='FeelsLikeSection'] > span > span[data-testid='TemperatureValue']"
+    ).text()
+    temp_feel_text = f"Feels like {temp_feel}c"
 
-# temperature feels like
-temp_feel = html_data(
-    "div[data-testid='FeelsLikeSection'] > span > span[data-testid='TemperatureValue']"
-).text()
-temp_feel_text = f"Feels like {temp_feel}c"
+    # Min/max temperature
+    temp_min = (
+        html_data("div[data-testid='wxData'] > span[data-testid='TemperatureValue']")
+        .eq(1)
+        .text()
+    )
+    temp_max = (
+        html_data("div[data-testid='wxData'] > span[data-testid='TemperatureValue']")
+        .eq(0)
+        .text()
+    )
 
-# min-max temperature
-temp_min = (
-    html_data("div[data-testid='wxData'] > span[data-testid='TemperatureValue']")
-    .eq(1)
-    .text()
-)
-temp_max = (
-    html_data("div[data-testid='wxData'] > span[data-testid='TemperatureValue']")
-    .eq(0)
-    .text()
-)
-temp_min_max = f"  {temp_min}\t\t  {temp_max}"
+    # Wind, humidity, visibility, AQI
+    wind_speed = html_data("span[data-testid='Wind'] > span").text()
+    wind_text = f"  {wind_speed}"
 
-# wind speed
-wind_speed = str(html_data("span[data-testid='Wind'] > span").text())
-wind_text = f"  {wind_speed}"
+    humidity = html_data("span[data-testid='PercentageValue']").text()
+    humidity_text = f"  {humidity}"
 
-# humidity
-humidity = html_data("span[data-testid='PercentageValue']").text()
-humidity_text = f"  {humidity}"
+    visibility = html_data("span[data-testid='VisibilityValue']").text()
+    visibility_text = f"  {visibility}"
 
-# visibility
-visibility = html_data("span[data-testid='VisibilityValue']").text()
-visibility_text = f"  {visibility}"
+    air_quality_index = html_data("text[data-testid='DonutChartValue']").text()
 
-# air quality index
-air_quality_index = html_data("text[data-testid='DonutChartValue']").text()
+    # Hourly rain prediction – formatted
+    try:
+        rain_elements = html_data("div[data-testid='SegmentPrecipPercentage'] > span")
+        prediction_lines = []
 
-# hourly rain prediction
-prediction = html_data("section[aria-label='Hourly Forecast']")(
-    "div[data-testid='SegmentPrecipPercentage'] > span"
-).text()
+        for el in rain_elements.items():
+            text = el.text().strip()
+            if not text:
+                continue
 
-# format hourly rain predictions, each on new line
-if prediction:
-    prediction_lines = prediction.split("%")
-    prediction_lines = [p.strip() + "%" for p in prediction_lines if p.strip()]
-    predictions = "\n".join(prediction_lines)
-    predictions = f"\n<big> </big> Hourly rain:\n{predictions}"
-else:
-    predictions = ""
+            match = re.search(r"(\d+)\s*%", text)
+            if match:
+                percentage = match.group(1)
+                prediction_lines.append(f"Chance of Rain {percentage}%")
+            else:
+                logging.debug(f"[rain debug] Ignored rain text: '{text}'")
 
-# tooltip text (pretty)
-tooltip_text = f"""
+        if prediction_lines:
+            predictions = "\n".join(prediction_lines)
+            predictions = f"\n<big> </big> Hourly rain:\n{predictions}"
+        else:
+            predictions = ""
+
+    except Exception as e:
+        logging.error(f"[rain error] Failed to parse rain predictions: {e}")
+        predictions = ""
+
+    # Tooltip (multi-line info for hover)
+    tooltip_text = f"""
 <span size="xx-large" weight="bold">{temp}</span>
 
 <small>{temp_feel_text}</small>
@@ -122,27 +141,36 @@ tooltip_text = f"""
 {predictions}
 """
 
-# print waybar module data
-out_data = {
-    "text": f"{icon}  {temp}",
-    "alt": status,
-    "tooltip": tooltip_text,
-    "class": status_code,
-}
-print(json.dumps(out_data))
+    # Output for Waybar
+    out_data = {
+        "text": f"{icon}  {temp}",
+        "alt": status,
+        "tooltip": tooltip_text,
+        "class": status_code,
+    }
+    print(json.dumps(out_data))
 
-# simple cache text (for other uses)
-simple_weather = (
-    f"{icon}  {status}\n"
-    + f"  {temp} ({temp_feel_text})\n"
-    + f"{wind_text} \n"
-    + f"{humidity_text} \n"
-    + f"{visibility_text} AQI{air_quality_index}\n"
-)
+    # Write to simple cache
+    simple_weather = (
+        f"{icon}  {status}\n"
+        + f"  {temp} ({temp_feel_text})\n"
+        + f"{wind_text} \n"
+        + f"{humidity_text} \n"
+        + f"{visibility_text} AQI{air_quality_index}\n"
+    )
 
-try:
-    with open(os.path.expanduser("~/.cache/.weather_cache"), "w") as file:
-        file.write(simple_weather)
+    try:
+        with open(os.path.expanduser("~/.cache/.weather_cache"), "w") as file:
+            file.write(simple_weather)
+    except Exception as e:
+        logging.error(f"Error writing to cache: {e}")
+
+# Error fallback
+except RuntimeError as e:
+    logging.error(f"Weather script failed: {e}")
+    print('{"text": "", "tooltip": "Network unavailable"}')
+
 except Exception as e:
-    print(f"Error writing to cache: {e}")
+    logging.error(f"Unexpected error:\n{e}")
+    print('{"text": "", "tooltip": "Weather error"}')
 
