@@ -40,11 +40,11 @@ run_command "pacman -S --noconfirm wpa_supplicant && systemctl enable wpa_suppli
 run_command "pacman -S --noconfirm bluez bluez-utils blueman && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"
 
 # -------------------- Applications Installation --------------------
-run_command "pacman -S --noconfirm nautilus inotify-tools gum ufw sassc cargo swww python-pyquery luarocks firefoxpwa curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi firefox obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions zoxide fzf eza ghostty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
+run_command "pacman -S --noconfirm nautilus inotify-tools gum ufw sassc cargo swww python-pyquery luarocks firefoxpwa curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi firefox obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
 
 # -------------------- Configuration Files --------------------
 
-run_command "cp -r $BASE_DIR/configs/ghostty /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/ghostty" "Copy ghostty folder" "yes" "no"
+run_command "cp -r $BASE_DIR/configs/kitty /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/kitty" "Copy Kitty folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/btop /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/btop" "Copy btop folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/cava /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/cava" "Copy Cava folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/fastfetch /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fastfetch" "Copy Fastfetch folder" "yes" "no"

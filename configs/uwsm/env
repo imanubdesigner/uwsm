@@ -1,7 +1,7 @@
 # =========================
 # Default terminal emulator
 # =========================
-export TERMINAL=ghostty     # default terminal emulator
+export TERMINAL=kitty     # default terminal emulator
 export EDITOR=nvim
 
 # =========================

@@ -192,7 +192,7 @@
 		"format-linked": "{ifname} (No IP)",
 		"format-wifi": "  {signalStrength}%",
 		"tooltip-format": "{ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
-		"on-click": "ghostty --title=TermNmtui -e 'sleep 0.1; nmtui'"
+		"on-click": "kitty --title=TermNmtui -e 'nmtui'"
 	},
 
 	/*------------Tray--------------------*/
