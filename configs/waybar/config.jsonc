@@ -95,10 +95,12 @@
 	"memory": {
 		"format": " "
 	},
-	"temperature": {
-		"critical-threshold": 80,
-		"format": " "
-	},
+  "temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
+    "critical-threshold": 80,
+    "format": " ",
+    "tooltip-format": "CPU Temp: {temperatureC}°C"
+  },
 		"idle_inhibitor": {
 		"format": "{icon}",
 		"format-icons": {
