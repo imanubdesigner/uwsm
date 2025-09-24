@@ -65,7 +65,7 @@
 		"return-type": "json",
 		"exec": "/home/manu/.config/waybar/scripts/Weather.py",
 	    	//"exec": "/home/manu/.config/waybar/scripts/Weather.sh",
-	  "exec-if": "ping wttr.in -c1",
+	  // "exec-if": "ping wttr.in -c1",
 	    	"tooltip": true
 	},	
 
