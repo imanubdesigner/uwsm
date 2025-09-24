@@ -212,7 +212,7 @@
 	/*------------Clock------------------*/
 
 	"clock": {
-    "format": "󰥔  {:%H:%M:%S %p} ",
+    "format": "󰥔  {:%H:%M:%S} ",
     "format-alt": "󰥔  {:%A, %d %B, %Y (%R)}",
     "interval": 1,
     "tooltip-format": "<tt>{calendar}</tt>",
