@@ -25,7 +25,7 @@ run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "yes" "n
 # -------------------- Firewall setup --------------------
 run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "yes"
 run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "yes"
-run_command "ufw enable" "Enable UFW firewall" "yes"
+run_command "ufw --force enable" "Enable UFW firewall" "yes"
 
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "yes" "no"
