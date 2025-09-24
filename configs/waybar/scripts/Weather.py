@@ -14,7 +14,7 @@ import re
 from pyquery import PyQuery  # install using `pip install pyquery`
 
 # === WAIT before starting ===
-time.sleep(3)  # Wait 3 seconds before running the script to prevent startup issues
+time.sleep(5)  # Wait 5 seconds before running the script to prevent startup issues
 
 # === LOGGING CONFIGURATION ===
 log_path = os.path.expanduser("~/.cache/weather_error.log")
