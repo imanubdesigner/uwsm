@@ -2,7 +2,7 @@
 Name=Neovim
 GenericName=Text Editor
 Comment=Apri file di testo con Neovim dentro Ghostty
-Exec=/usr/bin/kitty -e nvim %f
+Exec=/usr/bin/ghostty -e nvim %f
 Terminal=false
 Type=Application
 MimeType=text/plain;
