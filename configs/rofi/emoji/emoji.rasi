@@ -59,7 +59,7 @@ entry {
     text-color:                  #ffffff33;
     cursor:                      text;
     placeholder:                 "󰞅  Search";
-    placeholder-color:           @inherit;
+    placeholder-color:           inherit;
 }
 
 /*****----- Listview -----*****/
