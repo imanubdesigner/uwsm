@@ -190,7 +190,7 @@
 		"format-ethernet": "󰈀 100%",
 		"format-linked": "{ifname} (No IP)",
 		"format-wifi": "  {signalStrength}%",
-		"tooltip-format": "{ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
+		"tooltip-format": " {ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
 		"on-click": "ghostty --title=TermNmtui -e 'nmtui'"
 	},
 
