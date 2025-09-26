@@ -44,7 +44,7 @@ truncation_symbol = "…/"
 repo_root_style = "bold sky"
 repo_root_format = "[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
 read_only_style = "mauve"
-style = "text"
+style = "sky"
 
 
 [git_branch]
