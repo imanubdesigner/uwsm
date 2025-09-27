@@ -57,6 +57,7 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set c
 run_command "sudo -u $SUDO_USER gsettings set org.gtk.gtk4.Settings.FileChooser sort-directories-first true" "Set Nautilus to sort directories before files" "yes" "no"
 run_command "sudo -u $SUDO_USER gsettings set org.gnome.nautilus.preferences default-sort-order 'mtime'" "Set Nautilus default sort order to modification date" "yes" "no"
 run_command "sudo -u $SUDO_USER gsettings set org.gnome.nautilus.preferences default-sort-in-reverse-order true" "Set Nautilus default sort order to be in reverse (newest first)" "yes" "no"
+run_command "sudo -u $SUDO_USER gsettings set org.gnome.desktop.interface color-scheme prefer-dark" "Set Dark for all windows" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
