@@ -14,7 +14,11 @@ run_command "pacman -S --noconfirm nwg-look qt5ct qt6ct kvantum kvantum-qt5" "In
 run_command "mkdir -p /home/$SUDO_USER/.themes && unzip -o $BASE_DIR/assets/themes/Catppuccin-Dark-BL-MB.zip -d /home/$SUDO_USER/.themes && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes" "Install Catppuccin Dark BL MB GTK theme" "yes" "no"
 run_command "mkdir -p /home/$SUDO_USER/.icons && tar -xvf $BASE_DIR/assets/icons/Nordzy-dark.tar.gz -C /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Nordzy Dark Icons" "yes" "no"
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
-run_command "yay -S --sudoloop --noconfirm kvantum-theme-catppuccin-git" "Install Catppuccin theme for Kvantum" "yes" "no"
+
+# -------------------- Catppuccin Kvantum Theme--------------------
+run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no" 
+run_command "cp -r $BASE_DIR/assets/themes/catppuccin-mocha-blue /home/$SUDO_USER/Documents/Cat" "Copy Cat folder for Kvantum" "yes" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Documents/Cat" "Set corrent ownership" "yes"
 
 # -------------------- Fonts --------------------
 run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
