@@ -1,0 +1,13 @@
+[Unit]
+Description=Wayland Clipboard Persistence Daemon
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
+ExecStart=/usr/bin/wl-clip-persist --clipboard regular
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
