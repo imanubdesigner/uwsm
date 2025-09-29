@@ -7,8 +7,9 @@
 # =========================
 # Default terminal emulator
 # =========================
-export TERMINAL=/usr/bin/ghostty     # default terminal emulator
-export EDITOR=/usr/bin/nvim
+export TERMINAL=ghostty   
+export EDITOR=nvim
+export PATH="$HOME/.local/bin:$PATH"
 
 # =========================
 # Cursor theme (Xwayland)

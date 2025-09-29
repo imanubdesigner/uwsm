@@ -47,6 +47,9 @@ run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf 
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
 
+# -------------------- Starship Configuration --------------------
+run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/mimeapps.list" "Copy mimeapps.list configuration" "yes" "no"
+
 # -------------------- Wallpapers --------------------
 run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
 run_command "cp $BASE_DIR/assets/wallpapers/wallhaven-3qzvr6.png /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "yes" "no"
@@ -56,12 +59,6 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers
 run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
-
-# -------------------- Nautilus configuration --------------------
-run_command "sudo -u $SUDO_USER gsettings set org.gtk.gtk4.Settings.FileChooser sort-directories-first true" "Set Nautilus to sort directories before files" "yes" "no"
-run_command "sudo -u $SUDO_USER gsettings set org.gnome.nautilus.preferences default-sort-order 'mtime'" "Set Nautilus default sort order to modification date" "yes" "no"
-run_command "sudo -u $SUDO_USER gsettings set org.gnome.nautilus.preferences default-sort-in-reverse-order true" "Set Nautilus default sort order to be in reverse (newest first)" "yes" "no"
-run_command "sudo -u $SUDO_USER gsettings set org.gnome.desktop.interface color-scheme prefer-dark" "Set Dark for all windows" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
