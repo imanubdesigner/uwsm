@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┏┓┳┓┳┏┳┓┏┓┳┓
+#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣ ┃┃┃ ┃ ┃┃┣┫
+#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┻┛┻ ┻ ┗┛┛┗
+#                       by Manu
+
 case "${EDITOR:-nvim}" in
 nvim | vim | nano | micro | hx)
   exec setsid uwsm app -- "$TERMINAL" -e "$EDITOR" "$@"

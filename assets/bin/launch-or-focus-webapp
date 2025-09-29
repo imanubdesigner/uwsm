@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#    ┓ ┏┓┳┳┳┓┏┓┓┏        ┏┓┏┓┏┓┳┳┏┓
+#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┏┓┏┓  ┣ ┃┃┃ ┃┃┗┓
+#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┛   ┻ ┗┛┗┛┗┛┗┛
+#              ┓ ┏  ┓ ┏┓           
+#              ┃┃┃┏┓┣┓┣┫┏┓┏┓       
+#              ┗┻┛┗ ┗┛┛┗┣┛┣┛       
+#                       ┛ ┛ by Manu
+
 if (($# == 0)); then
   echo "Usage: launch-or-focus-webapp [window-pattern] [url]"
   exit 1
