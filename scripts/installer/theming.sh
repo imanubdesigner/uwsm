@@ -16,7 +16,7 @@ run_command "mkdir -p /home/$SUDO_USER/.icons && tar -xvf $BASE_DIR/assets/icons
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
-run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no" 
+run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/themes/catppuccin-mocha-blue /home/$SUDO_USER/Documents/Cat" "Copy Cat folder for Kvantum" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Documents/Cat" "Set corrent ownership" "yes"
 
@@ -46,6 +46,9 @@ run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf 
 
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
+
+# -------------------- Chromium Flags --------------------
+run_command "cp $BASE_DIR/assets/chromium-flags.conf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/chromium-flags.conf" "Copy Chromium flags configuration" "yes" "no"
 
 # -------------------- MimeApps List --------------------
 run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/mimeapps.list" "Copy mimeapps.list configuration" "yes" "no"
