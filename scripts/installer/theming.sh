@@ -52,7 +52,10 @@ run_command "sudo mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1
 run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.service.d" "Copy override.conf" "yes" "no"
 
 # -------------------- .zprofile for uwsm autologin --------------------
-run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/.zprofile" "Copy Starship configuration" "yes" "no"
+run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "yes" "no"
+
+# -------------------- OH My Zsh and Zshrc --------------------
+run_command "cp $BASE_DIR/assets/.zshrc /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zshrc" "Copy zshrc configuration" "yes" "no"
 
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
