@@ -21,11 +21,15 @@ export XCURSOR_SIZE=20
 # NVIDIA GPU settings
 # =========================
 export LIBVA_DRIVER_NAME=nvidia             # VAAPI hardware video decoding
-export __GLX_VENDOR_LIBRARY_NAME=nvidia     # GLX/OpenGL apps use NVIDIA
-export GBM_BACKEND=nvidia-drm               # GBM renderer for wlroots/Wayland
-export __GL_GSYNC_ALLOWED=0                 # enable G-Sync on compatible monitors
-export __GL_VRR_ALLOWED=0                   # enable VRR on compatible monitors
 export NVD_BACKEND=direct                   # hardware decoding (PipeWire, Firefox)
+export __GLX_VENDOR_LIBRARY_NAME=nvidia     # GLX/OpenGL apps use NVIDIA
+
+# =========================
+# Hyprland-specific rendering
+# =========================
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=hyprland
+export XDG_SESSION_DESKTOP=hyprland
 
 # =========================
 # Hyprland-specific rendering
@@ -45,7 +49,7 @@ export MOZ_DISABLE_RDD_SANDBOX=1             # only if video decoding crashes
 # Qt toolkit environment
 # =========================
 export QT_QPA_PLATFORM=wayland xcb          # prefer Wayland, fallback to X11
-export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_QUICK_CONTROLS_STYLE=org.hyprland.style
