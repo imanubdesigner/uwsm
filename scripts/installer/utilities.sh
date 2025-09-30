@@ -19,9 +19,7 @@ cp $BASE_DIR/assets/mimeinfo.cache /home/$SUDO_USER/.local/share/applications/ &
 chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/share/applications" \
   "Create applications folder and copy Neovim desktop files from assets" "yes" "no"
 
-
 run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/mimeapps.list" "Copy mimeapps.list configuration" "yes" "no"
-run_command "cp -r $BASE_DIR/assets/manu /home/$SUDO_USER/.local/share/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/share/manu" "Copy manu folder" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/bin /home/$SUDO_USER/.local/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/bin" "Copy bin folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/waybar /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/waybar" "Copy Waybar config" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/waypaper /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/waypaper" "Copy Waypaper config" "yes" "no"
