@@ -44,6 +44,9 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set 
 # -------------------- SDDM Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf to /etc for manu user" "yes" "no"
 
+# -------------------- Pacman Configuration --------------------
+run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "yes" "no"
+
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
 
