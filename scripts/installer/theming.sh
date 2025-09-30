@@ -47,6 +47,13 @@ run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf 
 # -------------------- Pacman Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "yes" "no"
 
+# -------------------- Override Autologin --------------------
+run_command "sudo mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1 directory" "yes" "no"
+run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.service.d" "Copy override.conf" "yes" "no"
+
+# -------------------- .zprofile for uwsm autologin --------------------
+run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/.zprofile" "Copy Starship configuration" "yes" "no"
+
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
 
