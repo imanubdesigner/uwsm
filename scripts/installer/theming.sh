@@ -50,9 +50,6 @@ run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chow
 # -------------------- Chromium Flags --------------------
 run_command "cp $BASE_DIR/assets/chromium-flags.conf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/chromium-flags.conf" "Copy Chromium flags configuration" "yes" "no"
 
-# -------------------- MimeApps List --------------------
-run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/mimeapps.list" "Copy mimeapps.list configuration" "yes" "no"
-
 # -------------------- Wallpapers --------------------
 run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
 run_command "cp $BASE_DIR/assets/wallpapers/wallhaven-3qzvr6.png /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "yes" "no"
