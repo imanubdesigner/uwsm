@@ -18,17 +18,27 @@ run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors
 # -------------------- Papirus Icons theme + Catppuccin --------------------
 run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
 
-PAPIRUS_COMMANDS="git clone https://github.com/catppuccin/papirus-folders.git && \
-cd papirus-folders && \
-cp -r src/* /usr/share/icons/Papirus && \
+run_command "sudo -u $SUDO_USER git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" \
+  "Papirus-folders Clone (User)" \
+  "yes" "no"
+
+run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papirus" \
+  "Copia dei file Catppuccin per Papirus (Root)" \
+  "yes"
+
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" \
+  "Chown (Root)" \
+  "yes" "no"
+
+PAPIRUS_COMMANDS="cd papirus-folders && \
 curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && \
 chmod +x ./papirus-folders && \
 ./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && \
 cd .. && \
 rm -rf papirus-folders"
 
-run_command "sh -c '$PAPIRUS_COMMANDS'" \
-  "Catppuccin Mocha Blue theme for Papirus" \
+run_command "sudo -u $SUDO_USER sh -c 'cd /home/$SUDO_USER && $PAPIRUS_COMMANDS'" \
+  "Catppuccin Mocha Blue (User)" \
   "yes" "no"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
