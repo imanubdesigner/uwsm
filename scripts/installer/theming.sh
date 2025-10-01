@@ -12,8 +12,24 @@ print_info "\nStarting theming and service setup..."
 # -------------------- Theming --------------------
 run_command "pacman -S --noconfirm nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
 run_command "mkdir -p /home/$SUDO_USER/.themes && unzip -o $BASE_DIR/assets/themes/Catppuccin-Dark-BL-MB.zip -d /home/$SUDO_USER/.themes && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes" "Install Catppuccin Dark BL MB GTK theme" "yes" "no"
-run_command "mkdir -p /home/$SUDO_USER/.icons && tar -xvf $BASE_DIR/assets/icons/Nordzy-dark.tar.gz -C /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Nordzy Dark Icons" "yes" "no"
+# run_command "mkdir -p /home/$SUDO_USER/.icons && tar -xvf $BASE_DIR/assets/icons/Nordzy-dark.tar.gz -C /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Nordzy Dark Icons" "yes" "no"
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
+
+# -------------------- Papirus Icons theme + Catppuccin --------------------
+run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
+
+PAPIRUS_COMMANDS="git clone https://github.com/catppuccin/papirus-folders.git && \
+cd papirus-folders && \
+cp -r src/* /usr/share/icons/Papirus && \
+curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && \
+chmod +x ./papirus-folders && \
+./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && \
+cd .. && \
+rm -rf papirus-folders"
+
+run_command "sh -c '$PAPIRUS_COMMANDS'" \
+  "Catppuccin Mocha Blue theme for Papirus" \
+  "yes" "no"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
 run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
