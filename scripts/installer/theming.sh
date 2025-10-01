@@ -47,12 +47,17 @@ run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf 
 # -------------------- Pacman Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "yes" "no"
 
-# -------------------- Override Autologin --------------------
-run_command "sudo mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1 directory" "yes" "no"
-run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.service.d" "Copy override.conf" "yes" "no"
+# # -------------------- Override Autologin --------------------
+# run_command "sudo mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1 directory" "yes" "no"
+# run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.service.d" "Copy override.conf" "yes" "no"
+#
+# # -------------------- .zprofile for uwsm autologin --------------------
+# run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "yes" "no"
 
-# -------------------- .zprofile for uwsm autologin --------------------
-run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "yes" "no"
+# -------------------- UWSM Autologin with Service for better performance --------------------
+run_command "sudo cp $BASE_DIR/assets/uwsm-autologin.service /etc/systemd/system/" "Copy override.conf" "yes" "no"
+run_command "sudo systemctl daemon-reload" "Systemd daemon reload" "yes" "no"
+run_command "sudo systemctl enable uwsm-autologin.service" "Enable uwsm-autologin service" "yes" "no"
 
 # -------------------- OH My Zsh and Zshrc --------------------
 run_command "cp $BASE_DIR/assets/.zshrc /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zshrc" "Copy zshrc configuration" "yes" "no"

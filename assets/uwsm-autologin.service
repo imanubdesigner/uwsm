@@ -1,0 +1,24 @@
+[Unit]
+Description=Hyprland UWSM Auto-Login
+Conflicts=getty@tty1.service
+After=systemd-user-sessions.service getty@tty1.service plymouth-quit.service systemd-logind.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/uwsm start -- hyprland.desktop
+Restart=always
+RestartSec=2
+StartLimitInterval=60
+StartLimitBurst=2
+User=manu
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal+console
+PAMName=login
+
+[Install]
+WantedBy=default.target
