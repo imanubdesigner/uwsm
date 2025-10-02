@@ -83,7 +83,7 @@ run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman
 run_command "cp $BASE_DIR/assets/.zshrc /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zshrc" "Copy zshrc configuration" "yes" "no"
 
 # -------------------- UWSM Autologin with Service for better performance --------------------
-run_command "sudo cp $BASE_DIR/assets/uwsm-autologin.service /etc/systemd/system/" "Copy override.conf" "yes" "no"
+run_command "sudo cp $BASE_DIR/assets/uwsm-autologin.service /etc/systemd/system/" "Copy uwsm-autologin.service" "yes" "no"
 run_command "sudo systemctl daemon-reload" "Systemd daemon reload" "yes" "no"
 run_command "sudo systemctl enable uwsm-autologin.service" "Enable uwsm-autologin service" "yes" "no"
 
