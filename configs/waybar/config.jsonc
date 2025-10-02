@@ -63,7 +63,7 @@
 		"format-alt-click": "click",
 		"interval": 3600,
 		"return-type": "json",
-		"exec": "/home/manu/.config/waybar/scripts/Weather.py",
+		"exec": "manu-weather.py",
 	    	//"exec": "/home/manu/.config/waybar/scripts/Weather.sh",
 	  // "exec-if": "ping wttr.in -c1",
 	    	"tooltip": true
@@ -80,9 +80,9 @@
 	"custom/pacman": {
 		"format": "󰅢  {}",
 		"interval": 3600,
-    "exec": "/home/manu/.config/waybar/scripts/updates/check_updates",
-    "on-click": "/home/manu/.config/waybar/scripts/updates/update_system",
-    "on-right-click": "/home/manu/.config/waybar/scripts/updates/check_updates",	
+    "exec": "manu-check-updates",
+    "on-click": "manu-update-system",
+    "on-right-click": "manu-check-updates",	
 		"signal": 8,
 		"tooltip": false
 	},
@@ -179,7 +179,8 @@
 			]
 		},
 		"format-muted": "󰟎 Muted",
-		"on-click": "pavucontrol",
+		"on-click": "$TERMINAL --class=Wiremix -e wiremix",
+    "on-click-right": "pamixer -t",
 		"scroll-step": 1,
     "tooltip": false
 	},
@@ -203,8 +204,8 @@
 /*------------Screen Indicator--------------------*/
 
 "custom/screenrecording-indicator": {
-    "on-click": "/home/manu/.config/hypr/scripts/wf-record/wf-record",
-    "exec": "/home/manu/.config/waybar/scripts/screen-recording.sh",
+    "on-click": "manu-wf-record",
+    "exec": "manu-screen-recording",
     "signal": 8,
     "return-type": "json"
   },
