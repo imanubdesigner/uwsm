@@ -3,14 +3,14 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏        ┏┓┏┓┏┓┳┳┏┓
 #    ┃ ┣┫┃┃┃┃┃ ┣┫  ┏┓┏┓  ┣ ┃┃┃ ┃┃┗┓
 #    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┛   ┻ ┗┛┗┛┗┛┗┛
-#              ┓ ┏  ┓ ┏┓           
-#              ┃┃┃┏┓┣┓┣┫┏┓┏┓       
-#              ┗┻┛┗ ┗┛┛┗┣┛┣┛       
+#              ┓ ┏  ┓ ┏┓
+#              ┃┃┃┏┓┣┓┣┫┏┓┏┓
+#              ┗┻┛┗ ┗┛┛┗┣┛┣┛
 #                       ┛ ┛ by Manu
 
 if (($# == 0)); then
-  echo "Usage: launch-or-focus-webapp [window-pattern] [url]"
+  echo "Usage: manu-launch-or-focus-webapp [window-pattern] [url]"
   exit 1
 fi
 
-exec launch-or-focus "$1" "launch-webapp '$2'"
+exec manu-launch-or-focus "$1" "manu-launch-webapp '$2'"

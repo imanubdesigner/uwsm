@@ -46,7 +46,7 @@ fi
 if [[ -n $CUSTOM_EXEC ]]; then
   EXEC_COMMAND="$CUSTOM_EXEC"
 else
-  EXEC_COMMAND="launch-webapp $APP_URL"
+  EXEC_COMMAND="manu-launch-webapp $APP_URL"
 fi
 
 # Create application .desktop file
