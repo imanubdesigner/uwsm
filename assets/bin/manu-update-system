@@ -12,7 +12,7 @@
 
 # If there is no terminal open, open it for me
 if [ ! -t 1 ]; then
-  # Change 'kitty' with your favorite terminal (alacritty, foot, gnome-terminal, etc.)
+  # $TERMINAL is inside of your UWSM conf file ~/.config/uwsm/env
   exec $TERMINAL -e bash "$0" "$@"
 fi
 
