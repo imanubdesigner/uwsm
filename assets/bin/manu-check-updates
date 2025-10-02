@@ -37,4 +37,4 @@ updates=$(count_updates)
 echo "$updates"
 
 # # Update waybar
-pkill -SIGRTMIN+8 waybar 2>/dev/null
+# pkill -SIGRTMIN+8 waybar 2>/dev/null
