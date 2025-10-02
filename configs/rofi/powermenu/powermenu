@@ -45,7 +45,7 @@ run_cmd() {
       amixer set Master mute
       systemctl suspend
     elif [[ $1 == '--relaunch' ]]; then
-      uwsm stop
+      manu-state clear relaunch-required && uwsm stop
     fi
   else
     exit 0
@@ -72,6 +72,6 @@ $suspend)
   run_cmd --suspend
   ;;
 $relaunch)
-  uwsm stop
+  manu-state clear relaunch-required && uwsm stop
   ;;
 esac
