@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┏┓┳┏┓┏┓┓ ┏┳┳┓┏┓
+#    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┃┃┃┃┃┣ ┃┃┃┃┣┫┣
+#    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┣┛┻┣┛┗┛┗┻┛┻┛┗┗┛
+#                              by Manu
+
+echo -e "Restarting pipewire audio service...\n"
+systemctl --user restart pipewire.service
