@@ -5,11 +5,11 @@
 #  ┗┛┛┗┗┛┛┗┗┛┛┗┗┛┛┗
 #           by Manu
 
-dir="$HOME/.config/rofi/launcher/"
-theme='apps-menu'
+dir="$HOME/.config/rofi/app-menu/"
+theme='app-menu'
 
 ## Run
-rofi \
+uwsm app -- rofi \
   -show drun \
   -run-command "uwsm app -- {cmd}" \
   -theme ${dir}/${theme}.rasi

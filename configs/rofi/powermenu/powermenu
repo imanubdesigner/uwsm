@@ -22,7 +22,7 @@ relaunch='  Relaunch'
 
 # Rofi CMD
 rofi_cmd() {
-  rofi -dmenu \
+  uwsm app -- rofi -dmenu \
     -p "$host" \
     -mesg "󰔚  $uptime" \
     -theme ${dir}/${theme}.rasi

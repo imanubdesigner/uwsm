@@ -10,7 +10,7 @@ dir="$HOME/.config/rofi/cliphist/"
 theme='cliphist'
 
 # Show the clipboard history list using Rofi
-selection=$(cliphist list | rofi \
+selection=$(cliphist list | uwsm app -- rofi \
   -dmenu \
   -p "Clipboard" \
   -theme "${dir}/${theme}.rasi" \

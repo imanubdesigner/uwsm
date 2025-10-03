@@ -9,6 +9,6 @@ dir="$HOME/.config/rofi/emoji/"
 theme='emoji'
 
 ## Run
-rofi \
+uwsm app -- rofi \
   -show emoji \
   -theme ${dir}/${theme}.rasi
