@@ -102,6 +102,26 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers
 run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
+run_command "sudo -u $SUDO_USER swww img /home/$SUDO_USER/Pictures/wallpapers/wallhaven-3qzvr6.png --transition-type simple" \
+  "One-shot wallpaper setting with swww" \
+  "yes" "no"
+
+# -------------------- Set Default GTK Theme and Icons --------------------
+# 1. USER SETTINGS (gsettings)
+GSETTINGS_COMMANDS="gsettings set org.gnome.desktop.interface gtk-theme \"Catppuccin-Blue-Dark\" && \
+gsettings set org.gnome.desktop.interface color-scheme \"prefer-dark\" && \
+gsettings set org.gnome.de:sktop.interface icon-theme \"Papirus-Dark\""
+
+# Execute gsettings commands
+run_command "sudo -u $SUDO_USER sh -c '$GSETTINGS_COMMANDS'" \
+  "Set GTK theme, icon theme, and dark mode preference" \
+  "yes" "no"
+
+# 2. ICON CACHE UPDATE (ROOT)
+run_command "sudo gtk-update-icon-cache /usr/share/icons/Papirus" \
+  "Update system icon cache for Papirus" \
+  "yes" 
+
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
