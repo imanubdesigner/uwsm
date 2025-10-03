@@ -64,7 +64,7 @@
 		"interval": 3600,
 		"return-type": "json",
 		"exec": "manu-weather.py",
-	    	//"exec": "/home/manu/.config/waybar/scripts/Weather.sh",
+	    	//"exec": "manu-weather",
 	  // "exec-if": "ping wttr.in -c1",
 	    	"tooltip": true
 	},	
@@ -73,7 +73,7 @@
 	"custom/launcher": {
 		"format": "󰣇",
 		"tooltip": false,
-		"on-click": "/home/manu/.config/rofi/launcher/launcher"
+		"on-click": "/home/manu/.config/rofi/app-menu/app-menu"
 	},
 
 	/*--------------Pacman--------------------*/
