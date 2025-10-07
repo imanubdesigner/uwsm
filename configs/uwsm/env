@@ -19,6 +19,11 @@ export XMODIFIERS=@im=fcitx
 export SDL_IM_MODULE=fcitx
 
 # =========================
+# Monitor: GDK_SCALE
+# =========================
+export GDK_SCALE=1
+
+# =========================
 # Cursor theme (Xwayland)
 # =========================
 export XCURSOR_THEME=catppuccin-mocha-light-cursors
