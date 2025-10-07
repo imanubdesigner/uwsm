@@ -11,6 +11,14 @@ export EDITOR=nvim
 export PATH="$HOME/.local/bin:$PATH"
 
 # =========================
+# fcitx configuration
+# =========================
+export INPUT_METHOD=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fcitx
+
+# =========================
 # Cursor theme (Xwayland)
 # =========================
 export XCURSOR_THEME=catppuccin-mocha-light-cursors
