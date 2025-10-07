@@ -6,7 +6,7 @@
 #                     by Manu
 
 sleep 0.1
-COLOR=$(hyprpicker | grep -E '^#')
+COLOR=$(uwsm app -- hyprpicker | grep -E '^#')
 
 if [ -n "$COLOR" ]; then
   echo "$COLOR" | wl-copy
