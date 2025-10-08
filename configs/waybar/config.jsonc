@@ -179,7 +179,7 @@
 			]
 		},
 		"format-muted": "󰟎 Muted",
-		"on-click": "$TERMINAL --class=Wiremix -e wiremix",
+		"on-click": "$TERMINAL --title=Wiremix -e wiremix",
     "on-click-right": "pamixer -t",
 		"scroll-step": 1,
     "tooltip": false
@@ -192,7 +192,7 @@
 		"format-linked": "{ifname} (No IP)",
 		"format-wifi": "  {signalStrength}%",
 		"tooltip-format": " {ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
-		"on-click": "ghostty --title=TermNmtui -e 'nmtui'"
+		"on-click": "$TERMINAL --title=TermNmtui -e 'nmtui'"
 	},
 
 	/*------------Tray--------------------*/
