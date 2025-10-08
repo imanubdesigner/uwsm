@@ -5,4 +5,5 @@
 #    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┛┗┗┛┣┛┛┗┻┻┛┗┛┗┛
 #                              by Manu
 
-manu-restart-app hypridle
+echo -e "Restarting hypridle...\n"
+systemctl --user restart hypridle.service
