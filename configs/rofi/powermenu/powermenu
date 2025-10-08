@@ -45,7 +45,7 @@ run_cmd() {
       amixer set Master mute
       systemctl suspend
     elif [[ $1 == '--relaunch' ]]; then
-      manu-state clear relaunch-required && uwsm stop
+      uwsm stop
     fi
   else
     exit 0
@@ -63,15 +63,15 @@ $reboot)
   ;;
 $lock)
   if [[ -x '/usr/bin/betterlockscreen' ]]; then
-    betterlockscreen -l
+    uwsm app -- betterlockscreen -l
   elif [[ -x '/usr/bin/hyprlock' ]]; then
-    hyprlock
+    uwsm app -- hyprlock
   fi
   ;;
 $suspend)
   run_cmd --suspend
   ;;
 $relaunch)
-  manu-state clear relaunch-required && uwsm stop
+  run_cmd --relaunch
   ;;
 esac
