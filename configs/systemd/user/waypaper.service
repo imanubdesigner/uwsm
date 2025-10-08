@@ -1,0 +1,13 @@
+[Unit]
+Description=Waypaper Wallpaper Restorer
+After=graphical-session.target swww-daemon.service
+Requires=swww-daemon.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/waypaper --restore
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
+
