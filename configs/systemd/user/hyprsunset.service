@@ -4,11 +4,9 @@ After=graphical-session.target
 
 [Service]
 Type=simple
-ExecCondition=/usr/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 ExecStart=/usr/bin/hyprsunset
 Restart=on-failure
 Slice=background-graphical.slice
-RemainAfterExit=yes
 
 [Install]
 WantedBy=graphical-session.target
