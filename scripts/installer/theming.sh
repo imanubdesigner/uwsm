@@ -100,6 +100,9 @@ run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
 
+# -------------------- Reflector Configuration --------------------
+run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
+
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
 print_bold_blue "Set themes and icons:"
