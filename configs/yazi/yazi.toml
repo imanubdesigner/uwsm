@@ -1,0 +1,55 @@
+#    ┓┏┏┓┏┓┳  ┏┓┏┓┳┓┏┓
+#    ┗┫┣┫┏┛┃  ┃ ┃┃┃┃┣ 
+#    ┗┛┛┗┗┛┻  ┗┛┗┛┛┗┻ 
+#             by Manu
+
+[mgr]
+# Layout of panes (left, middle, right ratios)
+ratio = [1, 4, 3]
+
+# Sorting method: "natural" sorts numbers in human order (file2 before file10)
+sort_by = "mtime"
+sort_sensitive = false
+sort_reverse = true
+sort_dir_first = true
+sort_translit = true  # Useful for accented or special characters
+
+# Line mode: shows extra info beside filenames
+linemode = "size"
+
+# Display options
+show_hidden = true
+show_symlink = true
+scrolloff = 3
+mouse_events = ["click", "scroll"]
+
+# Window title format
+title_format = "{cwd}"
+
+[preview]
+# Wrap long lines in preview
+wrap = "yes"
+# Tab width for text preview
+tab_size = 4
+# Maximum preview dimensions
+max_width = 120
+max_height = 40
+# Skip caching preview files (optional)
+cache_dir = ""
+# Image preview options (for ueberzugpp or compatible terminals)
+image_delay = 50
+image_filter = "lanczos3"
+image_quality = 80
+ueberzug_scale = 1.0
+ueberzug_offset = [0.0, 0.0, 0.0, 0.0]
+
+[input]
+# Enable blinking cursor for input prompts
+cursor_blink = true
+
+[search]
+# Ignore case when searching
+ignore_case = true
+# Highlight matched results
+highlight = true
+
