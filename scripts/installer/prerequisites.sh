@@ -46,6 +46,7 @@ run_command "pacman -S --noconfirm gtk-engine-murrine gnome-themes-extra nautilu
 
 # -------------------- Configuration Files --------------------
 
+run_command "cp -r $BASE_DIR/configs/fcitx5 /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fcitx5" "Copy fcitx5 folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/ghostty /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/ghostty" "Copy Ghostty folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/btop /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/btop" "Copy btop folder" "yes" "no"
 run_command "cp -r $BASE_DIR/configs/cava /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/cava" "Copy Cava folder" "yes" "no"
