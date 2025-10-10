@@ -5,5 +5,4 @@
 #    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┛┗┗┛┣┛┛┗┗┛┗┛┛┗┗┛┗┛ ┻
 #                                    by Manu
 
-echo -e "Restarting hyprsunset night light...\n"
-systemctl --user restart hyprsunset.service
+manu-restart-app hyprsunset
