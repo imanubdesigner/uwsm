@@ -66,9 +66,6 @@ run_command "git clone https://github.com/LazyVim/starter /home/$SUDO_USER/.conf
 run_command "rm -rf /home/$SUDO_USER/.config/nvim/.git" "Remove Git folder from LazyVim config" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set correct ownership for Neovim config" "yes" "no"
 
-# # -------------------- SDDM Configuration --------------------
-# run_command "sudo cp $BASE_DIR/assets/sddm.conf /etc/sddm.conf" "Copy sddm.conf to /etc for manu user" "yes" "no"
-
 # -------------------- Pacman Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "yes" "no"
 
@@ -78,11 +75,6 @@ run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tt
 
 # -------------------- .zprofile for uwsm autologin --------------------
 run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "yes" "no"
-
-# # -------------------- UWSM Autologin with Service for better performance --------------------
-# run_command "sudo cp $BASE_DIR/assets/uwsm-autologin.service /etc/systemd/system/" "Copy uwsm-autologin.service" "yes" "no"
-# run_command "sudo systemctl daemon-reload" "Systemd daemon reload" "yes" "no"
-# run_command "sudo systemctl enable uwsm-autologin.service" "Enable uwsm-autologin service" "yes" "no"
 
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
@@ -100,16 +92,10 @@ run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
 
-# -------------------- Nautilus Open Any Terminal --------------------
-run_command "git clone https://github.com/Stunkymonkey/nautilus-open-any-terminal.git /tmp/nautilus-open-any-terminal && cd /tmp/nautilus-open-any-terminal && make" "Clone and build nautilus-open-any-terminal" "yes" "no"
-run_command "sudo make -C /tmp/nautilus-open-any-terminal install-nautilus schema && rm -rf /tmp/nautilus-open-any-terminal" "Install nautilus-open-any-terminal and cleanup" "yes" "no"
-run_command "gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty" "Set kitty as default terminal for nautilus" "yes" "no"
-
 # -------------------- Reflector Configuration --------------------
 run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
 
 # -------------------- Mkinitcpio & Nvidia Configuration --------------------
-run_command "sudo sed -i '/^MODULES=/ s/)/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf && sudo mkinitcpio -g /boot/initramfs-linux.img" "Configure modules (BTRFS + Nvidia) and regenerate initramfs" "yes" "no"
 run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
