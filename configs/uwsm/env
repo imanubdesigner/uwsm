@@ -35,9 +35,8 @@ export XCURSOR_SIZE=20
 export LIBVA_DRIVER_NAME=nvidia                 
 export GBM_BACKEND=nvidia-drm                   
 export __GL_GSYNC_ALLOWED=1                     
-
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
 # export NVD_BACKEND=direct                     
-# export __GLX_VENDOR_LIBRARY_NAME=nvidia       
 
 # =========================
 # XDG (Desktop Environment Standards)
@@ -49,21 +48,22 @@ export XDG_SESSION_DESKTOP=Hyprland
 # =========================
 # Hyprland-specific rendering
 # =========================
-export WLR_RENDERER=vulkan                       # Vulkan renderer for wlroots
+export WLR_RENDERER=vulkan                                                          # Vulkan renderer for wlroots
 export WLR_NO_HARDWARE_CURSORS=1                
-# export WLR_DRM_DEVICES=/dev/dri/card0          # use only if you have multiple GPUs
+# export WLR_DRM_DEVICES=/dev/dri/card0                                             # use only if you have multiple GPUs
 
 # =========================
 # Firefox Wayland support
 # =========================
-export MOZ_ENABLE_WAYLAND=1                     # force Firefox to use Wayland
-export MOZ_DISABLE_RDD_SANDBOX=1                # only if video decoding crashes
-# export EGL_PLATFORM=wayland                   # often unnecessary, leave commented
+export MOZ_ENABLE_WAYLAND=1                                                         # force Firefox to use Wayland
+export MOZ_DISABLE_RDD_SANDBOX=1                                                    # only if video decoding crashes
+export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json
+# export EGL_PLATFORM=wayland                                                       # often unnecessary, leave commented
 
 # =========================
 # Qt toolkit environment
 # =========================
-export QT_QPA_PLATFORM="wayland;xcb"            # prefer Wayland, fallback to X11
+export QT_QPA_PLATFORM="wayland;xcb"                                                # prefer Wayland, fallback to X11
 export QT_QPA_PLATFORMTHEME=qt6ct
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
@@ -79,8 +79,8 @@ export CLUTTER_BACKEND=wayland
 # =========================
 # Electron / Chromium / Ozone
 # =========================
-export ELECTRON_OZONE_PLATFORM_HINT=wayland     # sufficient for Electron apps
-# export OZONE_PLATFORM=wayland                 # leave commented to avoid forcing globally
+export ELECTRON_OZONE_PLATFORM_HINT=wayland                                         # sufficient for Electron apps
+# export OZONE_PLATFORM=wayland                                                     # leave commented to avoid forcing globally
 
 # =========================
 # Java applications (tiling WM fix)

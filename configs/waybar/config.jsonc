@@ -33,9 +33,10 @@
 		"hyprland/workspaces",
     "custom/pacman"
 	],
-	/*----------Modules Center--------------*/
+	/*----------Modules Right--------------*/
 	"modules-right": [
 		"tray",
+    "bluetooth",
 		"pulseaudio",
 		"network",
 		"clock"
@@ -170,6 +171,15 @@
 		"return-type": "json"
 	},
 	
+/*---------------Pulseaudio------------*/
+"bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "manu-bluetooth-gui"
+  },
+
 	/*---------------Pulseaudio------------*/
 	"pulseaudio": {
 		"format": "{icon} {volume}%",
@@ -179,7 +189,7 @@
 			]
 		},
 		"format-muted": "󰟎 Muted",
-		"on-click": "$TERMINAL --title=Wiremix -e wiremix",
+		"on-click": "manu-audio-gui",
     "on-click-right": "pamixer -t",
 		"scroll-step": 1,
     "tooltip": false
@@ -192,7 +202,7 @@
 		"format-linked": "{ifname} (No IP)",
 		"format-wifi": "  {signalStrength}%",
 		"tooltip-format": " {ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
-		"on-click": "$TERMINAL --title=TermNmtui -e 'nmtui'"
+		"on-click": "manu-ethernet-gui"
 	},
 
 	/*------------Tray--------------------*/

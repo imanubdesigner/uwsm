@@ -100,8 +100,17 @@ run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
 
+# -------------------- Nautilus Open Any Terminal --------------------
+run_command "git clone https://github.com/Stunkymonkey/nautilus-open-any-terminal.git /tmp/nautilus-open-any-terminal && cd /tmp/nautilus-open-any-terminal && make" "Clone and build nautilus-open-any-terminal" "yes" "no"
+run_command "sudo make -C /tmp/nautilus-open-any-terminal install-nautilus schema && rm -rf /tmp/nautilus-open-any-terminal" "Install nautilus-open-any-terminal and cleanup" "yes" "no"
+run_command "gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty" "Set kitty as default terminal for nautilus" "yes" "no"
+
 # -------------------- Reflector Configuration --------------------
 run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
+
+# -------------------- Mkinitcpio & Nvidia Configuration --------------------
+run_command "sudo sed -i '/^MODULES=/ s/)/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf && sudo mkinitcpio -P" "Configure modules (BTRFS + Nvidia) and regenerate initramfs" "yes" "no"
+run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
