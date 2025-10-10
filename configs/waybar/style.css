@@ -133,13 +133,13 @@ tooltip label {
 /* } */
 
 /*---------------Tray, Clock, Playerctl, Cpu, Temperature, Memory, Idle_inhibitor----------------------*/
-#tray, #pulseaudio, #network, #cpu, #temperature, #memory, #idle_inhibitor,
+#tray, #bluetooth, #pulseaudio, #network, #cpu, #temperature, #memory, #idle_inhibitor,
 #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
     background: @background;
     font-weight: bold;
     margin: 5px 0px;
 }
-#tray, #pulseaudio, #network {
+#tray, #bluetooth, #pulseaudio, #network {
     color: @foreground;
     border-radius: 10px 24px 10px 24px;
     padding: 0 20px;

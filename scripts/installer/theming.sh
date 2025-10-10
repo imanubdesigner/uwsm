@@ -109,7 +109,7 @@ run_command "gsettings set com.github.stunkymonkey.nautilus-open-any-terminal te
 run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
 
 # -------------------- Mkinitcpio & Nvidia Configuration --------------------
-run_command "sudo sed -i '/^MODULES=/ s/)/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf && sudo mkinitcpio -P" "Configure modules (BTRFS + Nvidia) and regenerate initramfs" "yes" "no"
+run_command "sudo sed -i '/^MODULES=/ s/)/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf && sudo mkinitcpio -g /boot/initramfs-linux.img" "Configure modules (BTRFS + Nvidia) and regenerate initramfs" "yes" "no"
 run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "yes" "no"
 
 # -------------------- Post-install instructions --------------------
