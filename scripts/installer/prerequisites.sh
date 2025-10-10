@@ -13,7 +13,7 @@ print_info "\nStarting prerequisites setup..."
 run_command "pacman -S --noconfirm reflector" "Install Reflector" "yes"
 run_command "sudo reflector --country Italy --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Update Pacman mirrorlist with fresh, fast mirrors" "yes" "yes"
 run_command "pacman -Syyu --noconfirm" "Update package database and upgrade packages (Recommended)" "yes"
-run_command "pacman -Syu --noconfirm --needed git base-devel" "Install git and base-devel (needed for AUR and configs)" "yes"
+run_command "pacman -Syu --noconfirm --needed git base base-devel" "Install git and base-devel (needed for AUR and configs)" "yes"
 
 # -------------------- Yay (AUR helper) --------------------
 if command -v yay >/dev/null; then
