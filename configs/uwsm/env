@@ -6,7 +6,7 @@
 # =========================
 # Default terminal emulator
 # =========================
-export TERMINAL=ghostty   
+export TERMINAL=kitty   
 export EDITOR=nvim
 export PATH="$HOME/.local/bin:$PATH"
 
