@@ -95,8 +95,28 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set c
 # -------------------- Reflector Configuration --------------------
 run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
 
-# -------------------- Mkinitcpio & Nvidia Configuration --------------------
+# -------------------- Mkinitcpio & Nvidia Configuration (BEFORE driver installation) --------------------
+print_bold_blue "\n=== Preparing NVIDIA Kernel Configuration ==="
+
+# Step 1: Copy nvidia.conf (modprobe options)
 run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "yes" "no"
+
+# Step 2: Backup and modify mkinitcpio.conf BEFORE installing drivers
+run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup mkinitcpio.conf" "yes" "no"
+
+run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "yes" "no"
+
+print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
+
+# -------------------- NVIDIA Drivers Installation --------------------
+print_bold_blue "\n=== Installing NVIDIA Drivers ==="
+print_info "The installation will automatically compile DKMS modules and rebuild initramfs..."
+
+run_command "pacman -S --noconfirm linux-headers nvidia-open-dkms nvidia-utils libva libva-utils lib32-nvidia-utils libva-nvidia-driver egl-wayland mesa lib32-mesa" "Install Nvidia Open DKMS (will auto-run mkinitcpio)" "yes"
+
+run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
+
+print_success "NVIDIA drivers installed and initramfs rebuilt automatically!"
 
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"

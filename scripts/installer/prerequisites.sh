@@ -23,18 +23,17 @@ else
   run_command "makepkg --noconfirm -si && cd .." "Build YAY (Must)/Breaks the script" "no" "no"
 fi
 
-# -------------------- Drivers --------------------
-run_command "pacman -S --noconfirm linux-headers nvidia-open-dkms nvidia-utils libva libva-utils lib32-nvidia-utils libva-nvidia-driver egl-wayland mesa lib32-mesa" "Install Nvidia Open DKMS" "yes"
-run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
+# # -------------------- Drivers --------------------
+# run_command "pacman -S --noconfirm linux-headers nvidia-open-dkms nvidia-utils libva libva-utils lib32-nvidia-utils libva-nvidia-driver egl-wayland mesa lib32-mesa" "Install Nvidia Open DKMS" "yes"
+# run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
 
-# -------------------- Audio --------------------
-run_command "pacman -S --noconfirm pipewire wireplumber pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer pavucontrol" "Install complete audio stack (PipeWire + utilities)" "yes"
+# # -------------------- Audio --------------------
+# run_command "pacman -S --noconfirm pipewire wireplumber pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer pavucontrol" "Install complete audio stack (PipeWire + utilities)" "yes"
 
-# -------------------- Fonts --------------------
-run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
+# # -------------------- Fonts --------------------
+# run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts" "Installing Nerd Fonts and Symbols (Recommended)" "yes"
 
 # -------------------- Display manager & Network --------------------
-# run_command "pacman -S --noconfirm sddm && systemctl enable sddm.service" "Install and enable SDDM (Recommended)" "yes"
 run_command "pacman -S --noconfirm networkmanager && systemctl enable NetworkManager.service" "Install and enable NetworkManager (Recommended)" "yes"
 run_command "pacman -S --noconfirm wpa_supplicant && systemctl enable wpa_supplicant.service" "Install and enable WPA supplicant" "yes"
 
@@ -42,7 +41,7 @@ run_command "pacman -S --noconfirm wpa_supplicant && systemctl enable wpa_suppli
 run_command "pacman -S --noconfirm bluez bluez-utils bluetui && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"
 
 # -------------------- Applications Installation --------------------
-run_command "pacman -S --noconfirm gtk-engine-murrine gnome-themes-extra nautilus nautilus-python gtk4 glib2 gobject-introspection gum ufw fcitx5 fcitx5-gtk fcitx5-qt jdk21-openjdk inotify-tools sassc meson wget cargo swww python-pyquery luarocks curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi chromium obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions wiremix zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
+run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts pipewire wireplumber pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer pavucontrol gtk-engine-murrine gnome-themes-extra nautilus nautilus-python gtk4 glib2 gobject-introspection gum ufw fcitx5 fcitx5-gtk fcitx5-qt jdk21-openjdk inotify-tools sassc meson wget cargo swww python-pyquery luarocks curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi chromium obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions wiremix zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
 
 # -------------------- Configuration Files --------------------
 
