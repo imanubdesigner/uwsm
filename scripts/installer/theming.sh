@@ -104,7 +104,7 @@ run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.co
 # Step 2: Backup and modify mkinitcpio.conf BEFORE installing drivers
 run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup mkinitcpio.conf" "yes" "no"
 
-run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "yes" "no"
+run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "yes" "no"
 
 print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
 

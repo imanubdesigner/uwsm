@@ -44,16 +44,21 @@ run_command "pacman -S --noconfirm bluez bluez-utils bluetui && systemctl enable
 run_command "pacman -S --noconfirm ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts pipewire wireplumber pipewire-audio sushi pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer pavucontrol gtk-engine-murrine gnome-themes-extra nautilus nautilus-python gtk4 glib2 gobject-introspection gum ufw fcitx5 fcitx5-gtk fcitx5-qt jdk21-openjdk inotify-tools sassc meson wget cargo swww python-pyquery luarocks curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi chromium obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions wiremix zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep rofi rofi-emoji btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
 
 # -------------------- Configuration Files --------------------
+run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "yes" "no"
+run_command "find /home/$SUDO_USER/.config/rofi -name '*.sh' -type f -exec chmod +x {} +" "Make Rofi scripts executable" "yes" "no"
 
-run_command "cp -r $BASE_DIR/configs/fcitx5 /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fcitx5" "Copy fcitx5 folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/kitty /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/kitty" "Copy Kitty folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/btop /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/btop" "Copy btop folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/cava /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/cava" "Copy Cava folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/fastfetch /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fastfetch" "Copy Fastfetch folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/rofi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/rofi && find /home/$SUDO_USER/.config/rofi -name '*.sh' -type f -exec chmod +x {} +" "Copy Rofi config and set permissions" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/yazi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/yazi" "Copy yazi folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/bat /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/bat" "Copy bat folder" "yes" "no"
-run_command "cp -r $BASE_DIR/configs/fzf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fzf" "Copy fzf folder" "yes" "no"
+
+# -------------------- Configuration Files | Single folders --------------------
+
+# run_command "cp -r $BASE_DIR/configs/fcitx5 /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fcitx5" "Copy fcitx5 folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/kitty /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/kitty" "Copy Kitty folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/btop /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/btop" "Copy btop folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/cava /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/cava" "Copy Cava folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/fastfetch /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fastfetch" "Copy Fastfetch folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/rofi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/rofi && find /home/$SUDO_USER/.config/rofi -name '*.sh' -type f -exec chmod +x {} +" "Copy Rofi config and set permissions" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/yazi /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/yazi" "Copy yazi folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/bat /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/bat" "Copy bat folder" "yes" "no"
+# run_command "cp -r $BASE_DIR/configs/fzf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/fzf" "Copy fzf folder" "yes" "no"
 
 echo "------------------------------------------------------------------------"
 print_info "Prerequisites setup completed successfully!"
