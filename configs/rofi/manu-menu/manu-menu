@@ -22,7 +22,7 @@ MENU_OPTIONS="
 DISPLAY_NAMES=$(echo -e "${MENU_OPTIONS}" | sed '/^\s*$/d' | awk -F ';' '{print $1}')
 
 # Launch Rofi and capture the selection
-SELECTED_NAME=$(echo -e "${DISPLAY_NAMES}" | rofi \
+SELECTED_NAME=$(echo -e "${DISPLAY_NAMES}" | uwsm app -- rofi \
   -dmenu \
   -format s \
   -p "" \
