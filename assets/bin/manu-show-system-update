@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#    ┏┓┓┏┏┓┓ ┏  ┳┓┏┓┳┓┏┓
+#    ┗┓┣┫┃┃┃┃┃  ┃┃┃┃┃┃┣
+#    ┗┛┛┗┗┛┗┻┛  ┻┛┗┛┛┗┗┛
+#                by Manu
+
+echo
+gum spin --spinner "points" --title "$(echo -e '\033[32mPackages successfully updated!\033[0m Press any key to close...')" -- bash -c 'read -n 1 -s'

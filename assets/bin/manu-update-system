@@ -13,7 +13,7 @@
 # If there is no terminal open, open it for me
 if [ ! -t 1 ]; then
   # $TERMINAL is inside of your UWSM conf file ~/.config/uwsm/env
-  exec uwsm app -- $TERMINAL -e bash "$0" "$@"
+  exec uwsm app -- $TERMINAL --class=WaybarPkg -e bash "$0" "$@"
 fi
 
 # Command
@@ -49,14 +49,13 @@ else
   print_err "Pacman update failed."
   exit 1
 fi
-
-print_ok "System successfully updated!"
+manu-show-system-update
 
 # Waybar cache update
 rm -f /tmp/waybar-updates-cache 2>/dev/null
 pkill -SIGRTMIN+8 waybar 2>/dev/null
 
-# Keep terminal open to see the result
-echo
-echo -e "${GREEN}Press Enter to close...${RESET}"
-read
+# # Keep terminal open to see the result
+# echo
+# echo -e "${GREEN}Press Enter to close...${RESET}"
+# read
