@@ -16,4 +16,4 @@ uwsm app -- rofi \
   -matching prefix \
   -drun-match-fields name,generic,exec \
   -no-tokenize \
-  -no-history
+  -disable-history
