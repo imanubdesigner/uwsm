@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
 
-# Current Theme directory. Note: This assumes you moved manu-menu.rasi to this path.
+#    ┳┳┓┏┓┳┓┳┳  ┳┳┓┏┓┳┓┳┳
+#    ┃┃┃┣┫┃┃┃┃  ┃┃┃┣ ┃┃┃┃
+#    ┛ ┗┛┗┛┗┗┛  ┛ ┗┗┛┛┗┗┛
+#    ┏┓   •
+#    ┗┓┏┏┓┓┏┓╋
+#    ┗┛┗┛ ┗┣┛┗
+#          ┛      by Manu
+
 dir="$HOME/.config/rofi/manu-menu/"
 theme='manu-menu'
 
-# --- 1. Define Menu Options (Display Name;Command to Execute) ---
 MENU_OPTIONS="
  Install WebApp;manu-install-webapp
 󰊯 Install Google Account;manu-install-chromium-google-account
 󰣇 Install Arch Package;manu-pkg-install
 󰏔 Install Aur Package;manu-pkg-aur-install
 "
-
-# --- 2. Prepare and Launch Rofi in dmenu mode ---
 
 # Extract only the display names (first column)
 DISPLAY_NAMES=$(echo -e "${MENU_OPTIONS}" | sed '/^\s*$/d' | awk -F ';' '{print $1}')
