@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# Current Theme directory. Note: This assumes you moved manu-menu.rasi to this path.
+dir="$HOME/.config/rofi/manu-menu/"
+theme='manu-menu'
+
+# --- 1. Define Menu Options (Display Name;Command to Execute) ---
+MENU_OPTIONS="
+ Install WebApp;manu-install-webapp
+󰊯 Install Google Account;manu-install-chromium-google-account
+󰣇 Install Arch Package;manu-pkg-install
+󰏔 Install Aur Package;manu-pkg-aur-install
+"
+
+# --- 2. Prepare and Launch Rofi in dmenu mode ---
+
+# Extract only the display names (first column)
+DISPLAY_NAMES=$(echo -e "${MENU_OPTIONS}" | sed '/^\s*$/d' | awk -F ';' '{print $1}')
+
+# Launch Rofi and capture the selection
+SELECTED_NAME=$(echo -e "${DISPLAY_NAMES}" | rofi \
+  -dmenu \
+  -format s \
+  -p "" \
+  -mesg "󰀻 Manu Install Menu" \
+  -theme ${dir}/${theme}.rasi \
+  -matching prefix \
+  -no-tokenize \
+  -me-select 'mouse-1' \
+  -e-text 'Command not found.' \
+  -kb-select-entry 'Tab')
+
+# --- 3. Map the selected name to the command and execute it ---
+if [ -n "${SELECTED_NAME}" ]; then
+  # Search for the full original line that starts with the selected name
+  FULL_LINE=$(echo -e "${MENU_OPTIONS}" | grep "^${SELECTED_NAME};" | head -n 1)
+
+  # Extract the command to be executed (second column)
+  SELECTED_COMMAND=$(echo "${FULL_LINE}" | awk -F ';' '{print $2}')
+
+  # Execute the command in the $TERMINAL
+
+  uwsm app -- "$TERMINAL" --class="ManuMenu" -e bash -c -i "
+        # Run the selected command (interactive)
+        ${SELECTED_COMMAND}
+
+        # Check the exit code of the script
+        EXIT_CODE=\$?
+        
+        # Call the final status script to handle the persistent message/spinner
+        if [ \$EXIT_CODE -eq 0 ]; then
+            manu-show-done
+        else
+            manu-show-failed
+        fi
+    "
+fi

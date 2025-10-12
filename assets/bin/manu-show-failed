@@ -6,4 +6,4 @@
 #
 
 echo
-gum spin --spinner "pulse" --title "$(echo -e '\033[32mDone!\033[0m Press any key to close...')" -- bash -c 'read -n 1 -s'
+gum spin --spinner "pulse" --title "$(echo -e '\033[35mOperation failed or interrupted by user!\033[0m\nPress any button to close...')" -- bash -c 'read -n 1 -s'

@@ -12,4 +12,8 @@ theme='app-menu'
 uwsm app -- rofi \
   -show drun \
   -run-command "uwsm app -- {cmd}" \
-  -theme ${dir}/${theme}.rasi
+  -theme ${dir}/${theme}.rasi \
+  -matching prefix \
+  -drun-match-fields name,generic,exec \
+  -no-tokenize \
+  -no-history
