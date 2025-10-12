@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm waypaper gowall qview" "Install Utilities" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "yes" "no"
 
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/applications && \
