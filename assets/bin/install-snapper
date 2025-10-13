@@ -1,0 +1,87 @@
+#!/bin/bash
+# post-install-setup.sh
+# Initial setup for Snapper + Limine after a fresh Arch installation
+# by Manu
+
+set -e
+
+# ────────────────────────────────
+#  Functions
+# ────────────────────────────────
+
+print_info()  { echo -e "  $1"; }
+print_ok()    { echo -e "󰄬  $1"; }
+print_warn()  { echo -e "󰀪  $1"; }
+print_err()   { echo -e "󰅚  $1"; }
+
+# ────────────────────────────────
+# 1️⃣ Check for .snapshots subvolume
+# ────────────────────────────────
+print_info "Checking for .snapshots subvolume..."
+if ! sudo btrfs subvolume list / | grep -q '\.snapshots'; then
+    print_warn ".snapshots subvolume not found, creating..."
+    sudo btrfs subvolume create /@/.snapshots
+    print_ok ".snapshots subvolume created successfully."
+else
+    print_ok ".snapshots subvolume already exists."
+fi
+
+# ────────────────────────────────
+# 2️⃣ Check Snapper configuration
+# ────────────────────────────────
+print_info "Verifying Snapper configuration..."
+if ! sudo snapper -c root list-configs | grep -q '^root$'; then
+    print_warn "Snapper root config not found, creating..."
+    sudo snapper -c root create-config /
+    print_ok "Snapper root config created."
+else
+    print_ok "Snapper root config already present."
+fi
+
+# ────────────────────────────────
+# 3️⃣ Ensure .snapshots is mounted in fstab
+# ────────────────────────────────
+print_info "Checking fstab for .snapshots mount..."
+UUID=$(lsblk -no UUID "$(findmnt -n / -o SOURCE)")
+FSTAB_LINE="UUID=${UUID} /.snapshots btrfs subvol=/@/.snapshots,rw,relatime,ssd,discard=async,space_cache=v2 0 0"
+
+if ! grep -q '\.snapshots' /etc/fstab; then
+    print_warn "Adding .snapshots entry to /etc/fstab..."
+    echo "$FSTAB_LINE" | sudo tee -a /etc/fstab > /dev/null
+    print_ok ".snapshots entry added to fstab."
+else
+    print_ok "fstab already contains .snapshots entry."
+fi
+
+print_info "Mounting all filesystems..."
+sudo mount -a
+ls -ld /.snapshots || print_err "Failed to mount /.snapshots"
+
+# ────────────────────────────────
+# 4️⃣ Create an initial system snapshot
+# ────────────────────────────────
+print_info "Creating initial system snapshot..."
+if sudo manu-snapshot create; then
+    print_ok "Snapshot created successfully."
+else
+    print_err "Snapshot creation failed."
+fi
+
+# ────────────────────────────────
+# 5️⃣ Sync Limine with snapshots
+# ────────────────────────────────
+print_info "Syncing Limine boot entries..."
+if sudo limine-snapper-sync; then
+    print_ok "Limine configuration updated."
+else
+    print_err "Failed to update Limine configuration."
+fi
+
+# ────────────────────────────────
+# 6️⃣ Show available snapshots
+# ────────────────────────────────
+print_info "Listing existing snapshots..."
+sudo snapper -c root list || print_warn "No snapshots found."
+
+print_ok "Post-install setup completed. Reboot to see the 'Snapshots' entry in Limine!"
+
