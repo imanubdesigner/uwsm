@@ -13,9 +13,9 @@ theme='manu-menu'
 
 MENU_OPTIONS="
  Install WebApp;manu-install-webapp
-󰊯 Install Google Account;manu-install-chromium-google-account
 󰣇 Install Arch Package;manu-pkg-install
 󰏔 Install Aur Package;manu-pkg-aur-install
+󰊯 Chromium Account;manu-install-chromium-google-account
 "
 
 # Extract only the display names (first column)
