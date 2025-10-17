@@ -92,6 +92,13 @@ run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
 run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
 
+# -------------------- Fstab Configuration for SSD Auto Mount --------------------
+FSTAB_ENTRY="# SSD Auto Mount\nUUID=0C1A3D631A3D4ACA /mnt/Dati ntfs3 defaults,noatime,nofail,windows_names,uid=1000,gid=1000 0 0"
+
+run_command "echo -e \"$FSTAB_ENTRY\" | sudo tee -a /etc/fstab" \
+  "Add SSD auto-mount entry to /etc/fstab" \
+  "yes"
+
 # -------------------- Reflector Configuration --------------------
 run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
 
