@@ -34,9 +34,17 @@ export XCURSOR_SIZE=20
 # =========================
 export LIBVA_DRIVER_NAME=nvidia                 
 export GBM_BACKEND=nvidia-drm                   
-export __GL_GSYNC_ALLOWED=1                     
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export NVD_BACKEND=direct                     
+
+# =========================
+# NVIDIA GPU - Stability
+# =========================
+export __GL_GSYNC_ALLOWED=1                     
+export __GL_VRR_ALLOWED=0
+export __GL_SYNC_TO_VBLANK=1
+export __GL_YIELD="USLEEP"
+export __GL_WRITE_TEXT_SECTION=0
 
 # =========================
 # XDG (Desktop Environment Standards)
@@ -64,7 +72,7 @@ export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.js
 # Qt toolkit environment
 # =========================
 export QT_QPA_PLATFORM="wayland;xcb"                                                
-export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_QUICK_CONTROLS_STYLE=org.hyprland.style
