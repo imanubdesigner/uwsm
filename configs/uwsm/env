@@ -37,6 +37,12 @@ export GBM_BACKEND=nvidia-drm
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export NVD_BACKEND=direct                     
 
+# ==================================
+# NGL and GLES for Nautilus and GTK: 
+# ==================================
+export GSK_RENDERER=ngl
+export GDK_GL=gles
+
 # =========================
 # XDG (Desktop Environment Standards)
 # =========================
