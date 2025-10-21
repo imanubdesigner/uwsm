@@ -102,6 +102,24 @@ run_command "echo -e \"$FSTAB_ENTRY\" | sudo tee -a /etc/fstab" \
 # -------------------- Reflector Configuration --------------------
 run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
 
+# -------------------- Snapper + Snap-pac Configuration --------------------
+print_bold_blue "\n=== Configuring Snapper + Snap-pac ==="
+
+# Step 1: Copy Snapper root configuration
+run_command "sudo mkdir -p /etc/snapper/configs && sudo cp $BASE_DIR/assets/snap/root /etc/snapper/configs/root" \
+  "Copy Snapper root configuration" \
+  "yes" "no"
+
+# Step 2: Copy snap-pac.ini
+run_command "sudo cp $BASE_DIR/assets/snap/snap-pac.ini /etc/snap-pac.ini" \
+  "Copy snap-pac.ini configuration" \
+  "yes" "no"
+
+# Step 3: Disable snap-pac post-install snapshot hook
+run_command "sudo mv /usr/share/libalpm/hooks/zz-snap-pac-post.hook /usr/share/libalpm/hooks/zz-snap-pac-post.hook.disabled" \
+  "Disable snap-pac post install Snapshot" \
+  "yes"
+
 # -------------------- Mkinitcpio & Nvidia Configuration (BEFORE driver installation) --------------------
 print_bold_blue "\n=== Preparing NVIDIA Kernel Configuration ==="
 

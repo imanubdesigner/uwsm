@@ -1,0 +1,46 @@
+# =====================================
+# /etc/snapper/configs/root
+# Optimized for snap-pac + Limine setup
+# =====================================
+
+# Subvolume to snapshot
+SUBVOLUME="/"
+
+# Filesystem type
+FSTYPE="btrfs"
+
+# Btrfs qgroup for space-aware cleanup algorithms (optional)
+QGROUP=""
+
+# Fraction or absolute size of the filesystem's space snapshots may use
+SPACE_LIMIT="0.5"
+
+# Fraction or absolute size of free space required on the filesystem
+FREE_LIMIT="0.2"
+
+# Users and groups allowed to manage this configuration
+ALLOW_USERS=""
+ALLOW_GROUPS=""
+
+# Synchronize ACLs for allowed users/groups to .snapshots directory
+SYNC_ACL="no"
+
+# Compare pre- and post-snapshots in the background
+BACKGROUND_COMPARISON="yes"
+
+# --- Number cleanup policy ---
+# Keep only a fixed number of snapshots
+NUMBER_CLEANUP="yes"
+NUMBER_MIN_AGE="3600"                # Minimum age (in seconds) before cleanup
+NUMBER_LIMIT="5"                     # Max normal snapshots to keep
+NUMBER_LIMIT_IMPORTANT="5"           # Max important snapshots to keep
+
+# --- Disable timeline snapshots ---
+# Snap-pac already handles snapshot creation, so disable hourly ones
+TIMELINE_CREATE="no"
+TIMELINE_CLEANUP="no"
+
+# --- Optional cleanup for empty pre/post pairs ---
+EMPTY_PRE_POST_CLEANUP="yes"
+EMPTY_PRE_POST_MIN_AGE="3600"
+
