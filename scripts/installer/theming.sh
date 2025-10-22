@@ -115,9 +115,9 @@ run_command "sudo cp $BASE_DIR/assets/snap/snap-pac.ini /etc/snap-pac.ini" \
   "Copy snap-pac.ini configuration" \
   "yes" "no"
 
-# Step 3: Disable snap-pac post-install snapshot hook
-run_command "sudo mv /usr/share/libalpm/hooks/zz-snap-pac-post.hook /usr/share/libalpm/hooks/zz-snap-pac-post.hook.disabled" \
-  "Disable snap-pac post install Snapshot" \
+# Step 3: Enable Snapper automatic cleanup timer
+run_command "sudo systemctl enable --now snapper-cleanup.timer" \
+  "Enable Snapper automatic cleanup timer" \
   "yes"
 
 # -------------------- Mkinitcpio & Nvidia Configuration (BEFORE driver installation) --------------------
