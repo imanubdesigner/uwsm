@@ -93,7 +93,7 @@ run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww ca
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
 
 # -------------------- Fstab Configuration for SSD Auto Mount --------------------
-FSTAB_ENTRY="# SSD Auto Mount\nUUID=0C1A3D631A3D4ACA /mnt/Dati ntfs3 defaults,noatime,nofail,windows_names,uid=1000,gid=1000 0 0"
+FSTAB_ENTRY="# SSD Auto Mount\nUUID=0C1A3D631A3D4ACA /mnt/Dati ntfs3 defaults,noatime,nofail,windows_names,prealloc,uid=1000,gid=1000 0 0"
 
 run_command "echo -e \"$FSTAB_ENTRY\" | sudo tee -a /etc/fstab" \
   "Add SSD auto-mount entry to /etc/fstab" \
