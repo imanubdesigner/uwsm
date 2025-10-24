@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cmd="$*"
+exec setsid uwsm-app -- $TERMINAL -o font_size=12 --class=Manu --title=Manu -e bash -c "manu-show-logo; $cmd; manu-show-done"
