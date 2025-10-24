@@ -27,15 +27,15 @@ their dedication and open design philosophy inspired me to build upon those foun
 | 📊 [**Btop**](https://github.com/aristocratos/btop) | Modern resource monitor in terminal, minimal and visual. |
 | 🎵 [**Cava**](https://github.com/karlstav/cava) | Real-time audio visualizer integrated into terminal and bar. |
 | 🔔 [**Dunst**](https://github.com/dunst-project/dunst) | Simple, lightweight notification daemon. |
-| 🐘 [**Elephant**](https://github.com/ErikReider/elephant) | Backend search and indexing engine for Walker. |
-| 🚀 [**Walker**](https://github.com/ErikReider/walker) | Application launcher and menu system, styled with Catppuccin Mocha. |
+| 🐘 [**Elephant**](https://github.com/abenz1267/elephant) | Backend search and indexing engine for Walker. |
+| 🚀 [**Walker**](https://github.com/abenz1267/walker) | Application launcher and menu system, styled with Catppuccin Mocha. |
 | ⚡ [**Fastfetch**](https://github.com/fastfetch-cli/fastfetch) | Modern system information fetch tool, themed for HyprNest. |
 | 🌐 [**Fcitx5**](https://github.com/fcitx/fcitx5) | Input method framework for multilingual and emoji support. |
 | 🔍 [**Fzf**](https://github.com/junegunn/fzf) | Blazing-fast fuzzy finder used in scripts and menus. |
 | 🧱 [**Waybar**](https://github.com/Alexays/Waybar) | Status bar displaying system info, audio, and workspace indicators. |
-| 🖼️ [**Waypaper**](https://github.com/nwg-piotr/waypaper) | Wallpaper manager with seamless Swww integration. |
+| 🖼️ [**Waypaper**](https://github.com/anufrievroman/waypaper) | Wallpaper manager with seamless [**Swww**](https://github.com/LGFae/swww) integration. |
 | 📁 [**Yazi**](https://github.com/sxyazi/yazi) | TUI file manager with modern navigation and previews. |
-| 🌄 [**Gowall**](https://github.com/GowallApp/gowall) | Minimal wallpaper changer integrated with HyprNest. |
+| 🌄 [**Gowall**](https://github.com/Achno/gowall) | Minimal wallpaper changer integrated with HyprNest. |
 
 ---
 
