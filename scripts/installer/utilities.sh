@@ -13,25 +13,7 @@ print_info "\nStarting utilities setup..."
 # run_command "yay -S --sudoloop --noconfirm waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "yes" "no"
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm \
-elephant-bin \
-elephant-bluetooth-bin \
-elephant-calc-bin \
-elephant-clipboard-bin \
-elephant-desktopapplications-bin \
-elephant-files-bin \
-elephant-menus-bin \
-elephant-providerlist-bin \
-elephant-runner-bin \
-elephant-symbols-bin \
-elephant-todo-bin \
-elephant-unicode-bin \
-elephant-websearch-bin \
-waypaper \
-gowall \
-qview \
-limine-mkinitcpio-hook \
-limine-snapper-sync" "Install Utilities" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm --needed walker-bin elephant-bin elephant-bluetooth-bin elephant-calc-bin elephant-clipboard-bin elephant-desktopapplications-bin elephant-files-bin elephant-menus-bin elephant-providerlist-bin elephant-runner-bin elephant-symbols-bin elephant-todo-bin elephant-unicode-bin elephant-websearch-bin waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "yes" "no"
 
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/applications && \
