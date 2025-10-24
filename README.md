@@ -7,12 +7,11 @@
 
 ## 🌿 Introduction
 
-**HyprNest** is my personal and evolving Arch Linux configuration, designed around **Hyprland** and managed via **UWSM (Universal Wayland Session Manager)**.  
-It’s a cohesive, aesthetic, and highly responsive desktop environment that aims to balance **efficiency**, **clarity**, and **style**.
+**HyprNest** is my personal and evolving Arch Linux configuration, designed around **[Hyprland](https://github.com/hyprwm/Hyprland)** and managed via **[UWSM (Universal Wayland Session Manager)](https://github.com/Aylur/uwsm)**.  
+It’s a cohesive, aesthetic, and highly responsive desktop environment that balances **efficiency**, **clarity**, and **style**.
 
-A huge thanks goes to **DHH** and his collaborators for their incredible work on **Omarchy** —  
-their dedication and open design philosophy inspired me to create this refined setup.  
-**HyprNest** builds upon those foundations, adding my own workflow, design language, and automation tools.
+A huge thanks to **[DHH](https://github.com/dhh)** and his collaborators for their inspiring work on **[Omarchy](https://github.com/basecamp/omarchy)** —  
+their dedication and open design philosophy inspired me to build upon those foundations with my own workflow, visual identity, and automation layer.
 
 ---
 
@@ -20,29 +19,29 @@ their dedication and open design philosophy inspired me to create this refined s
 
 | Component | Description |
 |------------|-------------|
-| **Hyprland** | Dynamic tiling Wayland compositor — the heart of the system. |
-| **UWSM** | Universal Wayland session manager, handling daemons and startup services. |
-| **Kitty** | Fast, GPU-accelerated terminal emulator with a clean aesthetic. |
-| **Neovim + LazyVim** | My main editor setup, using LazyVim as a base (custom plugin list coming soon). |
-| **Bat & Bat-extras** | Syntax-highlighted replacement for `cat`, with extended utilities. |
-| **Btop** | Modern resource monitor in terminal, minimal and visual. |
-| **Cava** | Real-time audio visualizer, integrated into my terminal and bar. |
-| **Dunst** | Simple, lightweight notification daemon. |
-| **Elephant** | Backend search and indexing engine for Walker. |
-| **Walker** | My primary launcher and control menu, styled with Catppuccin Mocha. |
-| **Fastfetch** | Modern system information fetch tool, themed for HyprNest. |
-| **Fcitx5** | Input method framework for multilingual and emoji support. |
-| **Fzf** | Blazing-fast fuzzy finder used across my scripts and menus. |
-| **Waybar** | Status bar displaying system info, audio, and workspace indicators. |
-| **Waypaper** | Wallpaper manager with seamless Swww integration. |
-| **Yazi** | TUI file manager with modern navigation and preview system. |
-| **Gowall** | Minimal wallpaper changer integrated with my workflow. |
+| 🧠 [**Hyprland**](https://github.com/hyprwm/Hyprland) | Dynamic tiling Wayland compositor — the heart of the system. |
+| ⚙️ [**UWSM**](https://github.com/Aylur/uwsm) | Universal Wayland session manager, handling daemons and startup services. |
+| 🖥️ [**Kitty**](https://github.com/kovidgoyal/kitty) | Fast, GPU-accelerated terminal emulator with a clean aesthetic. |
+| 📝 [**Neovim**](https://github.com/neovim/neovim) + [**LazyVim**](https://github.com/LazyVim/LazyVim) | My main editor setup (custom plugins coming soon). |
+| 🐱 [**Bat**](https://github.com/sharkdp/bat) + [**Bat-extras**](https://github.com/eth-p/bat-extras) | Syntax-highlighted replacement for `cat`, with extended utilities. |
+| 📊 [**Btop**](https://github.com/aristocratos/btop) | Modern resource monitor in terminal, minimal and visual. |
+| 🎵 [**Cava**](https://github.com/karlstav/cava) | Real-time audio visualizer integrated into terminal and bar. |
+| 🔔 [**Dunst**](https://github.com/dunst-project/dunst) | Simple, lightweight notification daemon. |
+| 🐘 [**Elephant**](https://github.com/ErikReider/elephant) | Backend search and indexing engine for Walker. |
+| 🚀 [**Walker**](https://github.com/ErikReider/walker) | Application launcher and menu system, styled with Catppuccin Mocha. |
+| ⚡ [**Fastfetch**](https://github.com/fastfetch-cli/fastfetch) | Modern system information fetch tool, themed for HyprNest. |
+| 🌐 [**Fcitx5**](https://github.com/fcitx/fcitx5) | Input method framework for multilingual and emoji support. |
+| 🔍 [**Fzf**](https://github.com/junegunn/fzf) | Blazing-fast fuzzy finder used in scripts and menus. |
+| 🧱 [**Waybar**](https://github.com/Alexays/Waybar) | Status bar displaying system info, audio, and workspace indicators. |
+| 🖼️ [**Waypaper**](https://github.com/nwg-piotr/waypaper) | Wallpaper manager with seamless Swww integration. |
+| 📁 [**Yazi**](https://github.com/sxyazi/yazi) | TUI file manager with modern navigation and previews. |
+| 🌄 [**Gowall**](https://github.com/GowallApp/gowall) | Minimal wallpaper changer integrated with HyprNest. |
 
 ---
 
 ## 🧰 Post-Install Script
 
-A single command installs all the utilities and providers required for HyprNest:
+To install all required packages and providers for HyprNest:
 
 ```bash
 yay -S --sudoloop --noconfirm \
