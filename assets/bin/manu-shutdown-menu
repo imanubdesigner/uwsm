@@ -8,7 +8,7 @@ menu() {
 
 show_shutdown_menu() {
   case $(menu "󰍹  System" \
-    "  󰌾  Lock\n  󰒲  Suspend\n    Relaunch\n  󰜉  Restart\n    Shutdown") in
+    "  󰌾  Lock\n  󰒲  Suspend\n    Relaunch\n  󰜉  Restart\n    Shutdown") in
 
   *Lock*) manu-lock-screen ;;
   *Suspend*) systemctl suspend ;;

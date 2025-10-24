@@ -79,7 +79,8 @@
 	"custom/launcher": {
 		"format": "󰣇",
 		"tooltip": false,
-		"on-click": "/home/manu/.config/rofi/app-menu/app-menu"
+		"on-click": "manu-launch-walker",
+    "on-click-right": "manu-new-menu"
 	},
 
 	/*--------------Pacman--------------------*/
@@ -88,7 +89,7 @@
 		"interval": 3600,
     "exec": "manu-check-updates",
     "on-click": "manu-update-system",
-    "on-right-click": "manu-check-updates",	
+    "on-click-right": "manu-check-updates",	
 		"signal": 8,
 		"tooltip": false
 	},
@@ -96,7 +97,8 @@
 	/*-----------Cpu, Memory, Temperature, Idle-inhibitor------*/
 	"cpu": {
 		"format": "󰻠 ",
-		"tooltip": true
+		"tooltip": true,
+    "on-click":"$TERMINAL -e btop"
 	},
 	"memory": {
 		"format": " "
