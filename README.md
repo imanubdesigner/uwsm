@@ -7,7 +7,7 @@
 
 ## 🌿 Introduction
 
-**HyprNest** is my personal and evolving Arch Linux configuration, designed around **[Hyprland](https://github.com/hyprwm/Hyprland)** and managed via **[UWSM (Universal Wayland Session Manager)](https://github.com/Aylur/uwsm)**.  
+**HyprNest** is my personal and evolving Arch Linux configuration, designed around **[Hyprland](https://github.com/hyprwm/Hyprland)** and managed via **[UWSM (Universal Wayland Session Manager)](https://github.com/Vladimir-csp/uwsm)**.  
 It’s a cohesive, aesthetic, and highly responsive desktop environment that balances **efficiency**, **clarity**, and **style**.
 
 A huge thanks to **[DHH](https://github.com/dhh)** and his collaborators for their inspiring work on **[Omarchy](https://github.com/basecamp/omarchy)** —  
@@ -20,7 +20,7 @@ their dedication and open design philosophy inspired me to build upon those foun
 | Component | Description |
 |------------|-------------|
 | 🧠 [**Hyprland**](https://github.com/hyprwm/Hyprland) | Dynamic tiling Wayland compositor — the heart of the system. |
-| ⚙️ [**UWSM**](https://github.com/Aylur/uwsm) | Universal Wayland session manager, handling daemons and startup services. |
+| ⚙️ [**UWSM**](https://github.com/Vladimir-csp/uwsm) | Universal Wayland session manager, handling daemons and startup services. |
 | 🖥️ [**Kitty**](https://github.com/kovidgoyal/kitty) | Fast, GPU-accelerated terminal emulator with a clean aesthetic. |
 | 📝 [**Neovim**](https://github.com/neovim/neovim) + [**LazyVim**](https://github.com/LazyVim/LazyVim) | My main editor setup (custom plugins coming soon). |
 | 🐱 [**Bat**](https://github.com/sharkdp/bat) + [**Bat-extras**](https://github.com/eth-p/bat-extras) | Syntax-highlighted replacement for `cat`, with extended utilities. |
