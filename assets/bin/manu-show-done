@@ -6,4 +6,25 @@
 #                by Manu
 
 echo
-gum spin --spinner "pulse" --title "$(echo -e '\033[32mDone!\033[0m Press any key to close...')" -- bash -c 'read -n 1 -s'
+
+# Colori ANSI
+GREEN="\e[38;5;46m"
+BLUE="\e[38;5;39m"
+RESET="\e[0m"
+
+# Animated spinner with custom color
+gum spin \
+  --spinner "pulse" \
+  --spinner.foreground=39 \
+  --title "$(echo -e "${BLUE}󰄳 ${GREEN}Done!${RESET} 󰌑 Press any key to close...")" \
+  -- bash -c 'read -n 1 -s'
+
+# Final Box
+gum style \
+  --border rounded \
+  --border-foreground=46 \
+  --padding "1 3" \
+  --margin "1 2" \
+  --foreground=46 \
+  "󰄳  All done!" \
+  "󰌑  You can close this window now."

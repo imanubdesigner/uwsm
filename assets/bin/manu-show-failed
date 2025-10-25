@@ -6,4 +6,28 @@
 #                by Manu
 
 echo
-gum spin --spinner "pulse" --title "$(echo -e '\033[35mOperation failed or interrupted by user!\033[0m\nPress any button to close...')" -- bash -c 'read -n 1 -s'
+
+# ANSI colors
+RED="\e[38;5;196m"
+GRAY="\e[38;5;245m"
+RESET="\e[0m"
+
+# Red spinner with error message (Nerd Font icons)
+gum spin \
+  --spinner "pulse" \
+  --spinner.foreground=196 \
+  --title "$(echo -e "${RED}󰅚  Operation failed or interrupted by user!${RESET}\n${GRAY}󰌑  Press any key to close...${RESET}")" \
+  -- bash -c 'read -n 1 -s'
+
+# Optional styled message box (visual feedback)
+gum style \
+  --border double \
+  --border-foreground=196 \
+  --padding "1 3" \
+  --margin "1 2" \
+  --foreground=196 \
+  "󰅚  Operation failed!" \
+  "  Please review logs or retry the process."
+
+# Optional desktop notification
+notify-send "󰅚  Operation failed" "  Process interrupted or failed." -a "Manu Script" -u critical
