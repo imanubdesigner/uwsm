@@ -35,7 +35,6 @@ run_command "pacman -S --noconfirm mlocate snap-pac xsel ttf-nerd-fonts-symbols-
 
 # -------------------- Configuration Files --------------------
 run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "yes" "no"
-run_command "find /home/$SUDO_USER/.config/rofi -name '*.sh' -type f -exec chmod +x {} +" "Make Rofi scripts executable" "yes" "no"
 
 echo "------------------------------------------------------------------------"
 print_info "Prerequisites setup completed successfully!"
