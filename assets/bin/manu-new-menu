@@ -139,7 +139,7 @@ show_toggle_menu() {
 }
 
 show_install_menu() {
-  case $(menu "  Install" "  󰏖  Package\n  󰂓  AUR\n  󰖟  Web App\n  󰞷  TUI\n    Chromium") in
+  case $(menu "  Install" "  󰣇  Package\n  󰂓  AUR\n  󰖟  Web App\n  󰞷  TUI\n    Chromium") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
@@ -150,7 +150,7 @@ show_install_menu() {
 }
 
 show_update_menu() {
-  case $(menu "󰚰  Update" "  󰏗  Pacman") in
+  case $(menu "󰚰  Update" "  󰣇  Pacman") in
   *Pacman*) present_terminal manu-menu-update ;;
   *) show_main_menu ;;
   esac
@@ -166,7 +166,8 @@ show_restart_menu() {
 
 show_restart_apps_menu() {
   case $(menu "  Restart Apps" \
-    "  󰈹  Walker\n  󰕰  Waybar\n    Hypridle\n    Hyprsunset") in
+    "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Hypridle\n    Hyprsunset") in
+  *Sudo*) present_terminal manu-reset-sudo ;;
   *Walker*) manu-restart-walker ;;
   *Waybar*) manu-restart-waybar ;;
   *Hypridle*) manu-restart-hypridle ;;

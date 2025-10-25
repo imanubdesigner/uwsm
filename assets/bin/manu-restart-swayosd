@@ -1,0 +1,3 @@
+#!/bin/bash
+
+manu-restart-app swayosd-server
