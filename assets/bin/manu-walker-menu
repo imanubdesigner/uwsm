@@ -151,7 +151,7 @@ show_install_menu() {
 
 show_update_menu() {
   case $(menu "󰚰  Update" "  󰣇  Pacman") in
-  *Pacman*) present_terminal manu-menu-update ;;
+  *Pacman*) present_terminal manu-update-system ;;
   *) show_main_menu ;;
   esac
 }

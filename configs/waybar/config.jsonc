@@ -80,7 +80,7 @@
 		"format": "󰣇",
 		"tooltip": false,
 		"on-click": "manu-launch-walker",
-    "on-click-right": "manu-new-menu"
+    "on-click-right": "manu-walker-menu"
 	},
 
 	/*--------------Pacman--------------------*/
@@ -88,8 +88,8 @@
 		"format": "󰅢  {}",
 		"interval": 3600,
     "exec": "manu-check-updates",
-    "on-click": "manu-update-system",
-    "on-click-right": "manu-check-updates",	
+    "on-click": "manu-launch-floating-terminal-with-presentation manu-update-system",
+    "on-click-right":  "manu-check-updates",	
 		"signal": 8,
 		"tooltip": false
 	},
