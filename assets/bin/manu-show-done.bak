@@ -1,9 +1,0 @@
-#!/bin/bash
-
-#    ┏┓┓┏┏┓┓ ┏  ┳┓┏┓┳┓┏┓
-#    ┗┓┣┫┃┃┃┃┃  ┃┃┃┃┃┃┣
-#    ┗┛┛┗┗┛┗┻┛  ┻┛┗┛┛┗┗┛
-#                by Manu
-
-echo
-gum spin --spinner "pulse" --title "$(echo -e '\033[32mDone!\033[0m Press any key to close...')" -- bash -c 'read -n 1 -s'
