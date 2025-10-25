@@ -13,8 +13,8 @@ show_shutdown_menu() {
   *Lock*) manu-lock-screen ;;
   *Suspend*) systemctl suspend ;;
   *Relaunch*) uwsm stop ;;
-  *Restart*) manu-state clear re*-required && systemctl reboot --no-wall ;;
-  *Shutdown*) manu-state clear re*-required && systemctl poweroff --no-wall ;;
+  *Restart*) manu-state clear re*-required && systemctl reboot ;;
+  *Shutdown*) manu-state clear re*-required && systemctl poweroff ;;
   *) exit 0 ;;
   esac
 }

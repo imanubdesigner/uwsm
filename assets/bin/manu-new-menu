@@ -191,10 +191,8 @@ show_system_menu() {
   *Lock*) manu-lock-screen ;;
   *Suspend*) systemctl suspend ;;
   *Relaunch*) uwsm stop ;;
-  *Restart*) systemctl reboot ;;
-  *Shutdown*) systemctl poweroff ;;
-  # *Restart*) manu-state clear re*-required && systemctl reboot --no-wall ;;
-  # *Shutdown*) manu-state clear re*-required && systemctl poweroff --no-wall ;;
+  *Restart*) manu-state clear re*-required && systemctl reboot ;;
+  *Shutdown*) manu-state clear re*-required && systemctl poweroff ;;
   *) back_to show_main_menu ;;
   esac
 }
