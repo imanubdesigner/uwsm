@@ -2,7 +2,7 @@
 Name=Neovim
 GenericName=Text Editor
 Comment=Edit text files
-Exec=/bin/bash -c "exec uwsm-app -- $TERMINAL --class=nvim --title=nvim -e nvim -- %F"
+Exec=manu-launch-editor %F
 Terminal=false
 Type=Application
 Keywords=Text;editor;
