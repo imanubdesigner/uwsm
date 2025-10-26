@@ -234,6 +234,7 @@
     "format-alt": "󰥔  {:%A, %d %B, %Y (%R)}",
     "interval": 1,
     "tooltip-format": "<tt>{calendar}</tt>",
+    "on-click-right": "manu-launch-floating-terminal-with-presentation manu-tz-select",
     "calendar": {
         "format": {
             "today": "<span color='#d699b6'><b>{}</b></span>"

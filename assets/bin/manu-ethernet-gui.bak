@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#    ┏┓┏┳┓┓┏┏┓┳┓┳┓┏┓┏┳┓  ┏┓┳┳┳
-#    ┣  ┃ ┣┫┣ ┣┫┃┃┣  ┃   ┃┓┃┃┃
-#    ┗┛ ┻ ┛┗┗┛┛┗┛┗┗┛ ┻   ┗┛┗┛┻
-#                      by Manu
-
-exec setsid uwsm-app -- "$TERMINAL" --class=TermNmtui -e nmtui "$@"
