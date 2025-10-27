@@ -38,18 +38,3 @@ their dedication and open design philosophy inspired me to build upon those foun
 | 🌄 [**Gowall**](https://github.com/Achno/gowall) | Minimal wallpaper changer integrated with HyprNest. |
 
 ---
-
-## 🧰 Post-Install Script
-
-To install all required packages and providers for HyprNest:
-
-```bash
-yay -S --sudoloop --noconfirm \
-walker-bin elephant-bin \
-elephant-bluetooth-bin elephant-calc-bin elephant-clipboard-bin \
-elephant-desktopapplications-bin elephant-files-bin elephant-menus-bin \
-elephant-providerlist-bin elephant-runner-bin elephant-symbols-bin \
-elephant-todo-bin elephant-unicode-bin elephant-websearch-bin \
-waypaper gowall qview kitty neovim bat bat-extras btop cava dunst fastfetch \
-fcitx5 fzf waybar yazi limine-mkinitcpio-hook limine-snapper-sync
-
