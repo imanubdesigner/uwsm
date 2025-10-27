@@ -23,9 +23,22 @@ else
   run_command "makepkg --noconfirm -si && cd .." "Build YAY (Must)/Breaks the script" "no" "no"
 fi
 
-# -------------------- Display manager & Network --------------------
-run_command "pacman -S --noconfirm networkmanager && systemctl enable NetworkManager.service" "Install and enable NetworkManager (Recommended)" "yes"
-run_command "pacman -S --noconfirm wpa_supplicant && systemctl enable wpa_supplicant.service" "Install and enable WPA supplicant" "yes"
+# -------------------- Network Configuration (iwd + systemd-networkd) --------------------
+
+# Install iwd (Wi-Fi daemon) and Impala (TUI frontend)
+run_command "pacman -S --noconfirm iwd impala" "Install iwd and Impala" "yes"
+
+# Create networkd directory and copy config file
+run_command "sudo mkdir -p /etc/systemd/network && sudo cp $BASE_DIR/assets/20-ethernet.network /etc/systemd/network/" "Create networkd directory and copy config file" "yes"
+
+# Prevent systemd from waiting for a network connection on boot
+run_command "sudo systemctl disable systemd-networkd-wait-online.service && sudo systemctl mask systemd-networkd-wait-online.service" "Prevent networkd wait-online timeout" "yes"
+
+# Enable all necessary services
+run_command "systemctl enable iwd.service systemd-networkd.service systemd-resolved.service" "Enable network services" "yes"
+
+# Configure DNS symlink
+run_command "sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf" "Configure DNS symlink" "no"
 
 # -------------------- Bluetooth --------------------
 run_command "pacman -S --noconfirm bluez bluez-utils bluetui && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"

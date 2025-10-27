@@ -209,7 +209,7 @@
 		"format-linked": "{ifname} (No IP)",
 		"format-wifi": "  {signalStrength}%",
 		"tooltip-format": " {ifname}\n {bandwidthDownBytes}   {bandwidthUpBytes}",
-		"on-click": "manu-ethernet-gui"
+		"on-click": "manu-launch-wifi"
 	},
 
 	/*------------Tray--------------------*/
