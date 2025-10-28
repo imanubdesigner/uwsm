@@ -15,10 +15,9 @@ run_command "yay -S --sudoloop --noconfirm --needed walker-bin elephant-bin elep
 # -------------------- Applications & mimeinfo --------------------
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/applications && \
-cp $BASE_DIR/assets/nvim.desktop /home/$SUDO_USER/.local/share/applications/ && \
-cp $BASE_DIR/assets/mimeinfo.cache /home/$SUDO_USER/.local/share/applications/ && \
+cp -r $BASE_DIR/assets/applications/* /home/$SUDO_USER/.local/share/applications/ && \
 chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/share/applications" \
-  "Create applications folder and copy Neovim desktop files from assets" "yes" "no"
+  "Copy all .desktop and mime files from assets/applications to local share" "yes" "no"
 
 # -------------------- Logo --------------------
 run_command "cp $BASE_DIR/assets/logo.txt /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/logo.txt" "Copy logo.txt" "yes" "no"
