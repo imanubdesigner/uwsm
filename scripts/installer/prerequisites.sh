@@ -31,11 +31,11 @@ run_command "pacman -S --noconfirm iwd impala" "Install iwd and Impala" "yes"
 # Create networkd directory and copy config file
 run_command "sudo mkdir -p /etc/systemd/network && sudo cp $BASE_DIR/assets/20-ethernet.network /etc/systemd/network/" "Create networkd directory and copy config file" "yes"
 
-# Prevent systemd from waiting for a network connection on boot
-run_command "sudo systemctl disable systemd-networkd-wait-online.service && sudo systemctl mask systemd-networkd-wait-online.service" "Prevent networkd wait-online timeout" "yes"
-
 # Enable all necessary services
 run_command "systemctl enable iwd.service systemd-networkd.service systemd-resolved.service" "Enable network services" "yes"
+
+# Prevent systemd from waiting for a network connection on boot
+run_command "sudo systemctl disable systemd-networkd-wait-online.service && sudo systemctl mask systemd-networkd-wait-online.service" "Prevent networkd wait-online timeout" "yes"
 
 # Configure DNS symlink
 run_command "sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf" "Configure DNS symlink" "no"
@@ -44,7 +44,7 @@ run_command "sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf"
 run_command "pacman -S --noconfirm bluez bluez-utils bluetui && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"
 
 # -------------------- Applications Installation --------------------
-run_command "pacman -S --noconfirm mlocate snap-pac xsel ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts pipewire wireplumber pipewire-audio sushi pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer gtk-engine-murrine gnome-themes-extra nautilus nautilus-python gtk4 glib2 gobject-introspection gum ufw fcitx5 fcitx5-gtk fcitx5-qt jdk21-openjdk inotify-tools sassc meson wget cargo swww python-pyquery luarocks curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi chromium obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions wiremix zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
+run_command "pacman -S --noconfirm lazygit mlocate snap-pac xsel ttf-nerd-fonts-symbols-mono woff2-font-awesome ttf-nerd-fonts-symbols noto-fonts ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome adobe-source-code-pro-fonts pipewire wireplumber pipewire-audio sushi pipewire-alsa pipewire-pulse pipewire-jack alsa-utils alsa-plugins pamixer gnome-themes-extra nautilus nautilus-python gtk4 glib2 gobject-introspection gum ufw fcitx5 fcitx5-gtk fcitx5-qt jdk21-openjdk inotify-tools sassc meson wget cargo swww python-pyquery luarocks curl spotify-launcher nodejs npm tree-sitter tree-sitter-cli cmake ninja bat bat-extras yazi chromium obsidian neovim discord mpv yt-dlp cava evince zsh zsh-completions wiremix zoxide fzf eza kitty imagemagick starship nano fastfetch ripgrep btop pacman-contrib tar p7zip unrar unzip libgsf libgepub libwebp libopenraw gvfs gvfs-mtp udisks2 xdg-user-dirs ffmpegthumbnailer ffmpeg poppler-glib librsvg qt6-imageformats qt5-imageformats" "Install complete application suite (browsers, media, development, system tools)" "yes"
 
 # -------------------- Configuration Files --------------------
 run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "yes" "no"
