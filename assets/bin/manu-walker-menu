@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓ ┏┏┓┓ ┓┏┓┏┓┳┓  ┳┳┓┏┓┳┓┳┳
+#    ┃┃┃┣┫┃ ┃┫ ┣ ┣┫  ┃┃┃┣ ┃┃┃┃
+#    ┗┻┛┛┗┗┛┛┗┛┗┛┛┗  ┛ ┗┗┛┛┗┗┛
+#                      by Manu
+
 export PATH="$HOME/.local/bin:$PATH"
 
 # Set to true when going directly to a submenu, so we can exit directly

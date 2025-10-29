@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┳┓┓ ┳┳┏┓┏┳┓┏┓┏┓┏┳┓┓┏
+#    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┣┫┃ ┃┃┣  ┃ ┃┃┃┃ ┃ ┣┫
+#    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┻┛┗┛┗┛┗┛ ┻ ┗┛┗┛ ┻ ┛┗
+#                                   by manu
+
 echo -e "Unblocking bluetooth...\n"
 rfkill unblock bluetooth
 rfkill list bluetooth

@@ -1,3 +1,8 @@
 #!/bin/bash
 
+#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┏┓┳┓┏┓┳┳┏┳┓
+#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣┫┣┫┃┃┃┃ ┃
+#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┛┗┻┛┗┛┗┛ ┻
+#                      by Manu
+
 exec setsid uwsm-app -- kitty --class=Manu -o font_size=12 -e bash -c 'fastfetch; read -n 1 -s'

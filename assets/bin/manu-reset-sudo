@@ -1,4 +1,9 @@
 #!/bin/bash
 
+#    ┳┓┏┓┏┓┏┓┏┳┓  ┏┓┳┳┳┓┏┓
+#    ┣┫┣ ┗┓┣  ┃   ┗┓┃┃┃┃┃┃
+#    ┛┗┗┛┗┛┗┛ ┻   ┗┛┗┛┻┛┗┛
+#                  by Manu
+
 # Resetting sudo lockout for user
 su -c "faillock --reset --user $USER"

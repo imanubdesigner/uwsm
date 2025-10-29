@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┳┓┏┓┏┓┏┓┓ ┏┓  ┳┳┓┓ ┏┓
+#     ┃ ┃┃┃┓┃┓┃ ┣   ┃┃┃┃ ┣
+#     ┻ ┗┛┗┛┗┛┗┛┗┛  ┻┻┛┗┛┗┛
+#                   by Manu
+
 if pgrep -x hypridle >/dev/null; then
   pkill -x hypridle
   notify-send "Stop locking computer when idle"
