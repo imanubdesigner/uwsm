@@ -5,7 +5,54 @@
 #     ┻ ┗┛  ┗┛┣┛┻┛┛┗ ┻ ┗┛
 #                 by Manu
 
-timezone=$(timedatectl list-timezones | gum filter --height 20 --header "Set timezone") || exit 1
+# ────────────────────────────────────────────────
+#  Catppuccin Mocha color palette
+# ────────────────────────────────────────────────
+base="#1e1e2e"
+text="#cdd6f4"
+mauve="#cba6f7"
+green="#a6e3a1"
+
+# ────────────────────────────────────────────────
+#  Nerd Font icons
+# ────────────────────────────────────────────────
+icon_time="󰥔"     # clock
+icon_done="󱑂"     # success check
+icon_restart=""  # restart/refresh
+icon_timezone="" # timezone symbol
+
+# ────────────────────────────────────────────────
+#  Set Gum theme via environment variables
+# ────────────────────────────────────────────────
+export GUM_FILTER_HEADER="$icon_time  Select timezone"
+export GUM_FILTER_PROMPT_FOREGROUND="$green"
+export GUM_FILTER_HEADER_FOREGROUND="$mauve"
+export GUM_FILTER_CURSOR_FOREGROUND="$mauve"
+export GUM_FILTER_SELECTED_FOREGROUND="$green"
+export GUM_FILTER_MATCH_FOREGROUND="$mauve"
+export GUM_FILTER_HEIGHT=20
+
+# ────────────────────────────────────────────────
+#  Select timezone with Gum
+# ────────────────────────────────────────────────
+timezone=$(timedatectl list-timezones | gum filter) || exit 1
+
+# ────────────────────────────────────────────────
+#  Apply timezone and restart Waybar
+# ────────────────────────────────────────────────
 sudo timedatectl set-timezone "$timezone"
-echo "Timezone is now set to $timezone"
+
+# Display messages using gum style (no borders)
+gum style \
+  --foreground "$green" \
+  --background "$base" \
+  --padding "0 1" \
+  "$icon_done  Timezone set to $icon_timezone  $timezone"
+
+gum style \
+  --foreground "$text" \
+  --background "$base" \
+  --padding "0 1" \
+  "$icon_restart  Restarting Waybar..."
+
 manu-restart-waybar
