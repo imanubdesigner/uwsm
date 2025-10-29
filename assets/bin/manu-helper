@@ -1,0 +1,181 @@
+#!/bin/bash
+
+#    ┓┏┏┓┓ ┏┓┏┓┳┓
+#    ┣┫┣ ┃ ┃┃┣ ┣┫
+#    ┛┗┗┛┗┛┣┛┗┛┛┗
+#         by Manu
+
+# ============================================
+# Script Helper (Catppuccin Mocha Edition)
+# Provides colorized and styled logging utilities for shell scripts.
+# ============================================
+
+# --- ANSI colors (approx. Catppuccin Mocha)
+_GREEN='\033[38;5;114m'    # A6E3A1
+_BLUE='\033[38;5;111m'     # 89B4FA
+_YELLOW='\033[38;5;229m'   # F9E2AF
+_RED='\033[38;5;204m'      # F38BA8
+_CYAN='\033[38;5;79m'      # 94E2D5
+_LAVENDER='\033[38;5;147m' # B4BEFE
+_TEXT='\033[38;5;189m'     # CDD6F4
+_SUBTEXT='\033[38;5;250m'  # BAC2DE
+_NC='\033[0m'
+
+# --- Nerd Font icons (minimal, no emoji)
+_ICON_STEP=""
+_ICON_INFO=""
+_ICON_SUCCESS=""
+_ICON_ERROR=""
+_ICON_ARROW=""
+_ICON_SPIN=""
+
+# --- Check if gum exists
+_has_gum() {
+  command -v gum &>/dev/null
+}
+
+is_installed() {
+  pacman -Q "$1" &>/dev/null
+}
+
+ensure_gum() {
+  if ! is_installed "gum"; then
+    echo -e "${_YELLOW}Installing gum for better UI...${_NC}"
+    sudo pacman -S --noconfirm gum
+  fi
+}
+
+# --- HEADER
+log_header() {
+  local text="$1"
+  if _has_gum; then
+    echo
+    gum style \
+      --foreground "#B4BEFE" \
+      --border double \
+      --border-foreground "#89B4FA" \
+      --background "#1E1E2E" \
+      --padding "0 2" \
+      --margin "1 0" \
+      --width 50 \
+      --align center \
+      "$text"
+    echo
+  else
+    echo -e "\n${_BLUE}════════════════════════════════════════${_NC}"
+    echo -e "${_LAVENDER}  $text${_NC}"
+    echo -e "${_BLUE}════════════════════════════════════════${_NC}\n"
+  fi
+}
+
+# --- STEP
+log_step() {
+  local text="$1"
+  if _has_gum; then
+    gum style --foreground "#B4BEFE" --bold "$_ICON_STEP $text"
+  else
+    echo -e "${_LAVENDER}$_ICON_STEP${_NC} $text"
+  fi
+}
+
+# --- INFO
+log_info() {
+  local text="$1"
+  if _has_gum; then
+    gum style --foreground "#89B4FA" "  $_ICON_INFO $text"
+  else
+    echo -e "  ${_BLUE}$_ICON_INFO${_NC} $text"
+  fi
+}
+
+# --- SUCCESS
+log_success() {
+  local text="$1"
+  if _has_gum; then
+    gum style --foreground "#A6E3A1" "  $_ICON_SUCCESS $text"
+  else
+    echo -e "  ${_GREEN}$_ICON_SUCCESS${_NC} $text"
+  fi
+}
+
+# --- ERROR
+log_error() {
+  local text="$1"
+  if _has_gum; then
+    gum style --foreground "#F38BA8" --bold "  $_ICON_ERROR $text"
+  else
+    echo -e "  ${_RED}$_ICON_ERROR${_NC} $text"
+  fi
+}
+
+# --- DETAIL
+log_detail() {
+  local text="$1"
+  if _has_gum; then
+    gum style --foreground "#BAC2DE" "    $_ICON_ARROW $text"
+  else
+    echo -e "    ${_SUBTEXT}$_ICON_ARROW${_NC} $text"
+  fi
+}
+
+# --- SPINNER
+spinner() {
+  local title="$1"
+  shift
+  if _has_gum; then
+    gum spin --spinner dot --title "$title" --show-error -- "$@"
+  else
+    echo -e "${_CYAN}$_ICON_SPIN${_NC} $title"
+    "$@"
+  fi
+}
+
+# --- ASK YES/NO
+ask_yes_no() {
+  local prompt="$1"
+  if _has_gum; then
+    gum confirm "$prompt" && return 0 || return 1
+  else
+    while true; do
+      read -p "$prompt [y/n]: " yn
+      case $yn in
+      [Yy]*) return 0 ;;
+      [Nn]*) return 1 ;;
+      *) echo "Please answer yes or no." ;;
+      esac
+    done
+  fi
+}
+
+# --- PROGRESS
+log_progress() {
+  local text="$1"
+  local count="$2"
+  if _has_gum; then
+    gum style --foreground "#94E2D5" "  [$count] $text"
+  else
+    echo -e "  ${_CYAN}[$count]${_NC} $text"
+  fi
+}
+
+# --- HARDWARE DETECTION
+detect_hardware_type() {
+  if ls /sys/class/power_supply/BAT* >/dev/null 2>&1 || [ -d /sys/class/power_supply/battery ]; then
+    echo "laptop"
+  else
+    echo "desktop"
+  fi
+}
+
+has_nvidia_gpu() {
+  lspci | grep -i nvidia &>/dev/null
+}
+
+remove_path() {
+  local target="$1"
+  if [ -L "$target" ] && [ ! -e "$target" ]; then
+    rm -f "$target"
+  elif [ -e "$target" ]; then
+    rm -rf "$target"
+  fi
+}
