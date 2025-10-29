@@ -221,7 +221,7 @@
 /*------------Screen Indicator--------------------*/
 
 "custom/screenrecording-indicator": {
-    "on-click": "manu-wf-record",
+    "on-click": "manu-cmd-screenrecord",
     "exec": "manu-screen-recording",
     "signal": 8,
     "return-type": "json"

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+export PATH="$HOME/.local/bin:$PATH"
+
+# Set to true when going directly to a submenu, so we can exit directly
+BACK_TO_EXIT=false
+
 back_to() {
   local parent_menu="$1"
 
@@ -28,10 +33,7 @@ menu() {
     fi
   fi
 
-  echo -e "$options" | manu-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null &
-  disown
-
-  # echo -e "$options" | manu-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null
+  echo -e "$options" | manu-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null
 }
 
 terminal() {
@@ -115,16 +117,11 @@ show_screenshot_menu() {
 
 show_screenrecord_menu() {
   case $(menu "󰍹  Screen Record" \
-    "  󰩬  Region – No audio\n  󰩬  Region – Mic\n  󰩬  Region – System Audio\n  󰩬  Region – Mic + System\n    Fullscreen – No audio\n    Fullscreen – Mic\n    Fullscreen – System Audio\n    Fullscreen – Mic + System") in
-
-  *"Region – No audio"*) manu-wf-record region none ;;
-  *"Region – Mic"*) manu-wf-record region mic ;;
-  *"Region – System"*) manu-wf-record region system ;;
-  *"Region – Mic + System"*) manu-wf-record region mic system ;;
-  *"Fullscreen – No audio"*) manu-wf-record output none ;;
-  *"Fullscreen – Mic"*) manu-wf-record output mic ;;
-  *"Fullscreen – System"*) manu-wf-record output system ;;
-  *"Fullscreen – Mic + System"*) manu-wf-record output mic system ;;
+    "  󰩬  Region\n  󰩬  Region + Audio\n    Fullscreen\n    Fullscreen + Audio") in
+  *"Region + Audio"*) manu-cmd-screenrecord region --with-audio ;;
+  *Region*) manu-cmd-screenrecord region ;;
+  *"Fullscreen + Audio"*) manu-cmd-screenrecord output --with-audio ;;
+  *Fullscreen*) manu-cmd-screenrecord output ;;
   *) show_capture_menu ;;
   esac
 }
