@@ -79,7 +79,7 @@ aur_install_and_launch() {
 }
 
 show_learn_menu() {
-  case $(menu "  Learn" "    Hyprland\n    Arch\n    Neovim\n    Bash\n    Yazi") in
+  case $(menu "  Learn" "    Hyprland\n    Arch\n    Neovim\n    Bash\n  󰇥  Yazi") in
   *Hyprland*) manu-launch-webapp "https://wiki.hypr.land/" ;;
   *Arch*) manu-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
   *Bash*) manu-launch-webapp "https://devhints.io/bash" ;;
