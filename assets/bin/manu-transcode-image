@@ -184,7 +184,6 @@ main() {
   "Transcode") do_transcode "$input_file" ;;
   esac
 
-  #manu-show-done
 }
 
 main "$@"
