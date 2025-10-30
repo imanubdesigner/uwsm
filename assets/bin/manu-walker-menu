@@ -198,6 +198,16 @@ show_restart_hardware_menu() {
   esac
 }
 
+show_tools_menu() {
+  case $(menu "  Tools" " 󰦗  Media Downloader\n  󱊞  ISO to USB\n  󰣌  Image Converter\n    Video Converter") in
+  *"Media Downloader"*) present_terminal manu-media-download ;;
+  *"ISO to USB"*) present_terminal manu-write-iso ;;
+  *"Image Converter"*) present_terminal manu-transcode-image ;;
+  *"Video Converter"*) present_terminal manu-transcode-video ;;
+  *) show_main_menu ;;
+  esac
+}
+
 show_system_menu() {
   case $(menu "󰍹  System" "  󰌾  Lock\n  󰒲  Suspend\n    Relaunch\n  󰜉  Restart\n    Shutdown") in
   *Lock*) manu-lock-screen ;;
@@ -211,7 +221,7 @@ show_system_menu() {
 
 show_main_menu() {
   go_to_menu "$(menu "󰕰  Go" \
-    "  󰵆  App\n    Learn\n    Trigger\n    Install\n    Remove\n  󰚰  Update\n    Restart\n  󰋽  About\n  󰍹  System")"
+    "  󰵆  App\n    Learn\n    Trigger\n    Install\n    Remove\n  󰚰  Update\n    Restart\n    Tools\n  󰋽  About\n  󰍹  System")"
 }
 
 go_to_menu() {
@@ -226,6 +236,7 @@ go_to_menu() {
   *remove*) show_remove_menu ;;
   *update*) show_update_menu ;;
   *restart*) show_restart_menu ;;
+  *tools*) show_tools_menu ;;
   *about*) manu-launch-about ;;
   *system*) show_system_menu ;;
   esac
