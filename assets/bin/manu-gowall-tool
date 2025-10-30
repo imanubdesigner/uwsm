@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+
+#    ┏┓┏┓┓ ┏┏┓┓ ┓   ┏┳┓┏┓┏┓┓
+#    ┃┓┃┃┃┃┃┣┫┃ ┃    ┃ ┃┃┃┃┃
+#    ┗┛┗┛┗┻┛┛┗┗┛┗┛   ┻ ┗┛┗┛┗┛
+#                     by Manu
+
+# --- Load manu-helper with safety check
+HELPER="$HOME/.local/bin/manu-helper"
+ICON_ERROR=""
+ICON_INFO=""
+
+if [[ -f "$HELPER" ]]; then
+  source "$HELPER"
+else
+  echo -e "${ICON_ERROR}  Helper not found at: $HELPER"
+  echo -e "${ICON_INFO}  Please make sure manu-helper is installed in ~/.local/bin"
+  exit 1
+fi
+
+clear
+log_header "GoWall Manager"
+
+# --- Icons
+ICON_IMAGE=""
+ICON_EFFECTS=""
+ICON_COLOR=""
+ICON_TOOLS=""
+ICON_EXIT=""
+
+# --- Function to get input file
+get_input_file() {
+  log_step "Select input file" >&2
+
+  local method=$(gum choose "Browse with fzf" "Paste file path" --header "How would you like to select the input file?") || exit 1
+  local input_file
+  if [[ "$method" == "Browse with fzf" ]]; then
+    input_file=$(find "$HOME" -type f \( \
+      -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o \
+      -iname "*.webp" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.avif" \) \
+      ! -path "*/.*" ! -path "*/.cache/*" ! -path "*/.local/share/Trash/*" 2>/dev/null |
+      sed "s|^$HOME|~|" | sort |
+      fzf --prompt="Select image file: " --height=80% --color='pointer:green,marker:green' |
+      sed "s|^~|$HOME|")
+  else
+    input_file=$(gum input --placeholder "Enter full path to image file")
+  fi
+
+  if [[ -z "$input_file" ]]; then
+    log_error "No file selected or provided" >&2
+    exit 1
+  fi
+  if [[ ! -f "$input_file" ]]; then
+    log_error "File not found: $input_file" >&2
+    exit 1
+  fi
+
+  log_success "Selected: $input_file" >&2
+  echo "$input_file"
+}
+
+# --- Conversion submenu
+do_convert() {
+  local input_file="$1"
+  log_step "Select conversion type"
+  local conv=$(gum choose \
+    "Convert to Theme" \
+    "Convert Icon Theme" \
+    "Image to Pixel" \
+    "Format Change" \
+    --header "Select a conversion") || exit 1
+
+  case "$conv" in
+  "Convert to Theme")
+    local theme=$(gum input --placeholder "Theme name (e.g. catppuccin, nord...)")
+    [[ -z "$theme" ]] && log_error "No theme entered" && exit 1
+    spinner "Converting to theme..." gowall convert "$input_file" -t "$theme"
+    ;;
+  "Convert Icon Theme")
+    local theme=$(gum input --placeholder "Icon theme name")
+    spinner "Applying icon theme..." gowall convertIconTheme "$input_file" -t "$theme"
+    ;;
+  "Image to Pixel")
+    spinner "Pixelating image..." gowall imgToPixel "$input_file"
+    ;;
+  "Format Change")
+    local format=$(gum choose "jpg" "png" "webp" "avif" --header "Select output format") || exit 1
+    spinner "Changing format..." gowall format "$input_file" -f "$format"
+    ;;
+  esac
+  log_success "Conversion complete!"
+}
+
+# --- Color tools submenu
+do_color_tools() {
+  local input_file="$1"
+  local action=$(gum choose \
+    "Extract Color Palette" \
+    "Replace Color" \
+    "Invert Colors" \
+    "Draw Border" \
+    --header "Select color tool") || exit 1
+
+  case "$action" in
+  "Extract Color Palette")
+    spinner "Extracting palette..." gowall extractColorPalette "$input_file"
+    ;;
+  "Replace Color")
+    local color=$(gum input --placeholder "Color to replace (#hex or name)")
+    local repl=$(gum input --placeholder "Replacement color")
+    spinner "Replacing color..." gowall replaceColor "$input_file" -c "$color" -r "$repl"
+    ;;
+  "Invert Colors")
+    spinner "Inverting colors..." gowall invert "$input_file"
+    ;;
+  "Draw Border")
+    local color=$(gum input --placeholder "Border color (#hex)")
+    local thickness=$(gum input --placeholder "Thickness (e.g. 5)")
+    spinner "Drawing border..." gowall draw "$input_file" -c "$color" -b "$thickness"
+    ;;
+  esac
+  log_success "Color operation complete!"
+}
+
+# --- Effects submenu
+do_effects() {
+  local input_file="$1"
+  local effect=$(gum choose \
+    "Mirror / Flip" \
+    "Brightness" \
+    "Grayscale" \
+    "Remove Background" \
+    "Upscale" \
+    "Compress" \
+    "Create GIF" \
+    --header "Select an effect or processing method") || exit 1
+
+  case "$effect" in
+  "Mirror / Flip")
+    local type=$(gum choose "mirror" "flip" --header "Select orientation")
+    spinner "Applying mirror/flip..." gowall "$type" "$input_file"
+    ;;
+  "Brightness")
+    local val=$(gum input --placeholder "Brightness value (-100 to 100)")
+    spinner "Adjusting brightness..." gowall brightness "$input_file" -v "$val"
+    ;;
+  "Grayscale")
+    spinner "Applying grayscale..." gowall grayscale "$input_file"
+    ;;
+  "Remove Background")
+    spinner "Removing background..." gowall removeBackground "$input_file"
+    ;;
+  "Upscale")
+    spinner "Upscaling image..." gowall imageUpscaling "$input_file"
+    ;;
+  "Compress")
+    spinner "Compressing image..." gowall compression "$input_file"
+    ;;
+  "Create GIF")
+    local list=$(gum input --placeholder "Comma-separated file paths")
+    spinner "Creating GIF..." gowall gif -b "$list"
+    ;;
+  esac
+  log_success "Effect applied successfully!"
+}
+
+# --- Main menu
+main() {
+  local operation=$(gum choose \
+    "$ICON_IMAGE  Conversions" \
+    "$ICON_COLOR  Color Tools" \
+    "$ICON_EFFECTS  Effects & Filters" \
+    "$ICON_EXIT  Exit" \
+    --header "GoWall Operations") || exit 1
+
+  [[ "$operation" == *Exit* ]] && log_info "Goodbye!" && exit 0
+
+  local input_file=$(get_input_file)
+  echo
+
+  case "$operation" in
+  *Conversion*) do_convert "$input_file" ;;
+  *Color*) do_color_tools "$input_file" ;;
+  *Effect*) do_effects "$input_file" ;;
+  esac
+}
+
+main "$@"
