@@ -142,7 +142,7 @@ show_toggle_menu() {
 }
 
 show_install_menu() {
-  case $(menu "  Install" "  󰣇  Package\n  󰂓  AUR\n  󰖟  Web App\n  󰞷  TUI\n    Chromium") in
+  case $(menu "  Install" "  󰣇  Package\n  󰂓  AUR\n  󰖟  Web App\n  󰞷  TUI\n    Chromium") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
