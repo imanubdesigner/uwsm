@@ -1,0 +1,729 @@
+#!/usr/bin/env bash
+# gowall-interactive.sh - Interactive Bash script for the gowall tool.
+# Includes all commands and subcommands (except help and completion) with a textual interface via gum.
+# Requires: bash, gowall >= 0.2.3, gum >= 0.17.0. (Optional: fzf, chafa, imgcat for advanced features)
+
+# Check for required commands
+if ! command -v gowall >/dev/null 2>&1; then
+  echo "Error: 'gowall' not found. Make sure it is installed." >&2
+  exit 1
+fi
+if ! command -v gum >/dev/null 2>&1; then
+  echo "Error: 'gum' not found. Install gum (>= 0.17.0) before running this script." >&2
+  exit 1
+fi
+
+# Check minimum gowall version
+gowall_version=$(gowall -v 2>/dev/null | sed -E 's/[^0-9.]*//g')
+min_version="0.2.3"
+version_lt() { [ "$(printf '%s\n%s\n' "$1" "$2" | sort -V | head -n1)" != "$2" ]; }
+if [ -n "$gowall_version" ] && version_lt "$gowall_version" "$min_version"; then
+  echo "Warning: gowall version $gowall_version detected, it is recommended to update to $min_version." >&2
+fi
+
+# Set Catppuccin Mocha colors for gum interface
+MOCHA_TEXT="#cdd6f4"    # Primary text
+MOCHA_SUBTEXT="#9399b2" # Secondary text (e.g., placeholders)
+MOCHA_ACCENT="#cba6f7"  # Accent color (Mauve)
+MOCHA_GREEN="#a6e3a1"   # Green for success messages
+MOCHA_RED="#f38ba8"     # Red for error messages
+export GUM_INPUT_PROMPT_FOREGROUND="$MOCHA_TEXT"
+export GUM_INPUT_CURSOR_FOREGROUND="$MOCHA_ACCENT"
+export GUM_INPUT_PLACEHOLDER_FOREGROUND="$MOCHA_SUBTEXT"
+export GUM_CHOOSE_CURSOR_FOREGROUND="$MOCHA_ACCENT"
+export GUM_CHOOSE_SELECTED_FOREGROUND="$MOCHA_ACCENT"
+export GUM_CHOOSE_UNSELECTED_FOREGROUND="$MOCHA_TEXT"
+export GUM_CHOOSE_SELECTED_BACKGROUND="#45475a" # Highlight selection
+export GUM_CONFIRM_PROMPT_FOREGROUND="$MOCHA_TEXT"
+export GUM_CONFIRM_SELECTED_FOREGROUND="$MOCHA_ACCENT"
+export GUM_CONFIRM_UNSELECTED_FOREGROUND="$MOCHA_TEXT"
+export GUM_FILTER_PROMPT_FOREGROUND="$MOCHA_TEXT"
+export GUM_FILTER_CURSOR_FOREGROUND="$MOCHA_ACCENT"
+export GUM_FILTER_SELECTED_FOREGROUND="$MOCHA_ACCENT"
+export GUM_FILTER_UNSELECTED_FOREGROUND="$MOCHA_TEXT"
+export GUM_FILTER_PLACEHOLDER_FOREGROUND="$MOCHA_SUBTEXT"
+export GUM_FILE_CURSOR_FOREGROUND="$MOCHA_ACCENT"
+export GUM_FILE_SELECTED_FOREGROUND="$MOCHA_ACCENT"
+export GUM_FILE_UNSELECTED_FOREGROUND="$MOCHA_TEXT"
+
+# Load theme list (for convert and list menus)
+theme_list=$(gowall list 2>/dev/null)
+if [ -z "$theme_list" ]; then
+  theme_list="Catppuccin\nDracula\nEverforest\nGruvbox\nNord\nOnedark\nSolarized\nTokyo-night\n..." # basic fallback
+fi
+
+# File selection function (manual or filesystem)
+choose_file() {
+  local prompt="$1"
+  local method=$(printf "%s\n%s\n" "  Enter path manually" "  Browse filesystem" | gum choose --header "$prompt")
+  local file_path=""
+  if [[ $method == *Enter* ]]; then
+    file_path=$(gum input --placeholder "Enter file path")
+    if [ -z "$file_path" ]; then
+      echo ""
+      return 1
+    fi
+  else
+    if command -v fzf >/dev/null 2>&1; then
+      file_path=$(find ~ -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.svg" -o -iname "*.ico" -o -iname "*.gif" -o -iname "*.pdf" \) -print |
+        fzf --height 50% --prompt="Select file: ")
+    else
+      file_path=$(gum file ~)
+    fi
+
+    if [ -z "$file_path" ]; then
+      echo ""
+      return 1
+    fi
+  fi
+  file_path=$(realpath -m "$file_path")
+  if [ ! -f "$file_path" ]; then
+    gum confirm "The file '$file_path' does not exist. Continue?" || {
+      echo ""
+      return 1
+    }
+  fi
+  echo "$file_path"
+}
+
+# Directory selection function (manual or filesystem)
+choose_directory() {
+  local prompt="$1"
+  local method=$(printf "%s\n%s\n" "  Enter path manually" "  Browse filesystem" | gum choose --header "$prompt")
+  local dir_path=""
+  if [[ $method == *Enter* ]]; then
+    dir_path=$(gum input --placeholder "Enter directory path")
+    if [ -z "$dir_path" ]; then
+      echo ""
+      return 1
+    fi
+  else
+    if command -v fzf >/dev/null 2>&1; then
+      dir_path=$(find ~ -type d 2>/dev/null | fzf --height 40% --prompt="Select directory: ")
+    else
+      dir_path=$(gum file --directory ~)
+    fi
+    if [ -z "$dir_path" ]; then
+      echo ""
+      return 1
+    fi
+  fi
+  dir_path=$(realpath -m "$dir_path")
+  if [ ! -d "$dir_path" ]; then
+    if gum confirm "The directory '$dir_path' does not exist. Create it?"; then
+      mkdir -p "$dir_path" || {
+        gum format "**Error:** unable to create directory."
+        return 1
+      }
+    else
+      echo ""
+      return 1
+    fi
+  fi
+  echo "$dir_path"
+}
+
+set -o pipefail # capture errors in pipelines
+
+# Main menu loop
+while true; do
+  choice=$(printf "%s\n" \
+    " Convert image (theme/colors)" \
+    " Pixel art (pixelate)" \
+    " Draw on image" \
+    " Remove background" \
+    " Image effects" \
+    " Create GIF from images" \
+    " Upscale image (AI)" \
+    " Compress image" \
+    " Extract color palette" \
+    " Invert image colors" \
+    " List available themes" \
+    " OCR (extract text)" \
+    " Wallpaper of the day" \
+    " Exit" | gum choose --height 14 --header "Choose a gowall command:")
+  case "$choice" in
+  ""*) # Convert
+    mode=$(printf "%s\n%s\n%s\n" \
+      " Convert with color theme" \
+      " Replace a color" \
+      " Change image format" | gum choose --header "Conversion operation:")
+    if [[ $mode == *theme* ]]; then
+      input=$(choose_file "Select the image to convert:") || continue
+      theme=$(echo -e "$theme_list" | gum choose --header "Select the destination theme:")
+      out_opt=""
+      if gum confirm "Specify output (file or folder)?"; then
+        out_path=$(gum input --placeholder "Output path (optional)")
+        if [ -n "$out_path" ]; then
+          out_path=$(realpath -m "$out_path")
+          if [[ "$out_path" =~ \.(png|jpg|jpeg|webp)$ ]]; then
+            mkdir -p "$(dirname "$out_path")"
+          else
+            mkdir -p "$out_path"
+          fi
+          out_opt="--output $out_path"
+        fi
+      fi
+      output_msg=""
+      if output_msg=$(gowall convert "$input" -t "$theme" $out_opt 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Conversion completed successfully." | cat
+        if [ -n "$out_opt" ]; then
+          out_target=${out_opt#--output }
+          gum format "_Image saved in_ \`$out_target\`"
+        fi
+      else
+        gum style --foreground "$MOCHA_RED" " Error during conversion: $output_msg" | cat
+      fi
+    elif [[ $mode == *Replace* ]]; then
+      input=$(choose_file "Select the image to modify:") || continue
+      orig_col=$(gum input --placeholder "Color to replace (#HEX)")
+      new_col=$(gum input --placeholder "New color (#HEX)")
+      if [ -z "$orig_col" ] || [ -z "$new_col" ]; then
+        gum format "**Error:** please specify both colors."
+        continue
+      fi
+      thresh=$(gum input --placeholder "Threshold (0-100, optional)")
+      replace_opt="$orig_col,$new_col"
+      [ -n "$thresh" ] && replace_opt+=",$thresh"
+      out_opt=""
+      if gum confirm "Specify output (file/folder)?"; then
+        out_path=$(gum input --placeholder "Output path (optional)")
+        if [ -n "$out_path" ]; then
+          out_path=$(realpath -m "$out_path")
+          if [[ "$out_path" =~ \.(png|jpg|jpeg|webp)$ ]]; then
+            mkdir -p "$(dirname "$out_path")"
+          else
+            mkdir -p "$out_path"
+          fi
+          out_opt="--output $out_path"
+        fi
+      fi
+      output_msg=""
+      if output_msg=$(gowall convert "$input" -r "$replace_opt" $out_opt 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Color replaced successfully." | cat
+        [ -n "$out_opt" ] && gum format "_Image saved in_ \`${out_opt#--output }\`"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+      fi
+    else
+      input=$(choose_file "Select the image to convert:") || continue
+      format=$(printf "%s\n%s\n%s\n%s\n" "png" "jpg" "jpeg" "webp" | gum choose --header "Convert to format:")
+      out_opt=""
+      if gum confirm "Specify output (file or folder)?"; then
+        out_path=$(gum input --placeholder "Output path (e.g. ~/image.$format)")
+        if [ -n "$out_path" ]; then
+          out_path=$(realpath -m "$out_path")
+          if [[ "$out_path" =~ \.$format$ ]]; then
+            mkdir -p "$(dirname "$out_path")"
+          else
+            mkdir -p "$out_path"
+          fi
+          out_opt="--output $out_path"
+        fi
+      fi
+      output_msg=""
+      if output_msg=$(gowall convert "$input" -f "$format" $out_opt 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Format converted to $format." | cat
+        [ -n "$out_opt" ] && gum format "_Image saved in_ \`${out_opt#--output }\`"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+      fi
+    fi
+    ;;
+  ""*) # Pixelate
+    input_mode=$(printf "%s\n%s\n%s\n" "  Single image" "  Batch of images" "  Entire directory" | gum choose --header "Pixel art on:")
+    pixel_args=""
+    case $input_mode in
+    *Single*)
+      file=$(choose_file "Select the image to pixelate:") || continue
+      pixel_args="$file"
+      ;;
+    *Batch*)
+      base_dir=$(choose_directory "Select the folder with the images:") || continue
+      file_list=$(find "$base_dir" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) -printf "%f\n")
+      [ -z "$file_list" ] && gum format "**No images found** in $base_dir" && continue
+      selected=$(echo "$file_list" | gum filter --no-limit --placeholder "Select images (Tab to toggle selection)")
+      [ -z "$selected" ] && continue
+      pixel_args="--batch $(echo "$selected" | paste -sd, -)"
+      pixel_args=$(sed -E "s@([^,]+)@$base_dir/\1@g" <<<"$pixel_args")
+      ;;
+    *Directory*)
+      dir=$(choose_directory "Select the directory to process:") || continue
+      pixel_args="--dir $dir"
+      ;;
+    esac
+    scale=$(gum input --value "15" --placeholder "Pixel scale (1-25, 1=very pixelated)")
+    [ -z "$scale" ] && scale="15"
+    out_opt=""
+    if gum confirm "Specify output folder?"; then
+      out_dir=$(choose_directory "Select output folder:") || continue
+      out_opt="--output $out_dir"
+    fi
+    output_msg=""
+    if output_msg=$(gowall pixelate $pixel_args -s "$scale" $out_opt 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " Pixel art effect applied successfully." | cat
+      [ -n "$out_opt" ] && gum format "_Images saved in_ \`${out_opt#--output }\`"
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # Draw (border or grid)
+    draw_mode=$(printf "%s\n%s\n" " Draw border" " Draw grid" | gum choose --header "Drawing operation:")
+    if [[ $draw_mode == *border* ]]; then
+      input=$(choose_file "Select the image on which to draw the border:") || continue
+      color=$(gum input --placeholder "Border color (default #FFFFFF)" --value "#FFFFFF")
+      [ -z "$color" ] && color="#FFFFFF"
+      thickness=$(gum input --placeholder "Border thickness px (default 5)" --value "5")
+      [ -z "$thickness" ] && thickness="5"
+      out_opt=""
+      if gum confirm "Specify output (file/folder)?"; then
+        out_path=$(gum input --placeholder "Output path (optional)")
+        if [ -n "$out_path" ]; then
+          out_path=$(realpath -m "$out_path")
+          mkdir -p "${out_path%/*}"
+          out_opt="--output $out_path"
+        fi
+      fi
+      output_msg=""
+      if output_msg=$(gowall draw border "$input" -c "$color" -b "$thickness" $out_opt 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Border drawn successfully." | cat
+        [ -n "$out_opt" ] && gum format "_Image saved in_ \`${out_opt#--output }\`"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+      fi
+    else
+      input=$(choose_file "Select the image on which to draw the grid:") || continue
+      custom_grid=false
+      if gum confirm "Customize grid parameters?"; then
+        custom_grid=true
+      fi
+      grid_color=""
+      grid_size=""
+      grid_thickness=""
+      if [ "$custom_grid" = true ]; then
+        grid_color=$(gum input --placeholder "Grid color (#HEX, leave blank for default)")
+        grid_size=$(gum input --placeholder "Cell size px (leave blank for default)")
+        grid_thickness=$(gum input --placeholder "Line thickness px (leave blank for default)")
+      fi
+      mask_flag=""
+      if gum confirm "Apply grid only to transparent background?"; then
+        mask_flag="-m true"
+      fi
+      out_opt=""
+      if gum confirm "Specify output (file/folder)?"; then
+        out_path=$(gum input --placeholder "Output path (optional)")
+        if [ -n "$out_path" ]; then
+          out_path=$(realpath -m "$out_path")
+          mkdir -p "${out_path%/*}"
+          out_opt="--output $out_path"
+        fi
+      fi
+      grid_flags=""
+      [ -n "$grid_color" ] && grid_flags+=" -c $grid_color"
+      [ -n "$grid_size" ] && grid_flags+=" -s $grid_size"
+      [ -n "$grid_thickness" ] && grid_flags+=" -t $grid_thickness"
+      [ -n "$mask_flag" ] && grid_flags+=" $mask_flag"
+      output_msg=""
+      if output_msg=$(gowall draw grid "$input" $grid_flags $out_opt 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Grid drawn successfully." | cat
+        [ -n "$out_opt" ] && gum format "_Image saved in_ \`${out_opt#--output }\`"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+      fi
+    fi
+    ;;
+  " Remove"*) # Remove background (bg)
+    input_mode=$(printf "%s\n%s\n%s\n" "  Single image" "  Batch of images" "  Entire directory" | gum choose --header "Remove background from:")
+    bg_args=""
+    case $input_mode in
+    *Single*)
+      file=$(choose_file "Select the image:") || continue
+      bg_args="$file"
+      ;;
+    *Batch*)
+      base_dir=$(choose_directory "Select the folder with the images:") || continue
+      file_list=$(find "$base_dir" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) -printf "%f\n")
+      [ -z "$file_list" ] && gum format "**No images found** in $base_dir" && continue
+      selected=$(echo "$file_list" | gum filter --no-limit --placeholder "Select images (Tab to toggle selection)")
+      [ -z "$selected" ] && continue
+      bg_args="--batch $(echo "$selected" | paste -sd, -)"
+      bg_args=$(sed -E "s@([^,]+)@$base_dir/\1@g" <<<"$bg_args")
+      ;;
+    *Directory*)
+      dir=$(choose_directory "Select the directory to process:") || continue
+      bg_args="--dir $dir"
+      ;;
+    esac
+    adv_flags=""
+    if gum confirm "Adjust advanced removal parameters?"; then
+      conv=$(gum input --placeholder "Convergence (c) [default 0.001]")
+      iter=$(gum input --placeholder "Iterations (i) [default 100]")
+      gor=$(gum input --placeholder "Goroutines (r) [default 4]")
+      samp=$(gum input --placeholder "Sample rate (s) [0-1, default 0.5]")
+      [ -n "$conv" ] && adv_flags+=" -c $conv"
+      [ -n "$iter" ] && adv_flags+=" -i $iter"
+      [ -n "$gor" ] && adv_flags+=" -r $gor"
+      [ -n "$samp" ] && adv_flags+=" -s $samp"
+    fi
+    out_opt=""
+    if gum confirm "Specify output folder?"; then
+      out_dir=$(choose_directory "Select output folder:") || continue
+      out_opt="--output $out_dir"
+    fi
+    output_msg=""
+    if output_msg=$(gowall bg $bg_args $adv_flags $out_opt 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " Background removed successfully." | cat
+      [ -n "$out_opt" ] && gum format "_Images saved in_ \`${out_opt#--output }\`"
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # Effects
+    effect=$(printf "%s\n%s\n%s\n%s\n" "  Horizontal flip" " Mirror (reflection)" " Brightness" " Grayscale" | gum choose --header "Choose an effect:")
+    case $effect in
+    *Horizontal*) eff_sub="flip" ;;
+    *Mirror*) eff_sub="mirror" ;;
+    *Brightness*) eff_sub="br" ;;
+    *Grayscale*) eff_sub="grayscale" ;;
+    esac
+    input_mode=$(printf "%s\n%s\n%s\n" "  Single image" "  Batch of images" "  Entire directory" | gum choose --header "Apply effect to:")
+    eff_args=""
+    case $input_mode in
+    *Single*)
+      file=$(choose_file "Select the image:") || continue
+      eff_args="$file"
+      ;;
+    *Batch*)
+      base_dir=$(choose_directory "Select the folder with the images:") || continue
+      file_list=$(find "$base_dir" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) -printf "%f\n")
+      [ -z "$file_list" ] && gum format "**No images found** in $base_dir" && continue
+      selected=$(echo "$file_list" | gum filter --no-limit --placeholder "Select images (Tab to toggle selection)")
+      [ -z "$selected" ] && continue
+      eff_args="--batch $(echo "$selected" | paste -sd, -)"
+      eff_args=$(sed -E "s@([^,]+)@$base_dir/\1@g" <<<"$eff_args")
+      ;;
+    *Directory*)
+      dir=$(choose_directory "Select the directory:") || continue
+      eff_args="--dir $dir"
+      ;;
+    esac
+    extra_flags=""
+    if [ "$eff_sub" = "br" ]; then
+      factor=$(gum input --placeholder "Brightness factor (0.0-10.0, >1 brightens, <1 darkens)" --value "1.0")
+      [ -z "$factor" ] && factor="1.0"
+      extra_flags="-f $factor"
+    fi
+    out_opt=""
+    if gum confirm "Specify output folder?"; then
+      out_dir=$(choose_directory "Select output folder:") || continue
+      out_opt="--output $out_dir"
+    fi
+    output_msg=""
+    if output_msg=$(gowall effects $eff_sub $eff_args $extra_flags $out_opt 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " Effect applied successfully." | cat
+      [ -n "$out_opt" ] && gum format "_Images saved in_ \`${out_opt#--output }\`"
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # GIF
+    mode=$(printf "%s\n%s\n" " Use file list" " Use images in folder" | gum choose --header "GIF creation:")
+    gif_args=""
+    if [[ $mode == *file* ]]; then
+      base_dir=$(choose_directory "Select the folder with the frames:") || continue
+      file_list=$(find "$base_dir" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) -printf "%f\n")
+      [ -z "$file_list" ] && gum format "**No images found** in $base_dir" && continue
+      selected=$(echo "$file_list" | gum filter --no-limit --placeholder "Select frames (Tab to toggle selection)")
+      [ -z "$selected" ] && continue
+      gif_args="--batch $(echo "$selected" | paste -sd, -)"
+      gif_args=$(sed -E "s@([^,]+)@$base_dir/\1@g" <<<"$gif_args")
+    else
+      dir=$(choose_directory "Select the folder with the images:") || continue
+      gif_args="--dir $dir"
+    fi
+    delay=$(gum input --placeholder "Frame delay (centiseconds, 100 = 1s)" --value "200")
+    [ -n "$delay" ] && gif_args+=" -d $delay"
+    loops=$(gum input --placeholder "Loop count (0=infinite, -1=single)" --value "0")
+    [ -n "$loops" ] && gif_args+=" -l $loops"
+    if gum confirm "Frames have identical dimensions? (optimize)"; then
+      gif_args+=" -r 0"
+    fi
+    out_opt=""
+    if gum confirm "Specify output GIF filename?"; then
+      out_path=$(gum input --placeholder "Output path (e.g. ~/animation.gif)")
+      if [ -n "$out_path" ]; then
+        out_path=$(realpath -m "$out_path")
+        mkdir -p "$(dirname "$out_path")"
+        out_opt="--output $out_path"
+      fi
+    fi
+    output_msg=""
+    if output_msg=$(gowall gif $gif_args $out_opt 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " GIF created successfully." | cat
+      if [ -n "$out_opt" ]; then
+        target=${out_opt#--output }
+        gum format "_GIF saved as_ \`$target\`"
+      fi
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # Upscale
+    input_mode=$(printf "%s\n%s\n%s\n" "  Single image" "  Batch of images" "  Entire directory" | gum choose --header "Upscaling images:")
+    up_args=""
+    case $input_mode in
+    *Single*)
+      file=$(choose_file "Select the image:") || continue
+      up_args="$file"
+      ;;
+    *Batch*)
+      base_dir=$(choose_directory "Select the folder with the images:") || continue
+      file_list=$(find "$base_dir" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) -printf "%f\n")
+      [ -z "$file_list" ] && gum format "**No images found** in $base_dir" && continue
+      selected=$(echo "$file_list" | gum filter --no-limit --placeholder "Select images (Tab to toggle selection)")
+      [ -z "$selected" ] && continue
+      up_args="--batch $(echo "$selected" | paste -sd, -)"
+      up_args=$(sed -E "s@([^,]+)@$base_dir/\1@g" <<<"$up_args")
+      ;;
+    *Directory*)
+      dir=$(choose_directory "Select the directory:") || continue
+      up_args="--dir $dir"
+      ;;
+    esac
+    scale=$(gum input --placeholder "Scale factor (2,3,4)" --value "4")
+    [ -z "$scale" ] && scale="4"
+    model_choice=$(printf "%s\n%s\n%s\n" \
+      "realesr-animevideov3 (default)" \
+      "realesrgan-x4plus (general)" \
+      "realesrgan-x4plus-anime (anime)" | gum choose --header "Upscaling model:")
+    case $model_choice in
+    realesr-anime*) model="realesr-animevideov3" ;;
+    realesrgan-x4plus\ \(general\)*) model="realesrgan-x4plus" ;;
+    realesrgan-x4plus-anime*) model="realesrgan-x4plus-anime" ;;
+    esac
+    out_opt=""
+    if gum confirm "Specify output folder?"; then
+      out_dir=$(choose_directory "Select output folder:") || continue
+      out_opt="--output $out_dir"
+    fi
+    output_msg=""
+    if output_msg=$(gowall upscale $up_args -s "$scale" -m "$model" $out_opt 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " Upscaling completed successfully." | cat
+      [ -n "$out_opt" ] && gum format "_Images saved in_ \`${out_opt#--output }\`"
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # Compress
+    file=$(choose_file "Select the image to compress:") || continue
+    method=""
+    if gum confirm "Use a specific method?"; then
+      method=$(printf "%s\n%s\n%s\n%s\n" \
+        "pngquant (lossy PNG)" \
+        "losslesspng" \
+        "lossyjpg (JPG/JPEG)" \
+        "lossywebp" | gum choose --header "Compression method:")
+      method=${method%% *}
+    fi
+    quality=""
+    if gum confirm "Set quality (0-100, default 80)?"; then
+      quality=$(gum input --placeholder "Quality 0-100" --value "80")
+    fi
+    speed=""
+    if gum confirm "Set pngquant speed (1=quality, 11=fast)?"; then
+      speed=$(gum input --placeholder "Speed 1-11 (default 4)" --value "4")
+    fi
+    out_opt=""
+    if gum confirm "Specify output (file/folder)?"; then
+      out_path=$(gum input --placeholder "Output path (optional)")
+      if [ -n "$out_path" ]; then
+        out_path=$(realpath -m "$out_path")
+        if [[ -d "$out_path" || ! "${out_path##*.}" =~ ^(png|jpg|jpeg|webp)$ ]]; then
+          mkdir -p "$out_path"
+        else
+          mkdir -p "$(dirname "$out_path")"
+        fi
+        out_opt="--output $out_path"
+      fi
+    fi
+    compress_cmd="gowall compress \"$file\""
+    [ -n "$method" ] && compress_cmd+=" -m $method"
+    [ -n "$quality" ] && compress_cmd+=" -q $quality"
+    [ -n "$speed" ] && compress_cmd+=" -s $speed"
+    [ -n "$out_opt" ] && compress_cmd+=" $out_opt"
+    output_msg=""
+    if output_msg=$(eval $compress_cmd 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " Compression completed." | cat
+      if [ -n "$out_opt" ]; then
+        target=${out_opt#--output }
+        if [ -d "$target" ]; then
+          gum format "_Compressed image saved in_ \`$target\`"
+        else
+          gum format "_Compressed image saved as_ \`$target\`"
+        fi
+      else
+        gum format "_Image compressed (overwritten on original)._"
+      fi
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # Extract color palette
+    file=$(choose_file "Select the image to analyze:") || continue
+    num_colors=$(gum input --placeholder "Number of colors to extract" --value "6")
+    [ -z "$num_colors" ] && num_colors="6"
+    open_preview=false
+    if gum confirm "Open palette preview in browser?"; then open_preview=true; fi
+    output_msg=""
+    if [ "$open_preview" = true ]; then
+      if output_msg=$(gowall extract "$file" -p -c "$num_colors" 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Palette extracted. Browser preview opened." | cat
+        gum format "_Extracted colors:_\n$(echo "$output_msg" | sed 's/^/- /')"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+      fi
+    else
+      if output_msg=$(gowall extract "$file" -c "$num_colors" 2>&1); then
+        gum style --foreground "$MOCHA_GREEN" " Palette extracted successfully." | cat
+        gum format "**Extracted colors:**\n$(echo "$output_msg" | sed 's/^/- /')"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+      fi
+    fi
+    ;;
+  ""*) # Invert colors
+    input_mode=$(printf "%s\n%s\n%s\n" "  Single image" "  Batch of images" "  Entire directory" | gum choose --header "Invert colors:")
+    inv_args=""
+    case $input_mode in
+    *Single*)
+      file=$(choose_file "Select the image:") || continue
+      inv_args="$file"
+      ;;
+    *Batch*)
+      base_dir=$(choose_directory "Select the folder with the images:") || continue
+      file_list=$(find "$base_dir" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) -printf "%f\n")
+      [ -z "$file_list" ] && gum format "**No images found** in $base_dir" && continue
+      selected=$(echo "$file_list" | gum filter --no-limit --placeholder "Select images (Tab to toggle selection)")
+      [ -z "$selected" ] && continue
+      inv_args="--batch $(echo "$selected" | paste -sd, -)"
+      inv_args=$(sed -E "s@([^,]+)@$base_dir/\1@g" <<<"$inv_args")
+      ;;
+    *Directory*)
+      dir=$(choose_directory "Select the directory:") || continue
+      inv_args="--dir $dir"
+      ;;
+    esac
+    out_opt=""
+    if gum confirm "Specify output folder?"; then
+      out_dir=$(choose_directory "Select output folder:") || continue
+      out_opt="--output $out_dir"
+    fi
+    output_msg=""
+    if output_msg=$(gowall invert $inv_args $out_opt 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " Colors inverted successfully." | cat
+      [ -n "$out_opt" ] && gum format "_Images saved in_ \`${out_opt#--output }\`"
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $output_msg" | cat
+    fi
+    ;;
+  ""*) # List themes
+    list_mode=$(printf "%s\n%s\n%s\n" \
+      " List all themes" \
+      " Show colors of a theme" \
+      " Preview palette of a theme" | gum choose --header "Available themes:")
+    if [[ $list_mode == *all* ]]; then
+      themes=$(gowall list 2>&1)
+      if [ $? -eq 0 ]; then
+        count=$(echo "$themes" | wc -l)
+        gum format "**Available themes ($count):**\n$(echo "$themes" | sed 's/^/- /')"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $themes" | cat
+      fi
+    elif [[ $list_mode == *colors* ]]; then
+      theme=$(echo -e "$theme_list" | gum choose --header "Select the theme:")
+      codes=$(gowall list -t "$theme" 2>&1)
+      if [ $? -eq 0 ]; then
+        gum style --foreground "$MOCHA_GREEN" " Palette of $theme:" | cat
+        gum format "$(echo "$codes" | sed 's/^/- /')"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $codes" | cat
+      fi
+    else
+      theme=$(echo -e "$theme_list" | gum choose --header "Select the theme:")
+      result=$(gowall list -p -t "$theme" 2>&1)
+      if [ $? -eq 0 ]; then
+        gum style --foreground "$MOCHA_GREEN" " Palette preview for '$theme' opened in browser." | cat
+        gum format "_Colors of $theme:_\n$(echo "$result" | sed 's/^/- /')\n_(Open the browser to see the palette preview)_"
+      else
+        gum style --foreground "$MOCHA_RED" " Error: $result" | cat
+      fi
+    fi
+    ;;
+  ""*) # OCR
+    file=$(choose_file "Select image/PDF for OCR:") || continue
+    schema_or_manual=$(printf "%s\n%s\n" " Use configured schema" " Specify provider manually" | gum choose --header "OCR mode:")
+    ocr_flags=""
+    if [[ $schema_or_manual == *configured* ]]; then
+      schema_name=$(gum input --placeholder "Schema name (from config)")
+      [ -n "$schema_name" ] && ocr_flags+=" -s $schema_name"
+    else
+      provider_choice=$(printf "%s\n%s\n%s\n%s\n%s\n" "tesseract" "docling" "openrouter" "gemini" "Other" | gum choose --header "OCR provider:")
+      if [[ $provider_choice == Other* ]]; then
+        provider=$(gum input --placeholder "Provider name")
+      else
+        provider="$provider_choice"
+      fi
+      model_val=$(gum input --placeholder "Model (if required)")
+      if [ -z "$model_val" ] && [[ $provider == "tesseract" || $provider == "docling" ]]; then
+        model_val="$provider"
+      fi
+      [ -n "$provider" ] && ocr_flags+=" -p $provider"
+      [ -n "$model_val" ] && ocr_flags+=" -m $model_val"
+    fi
+    if gum confirm "Specify language (e.g. eng, ita)?"; then
+      lang=$(gum input --placeholder "Language code" --value "eng")
+      [ -n "$lang" ] && ocr_flags+=" -l $lang"
+    fi
+    prompt_mode=$(printf "%s\n%s\n%s\n" "Keep default prompt" " Add to prompt" " Replace prompt" | gum choose --header "Prompt OCR:")
+    case $prompt_mode in
+    *Add*)
+      extra=$(gum input --placeholder "Text to add to prompt")
+      [ -n "$extra" ] && ocr_flags+=" -a \"$extra\""
+      ;;
+    *Replace*)
+      newprompt=$(gum input --placeholder "New complete prompt")
+      [ -n "$newprompt" ] && ocr_flags+=" -u \"$newprompt\""
+      ;;
+    esac
+    fmt_choice=$(printf "%s\n%s\n" "md (Markdown)" "txt (Plain text)" | gum choose --header "Output format:")
+    fmt_flag=${fmt_choice%% *}
+    [ "$fmt_flag" != "md" ] && ocr_flags+=" -f $fmt_flag"
+    gum format "*(Performing OCR, please wait...)*"
+    ocr_text=""
+    if ocr_text=$(gowall ocr "$file" $ocr_flags 2>&1); then
+      gum style --foreground "$MOCHA_GREEN" " OCR completed successfully." | cat
+      if [ "$(echo "$ocr_text" | wc -l)" -gt 10 ]; then
+        echo "$ocr_text" | gum pager
+      else
+        gum format "\`\`\`$fmt_flag\n$ocr_text\n\`\`\`"
+      fi
+    else
+      gum style --foreground "$MOCHA_RED" " OCR error: $ocr_text" | cat
+    fi
+    ;;
+  " Wallpaper"*) # Daily Wallpaper
+    gum format "*(Fetching wallpaper of the day...)*"
+    err=$(gowall -w 2>&1)
+    if [ $? -eq 0 ]; then
+      gum style --foreground "$MOCHA_GREEN" " Wallpaper of the day retrieved!" | cat
+      gum format "(If the terminal does not support inline images, the wallpaper has been opened in the default app.)"
+    else
+      gum style --foreground "$MOCHA_RED" " Error: $err" | cat
+    fi
+    ;;
+  ""*)
+    gum format "**Exiting script.**"
+    break
+    ;;
+  esac
+done
