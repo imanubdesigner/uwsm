@@ -6,17 +6,23 @@
 #            ┏┓┏┓┳┓┳┏┓┏┳┓
 #            ┗┓┃ ┣┫┃┃┃ ┃
 #            ┗┛┗┛┛┗┻┣┛ ┻
-#                        by Manu 
+#                        by Manu
+#
 
-#   update-system: update system packages (only pacman) on Arch Linux
-
-# If no terminal is open, open it automatically
+# ────────────────────────────────────────────────
+#  Check for terminal
+# ────────────────────────────────────────────────
 if [ ! -t 1 ]; then
-  exec uwsm-app -- $TERMINAL --class=PkgUpdate -e bash "$0" "$@"
+  exec uwsm-app -- "$TERMINAL" --class=PkgUpdate -e bash "$0" "$@"
 fi
 
-# Command
+# ────────────────────────────────────────────────
+#  Settings
+# ────────────────────────────────────────────────
 PACMAN="sudo pacman -Syu"
+PACMAN_LOG="/var/log/pacman.log"
+STATE_DIR="$HOME/.local/state/manu"
+mkdir -p "$STATE_DIR"
 
 # Colors
 GREEN="\e[32m"
@@ -24,7 +30,9 @@ YELLOW="\e[33m"
 RED="\e[31m"
 RESET="\e[0m"
 
-# Functions
+# ────────────────────────────────────────────────
+#  Functions
+# ────────────────────────────────────────────────
 print_info() {
   printf "%b\n" "${YELLOW}󰣇  [$(date '+%H:%M:%S')] $1${RESET}"
 }
@@ -38,10 +46,12 @@ print_err() {
 }
 
 # ────────────────────────────────────────────────
-#   Start update
+#  Start update
 # ────────────────────────────────────────────────
 print_info "  Starting system update..."
 notify-send "  System update" "󰏔  Starting update..." -a "Update Script"
+
+LAST_LOG_LINE=$(wc -l <"$PACMAN_LOG")
 
 print_info "󰏔  Updating official packages..."
 if $PACMAN; then
@@ -54,37 +64,17 @@ else
 fi
 
 # ────────────────────────────────────────────────
-#   Kernel update check (post-update)
+#  Kernel update check
 # ────────────────────────────────────────────────
-if tail -n 20 /var/log/pacman.log | grep -qE "upgraded linux(-[a-z0-9]+)? "; then
-  echo ""
-  notify-send "  Kernel update detected" "  It's recommended to reboot your system." -a "Update Script"
-
-  gum style \
-    --border double \
-    --border-foreground 111 \
-    --margin "1 2" \
-    --padding "1 2" \
-    "  Linux kernel update detected!" \
-    "  It's recommended to reboot your system to apply changes." \
-    "󰜉  Would you like to reboot now?"
-
-  echo ""
-  choice=$(gum choose \
-    --cursor.foreground=33 \
-    --height=2 \
-    "󰜱  Yes, reboot now" \
-    "󰜺  No, later")
-
-  if [[ "$choice" == "󰜱  Yes, reboot now" ]]; then
-    gum confirm "󰜉  Confirm reboot now?" && systemctl reboot
-  else
-    gum style --foreground 245 "󰒤  Remember to reboot later."
-    notify-send "  Reboot postponed" "󰒤  Remember to reboot later." -a "Update Script"
-  fi
+KERNEL_UPDATED=false
+if tail -n +$LAST_LOG_LINE "$PACMAN_LOG" | grep -qE "\[ALPM\] (upgraded|installed) linux(-[a-z0-9]+)? "; then
+  KERNEL_UPDATED=true
+  touch "$STATE_DIR/reboot-required"
 fi
 
-# Waybar cache update
+# ────────────────────────────────────────────────
+#  Waybar cache refresh
+# ────────────────────────────────────────────────
 sleep 0.5
 print_info "󰩹  Clearing Waybar update cache..."
 rm -f /tmp/waybar-updates-cache 2>/dev/null
@@ -92,3 +82,69 @@ pkill -SIGRTMIN+8 waybar 2>/dev/null
 print_ok "󰩹  Waybar cache cleared and refreshed."
 
 # ────────────────────────────────────────────────
+#  Post-update checks
+# ────────────────────────────────────────────────
+
+# Kernel update detected
+if [ "$KERNEL_UPDATED" = true ]; then
+  echo ""
+  notify-send "  Kernel update detected" "  Reboot recommended." -a "Update Script"
+  gum style \
+    --border double \
+    --border-foreground 111 \
+    --margin "1 2" \
+    --padding "1 2" \
+    "  Linux kernel update detected!" \
+    "  A new kernel version was installed." \
+    "󰜉  Reboot required to apply changes."
+  echo ""
+  if gum confirm "󰜱  Reboot now?"; then
+    rm -f "$STATE_DIR"/re*-required
+    sudo reboot now
+  else
+    gum style --foreground 245 "󰒤  Remember to reboot later."
+    notify-send "  Reboot postponed" "󰒤  Remember to reboot later." -a "Update Script"
+  fi
+
+# Previous reboot still required
+elif [ -f "$STATE_DIR/reboot-required" ]; then
+  echo ""
+  notify-send "  Reboot required" "󰜉  Previous updates need reboot." -a "Update Script"
+  gum style \
+    --border double \
+    --border-foreground 214 \
+    --margin "1 2" \
+    --padding "1 2" \
+    "󰜉  System reboot required" \
+    "  Previous updates need a reboot to take effect."
+  echo ""
+  if gum confirm "󰜱  Reboot now?"; then
+    rm -f "$STATE_DIR"/re*-required
+    sudo reboot now
+  else
+    gum style --foreground 245 "󰒤  Reboot later."
+  fi
+fi
+
+# ────────────────────────────────────────────────
+#  Service restart checks
+# ────────────────────────────────────────────────
+for file in "$STATE_DIR"/restart-*-required; do
+  if [ -f "$file" ]; then
+    service=$(basename "$file" | sed 's/restart-\(.*\)-required/\1/')
+    echo ""
+    print_info "  Service restart required: $service"
+    if gum confirm "  Restart $service now?"; then
+      print_info "󰑓  Restarting $service..."
+      rm -f "$file"
+      if command -v manu-restart-"$service" &>/dev/null; then
+        manu-restart-"$service"
+        print_ok "󰄳  $service restarted successfully."
+      else
+        print_err "󰅚  manu-restart-$service command not found!"
+      fi
+    else
+      gum style --foreground 245 "󰒤  $service restart postponed."
+    fi
+  fi
+done
