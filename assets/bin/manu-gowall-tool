@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+#    ┏┓┏┓┓ ┏┏┓┓ ┓   ┏┳┓┏┓┏┓┓
+#    ┃┓┃┃┃┃┃┣┫┃ ┃    ┃ ┃┃┃┃┃
+#    ┗┛┗┛┗┻┛┛┗┗┛┗┛   ┻ ┗┛┗┛┗┛
+#                     by Manu
+
 # gowall-interactive.sh - Interactive Bash script for the gowall tool.
 # Includes all commands and subcommands (except help and completion) with a textual interface via gum.
 # Requires: bash, gowall >= 0.2.3, gum >= 0.17.0. (Optional: fzf, chafa, imgcat for advanced features)
