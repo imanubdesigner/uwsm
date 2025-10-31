@@ -154,7 +154,8 @@ show_install_menu() {
 }
 
 show_remove_menu() {
-  case $(menu "  Remove" "  󰣇  Package\n    Web App\n    TUI") in
+  case $(menu "  Remove" "  󰣇  Package\n    Web App\n    TUI\n  󰮯  Cache Packages") in
+  *Cache*) terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
   *TUI*) present_terminal manu-tui-remove ;;
