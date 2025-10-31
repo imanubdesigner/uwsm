@@ -79,11 +79,12 @@ aur_install_and_launch() {
 }
 
 show_learn_menu() {
-  case $(menu "  Learn" "    Hyprland\n    Arch\n    Neovim\n    Bash\n  󰇥  Yazi") in
+  case $(menu "  Learn" "    Hyprland\n    Arch\n    Neovim\n    Bash\n  󱣻  Gowall\n  󰇥  Yazi") in
   *Hyprland*) manu-launch-webapp "https://wiki.hypr.land/" ;;
   *Arch*) manu-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
   *Bash*) manu-launch-webapp "https://devhints.io/bash" ;;
   *Neovim*) manu-launch-webapp "https://www.lazyvim.org/keymaps" ;;
+  *Gowall*) manu-launch-webapp "https://achno.github.io/gowall-docs/" ;;
   *Yazi*) manu-launch-webapp "https://yazi-rs.github.io/docs/quick-start/" ;;
   *) show_main_menu ;;
   esac
@@ -199,8 +200,9 @@ show_restart_hardware_menu() {
 }
 
 show_tools_menu() {
-  case $(menu "  Tools" " 󰦗  Media Downloader\n  󱊞  ISO to USB\n  󰣌  Image Converter\n    Video Converter") in
+  case $(menu "  Tools" " 󰦗  Media Downloader\n  󱣻  Gowall\n  󱊞  ISO to USB\n  󰣌  Image Converter\n    Video Converter") in
   *"Media Downloader"*) present_terminal manu-media-download ;;
+  *Gowall*) present_terminal manu-gowall-tool ;;
   *"ISO to USB"*) present_terminal manu-write-iso ;;
   *"Image Converter"*) present_terminal manu-transcode-image ;;
   *"Video Converter"*) present_terminal manu-transcode-video ;;
