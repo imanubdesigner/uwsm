@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┓┏┓┏┓┓┏┓┏┓┏┓┏┓┏┓  ┏┓┓ ┏┓┏┓┳┓┏┓┳┓
+#    ┃┃┣┫┃ ┃┫ ┣┫┃┓┣ ┗┓  ┃ ┃ ┣ ┣┫┃┃┣ ┣┫
+#    ┣┛┛┗┗┛┛┗┛┛┗┗┛┗┛┗┛  ┗┛┗┛┗┛┛┗┛┗┗┛┛┗
+#                              by Manu
+
 # ============================================================================
 #  󰣇 Pacman & Yay Cache Cleaner
 #  Interactive cache cleaner with Catppuccin Mocha (Blue Accent)
