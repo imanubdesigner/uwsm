@@ -5,31 +5,43 @@
 #    ┛┗┗┛┣┛┛┗┗┛┗┛┛┗┗┛┗┛ ┻   ┗┛┗┛┛┗┻┣┛ ┻
 #                               by Manu
 
+# ────────────────────────────────────────────────
 # Default temperature values
+# ────────────────────────────────────────────────
 ON_TEMP=3300
 OFF_TEMP=6500
 
+# ────────────────────────────────────────────────
 # Ensure hyprsunset is running
-if ! pgrep -x hyprsunset; then
+# ────────────────────────────────────────────────
+if ! pgrep -x hyprsunset >/dev/null; then
   setsid uwsm-app -- hyprsunset &
-  sleep 1 # Give it time to register
+  sleep 1 # Give it time to start
 fi
 
-# Query the current temperature
+# ────────────────────────────────────────────────
+# Query current temperature
+# ────────────────────────────────────────────────
 CURRENT_TEMP=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+')
 
+# ────────────────────────────────────────────────
+# Restart waybar if using custom nightlight module
+# ────────────────────────────────────────────────
 restart_nightlighted_waybar() {
   if grep -q "custom/nightlight" ~/.config/waybar/config.jsonc; then
-    manu-restart-waybar.sh  # restart waybar in case we wanna try a custom module for hyprsunset
+    manu-restart-waybar.sh
   fi
 }
 
+# ────────────────────────────────────────────────
+# Toggle Hyprsunset and send notification
+# ────────────────────────────────────────────────
 if [[ "$CURRENT_TEMP" == "$OFF_TEMP" ]]; then
-  hyprctl hyprsunset temperature $ON_TEMP
-  notify-send "Hyprsunset" "  Night Mode ON"
+  hyprctl hyprsunset temperature "$ON_TEMP"
+  notify-send "󰖔  Hyprsunset" "  Night Mode ON"
   restart_nightlighted_waybar
 else
-  hyprctl hyprsunset temperature $OFF_TEMP
-  notify-send "Hyprsunset" "  Night Mode OFF"
+  hyprctl hyprsunset temperature "$OFF_TEMP"
+  notify-send "󰖙  Hyprsunset" "  Night Mode OFF"
   restart_nightlighted_waybar
 fi
