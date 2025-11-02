@@ -49,5 +49,9 @@ run_command "pacman -S --noconfirm lazygit swayosd mlocate snap-pac xsel ttf-ner
 # -------------------- Configuration Files --------------------
 run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "yes" "no"
 
+# -------------------- Yazi Plugin Restore --------------------
+run_command "sudo -u $SUDO_USER ya pkg install" \
+  "Restore Yazi plugins from package.toml" "yes" "no"
+
 echo "------------------------------------------------------------------------"
 print_info "Prerequisites setup completed successfully!"
