@@ -6,7 +6,11 @@
 #            ┻ ┗┛┛┗  ┗┛┛┗┗┛┗┛          
 #                               by Manu
 
-syntect_theme = "~/.config/bat/themes/Catppuccin-mocha.tmTheme"
+[flavor]
+dark = "catppuccin-mocha"
+
+[mgr]
+hidden = { fg = "#6C7086", italic = true }
 
 [icon]
 
