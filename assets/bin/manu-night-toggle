@@ -9,7 +9,7 @@
 # Default temperature values
 # ────────────────────────────────────────────────
 ON_TEMP=3300
-OFF_TEMP=6500
+OFF_TEMP=6000
 
 # ────────────────────────────────────────────────
 # Ensure hyprsunset is running
@@ -29,7 +29,7 @@ CURRENT_TEMP=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+')
 # ────────────────────────────────────────────────
 restart_nightlighted_waybar() {
   if grep -q "custom/nightlight" ~/.config/waybar/config.jsonc; then
-    manu-restart-waybar.sh
+    manu-restart-waybar
   fi
 }
 
