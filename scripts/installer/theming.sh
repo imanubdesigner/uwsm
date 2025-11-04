@@ -11,7 +11,9 @@ print_info "\nStarting theming and service setup..."
 
 # -------------------- Theming --------------------
 run_command "pacman -S --noconfirm nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
-run_command "mkdir -p /home/$SUDO_USER/.themes && unzip -o $BASE_DIR/assets/themes/Catppuccin-Dark-BL-MB.zip -d /home/$SUDO_USER/.themes && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes" "Install Catppuccin Dark BL MB GTK theme" "yes" "no"
+# Install Catppuccin Dark Blue GTK theme from GitHub
+run_command "mkdir -p /home/$SUDO_USER/.themes && git clone https://github.com/catppuccin/gtk.git /tmp/catppuccin-gtk && cd /tmp/catppuccin-gtk/themes && ./install.sh -c dark -t blue -l && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes && rm -rf /tmp/catppuccin-gtk" "Install Catppuccin Dark Blue GTK theme from GitHub" "yes" "no"
+# Install Catppuccin Hyprcursor
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
 
 # -------------------- Papirus Icons theme + Catppuccin --------------------
