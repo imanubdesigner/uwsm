@@ -10,7 +10,7 @@ log_message "Installation started for theming + services setup"
 print_info "\nStarting theming and service setup..."
 
 # -------------------- Theming --------------------
-run_command "pacman -S --noconfirm nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
+run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
 
 # Install Catppuccin GTK theme (Fausto version) - Dark Blue variant
 run_command "mkdir -p /home/$SUDO_USER/.themes && git clone https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme.git /home/$SUDO_USER/catppuccin-gtk && cd /home/$SUDO_USER/catppuccin-gtk/themes && ./install.sh -c dark -t blue && rm -rf /home/$SUDO_USER/catppuccin-gtk && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes" "Install Catppuccin Dark Blue GTK theme (Fausto repo)" "yes" "no"
@@ -20,33 +20,23 @@ run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors
 
 # -------------------- Papirus Icons Theme + Catppuccin --------------------
 
-# 1. Install the base Papirus icon theme
-run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" \
-  "Install Papirus Icons Theme" "yes" "no"
+# 1) Install base Papirus icon theme (run as root)
+run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Install Papirus Icons Theme" "yes"
 
-# 2. Clone Catppuccin Papirus folders to the user's home
-run_command "git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/catppuccin-papirus-folders" \
-  "Clone Catppuccin Papirus folders" "yes" "no"
+# 2) Clone Catppuccin Papirus folders into /tmp (run as root)
+run_command "rm -rf /tmp/catppuccin-papirus-folders && git clone https://github.com/catppuccin/papirus-folders.git /tmp/catppuccin-papirus-folders" "Clone Catppuccin Papirus folders (tmp)" "yes"
 
-# 3. Copy the Catppuccin variants into the system Papirus icons directory
-run_command "sudo cp -r /home/$SUDO_USER/catppuccin-papirus-folders/src/* /usr/share/icons/Papirus" \
-  "Copy Catppuccin variants to Papirus icons" "yes" "yes"
+# 3) Copy Catppuccin variants into system Papirus directory (run as root)
+run_command "cp -r /tmp/catppuccin-papirus-folders/src/* /usr/share/icons/Papirus" "Copy Catppuccin variants to Papirus icons" "yes"
 
-# 4. Download the official papirus-folders script and make it executable
-run_command "curl -Lo /home/$SUDO_USER/catppuccin-papirus-folders/papirus-folders https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x /home/$SUDO_USER/catppuccin-papirus-folders/papirus-folders" \
-  "Download papirus-folders script" "yes" "no"
+# 4) Download official papirus-folders helper and make it executable (run as root)
+run_command "curl -Lo /tmp/catppuccin-papirus-folders/papirus-folders https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x /tmp/catppuccin-papirus-folders/papirus-folders" "Fetch papirus-folders helper" "yes"
 
-# 5. Apply the Catppuccin Mocha Blue variant (requires sudo)
-run_command "sudo /home/$SUDO_USER/catppuccin-papirus-folders/papirus-folders -C cat-mocha-blue --theme Papirus-Dark" \
-  "Apply Catppuccin Mocha Blue Papirus variant" "yes" "yes"
+# 5) Apply Catppuccin Mocha Blue variant (run as root)
+run_command "/tmp/catppuccin-papirus-folders/papirus-folders -C cat-mocha-blue --theme Papirus-Dark" "Apply Catppuccin Mocha Blue variant" "yes"
 
-# 6. Fix ownership for the cloned folder
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/catppuccin-papirus-folders" \
-  "Fix permissions for Catppuccin Papirus folders" "yes" "no"
-
-# 7. Update icon cache so changes are recognized immediately
-run_command "sudo gtk-update-icon-cache /usr/share/icons/Papirus" \
-  "Update icon cache" "yes" "no"
+# 6) Refresh icon cache and clean up (run as root)
+run_command "gtk-update-icon-cache /usr/share/icons/Papirus && rm -rf /tmp/catppuccin-papirus-folders" "Refresh Papirus cache & cleanup" "yes"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
 run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
