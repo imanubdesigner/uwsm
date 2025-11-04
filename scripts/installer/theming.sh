@@ -12,7 +12,9 @@ print_info "\nStarting theming and service setup..."
 # -------------------- Theming --------------------
 run_command "pacman -S --noconfirm nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
 # Install Catppuccin Dark Blue GTK theme from GitHub
-run_command "mkdir -p /home/$SUDO_USER/.themes && git clone https://github.com/catppuccin/gtk.git /tmp/catppuccin-gtk && cd /tmp/catppuccin-gtk/themes && ./install.sh -c dark -t blue -l && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes && rm -rf /tmp/catppuccin-gtk" "Install Catppuccin Dark Blue GTK theme from GitHub" "yes" "no"
+
+run_command "mkdir -p ~/.themes && git clone https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme.git /home/$SUDO_USER/catppuccin-gtk && cd /home/$SUDO_USER/catppuccin-gtk/themes && ./install.sh -c dark -t blue && rm -rf /home/$SUDO_USER/catppuccin-gtk" "Install Catppuccin Dark Blue GTK theme (Fausto repo)" "yes" "no"
+
 # Install Catppuccin Hyprcursor
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
 
