@@ -49,6 +49,13 @@ run_command "pacman -S --needed --noconfirm lazygit swayosd mlocate snap-pac xse
 # -------------------- Configuration Files --------------------
 run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "yes" "no"
 
+# -------------------- Yazi: plugin "bat" --------------------
+run_command "mkdir -p /home/$SUDO_USER/.config/yazi/plugins" \
+  "Create Yazi plugins dir" "yes" "no"
+
+run_command "bash -lc 'if [ -d /home/$SUDO_USER/.config/yazi/plugins/bat.yazi/.git ]; then git -C /home/$SUDO_USER/.config/yazi/plugins/bat.yazi pull --ff-only; else git clone --depth 1 https://github.com/mgumz/yazi-plugin-bat.git /home/$SUDO_USER/.config/yazi/plugins/bat.yazi; fi'" \
+  "Install/Update Yazi plugin: bat" "yes" "no"
+
 # -------------------- Yazi Plugin Restore --------------------
 run_command "sudo -u $SUDO_USER ya pkg install" \
   "Restore Yazi plugins from package.toml" "yes" "no"
