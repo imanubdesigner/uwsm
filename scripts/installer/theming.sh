@@ -32,14 +32,16 @@ run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papir
 # Fix permissions for the cloned folder
 run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" "Fix permissions for papirus-folders" "yes" "no"
 
-# Apply the Catppuccin Mocha Blue Papirus variant safely from /tmp
-run_command "sh -c 'rm -rf /tmp/papirus-folders && \
+# -------------------- Papirus Catppuccin tmp folder --------------------
+run_command "rm -rf /tmp/papirus-folders && \
 git clone https://github.com/catppuccin/papirus-folders.git /tmp/papirus-folders && \
 cd /tmp/papirus-folders && \
 curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && \
-chmod +x ./papirus-folders && \
-./papirus-folders -C cat-mocha-blue -t Papirus-Dark && \
-rm -rf /tmp/papirus-folders'" \
+chmod +x ./papirus-folders" \
+  "Prepare /tmp/papirus-folders and download papirus-folders script" "yes" "no"
+
+# -------------------- Set Papirus with sudo --------------------
+run_command "sudo /tmp/papirus-folders/papirus-folders -C cat-mocha-blue -t Papirus-Dark && rm -rf /tmp/papirus-folders" \
   "Apply Catppuccin Mocha Blue Papirus variant" "yes" "yes"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
