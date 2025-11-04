@@ -18,25 +18,25 @@ run_command "mkdir -p /home/$SUDO_USER/.themes && git clone https://github.com/F
 # Install Catppuccin Hyprcursor
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
 
-# -------------------- Papirus Icons Theme + Catppuccin --------------------
+# -------------------- Papirus Icons theme + Catppuccin --------------------
 
-# 1) Install base Papirus icon theme (run as root)
+# 1) Install Papirus icon theme (run as root — NO 4th param)
 run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Install Papirus Icons Theme" "yes"
 
-# 2) Clone Catppuccin Papirus folders into /tmp (run as root)
-run_command "rm -rf /tmp/catppuccin-papirus-folders && git clone https://github.com/catppuccin/papirus-folders.git /tmp/catppuccin-papirus-folders" "Clone Catppuccin Papirus folders (tmp)" "yes"
+# 2) Clone Catppuccin papirus-folders in user's home (run as user — 4th param 'no')
+run_command "git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" "Clone Papirus-folders" "yes" "no"
 
 # 3) Copy Catppuccin variants into system Papirus directory (run as root)
-run_command "cp -r /tmp/catppuccin-papirus-folders/src/* /usr/share/icons/Papirus" "Copy Catppuccin variants to Papirus icons" "yes"
+run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papirus" "Copy Catppuccin variants to Papirus" "yes"
 
-# 4) Download official papirus-folders helper and make it executable (run as root)
-run_command "curl -Lo /tmp/catppuccin-papirus-folders/papirus-folders https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x /tmp/catppuccin-papirus-folders/papirus-folders" "Fetch papirus-folders helper" "yes"
+# 4) (Opzionale) sistemare ownership della repo clonata (run as root ok; oppure come user con 4th 'no')
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" "Fix ownership for papirus-folders" "yes"
 
-# 5) Apply Catppuccin Mocha Blue variant (run as root)
-run_command "/tmp/catppuccin-papirus-folders/papirus-folders -C cat-mocha-blue --theme Papirus-Dark" "Apply Catppuccin Mocha Blue variant" "yes"
+# 5) Scarica helper papirus-folders e applica il colore (run as root — NO sudo inside)
+run_command "curl -Lo /tmp/papirus-folders https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x /tmp/papirus-folders && /tmp/papirus-folders -C cat-mocha-blue --theme Papirus-Dark && rm -f /tmp/papirus-folders" "Apply Catppuccin Mocha Blue variant" "yes"
 
-# 6) Refresh icon cache and clean up (run as root)
-run_command "gtk-update-icon-cache /usr/share/icons/Papirus && rm -rf /tmp/catppuccin-papirus-folders" "Refresh Papirus cache & cleanup" "yes"
+# 6) Aggiorna la cache icone (run as root)
+run_command "gtk-update-icon-cache -f /usr/share/icons/Papirus" "Refresh Papirus icon cache" "yes"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
 run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
