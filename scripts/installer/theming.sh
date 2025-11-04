@@ -21,7 +21,7 @@ run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors
 # -------------------- Papirus Icons theme + Catppuccin --------------------
 run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
 
-run_command "sudo -u $SUDO_USER git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" \
+run_command "git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" \
   "Clone Papirus-folders" \
   "yes" "no"
 
@@ -33,14 +33,7 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" \
   "Chown" \
   "yes" "no"
 
-PAPIRUS_COMMANDS="cd papirus-folders && \
-curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && \
-chmod +x ./papirus-folders && \
-./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && \
-cd .. && \
-rm -rf papirus-folders"
-
-run_command "sudo -u $SUDO_USER sh -c 'cd /home/$SUDO_USER && $PAPIRUS_COMMANDS'" \
+run_command "sh -c 'cd /home/$SUDO_USER && cd papirus-folders && curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x ./papirus-folders && ./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && cd .. && rm -rf papirus-folders'" \
   "Catppuccin Mocha Blue" \
   "yes" "no"
 
