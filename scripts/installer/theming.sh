@@ -19,23 +19,21 @@ run_command "mkdir -p /home/$SUDO_USER/.themes && git clone https://github.com/F
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
 
 # -------------------- Papirus Icons theme + Catppuccin --------------------
-run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
 
-run_command "git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" \
-  "Clone Papirus-folders" \
-  "yes" "no"
+# Install base Papirus icon theme
+run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Install Papirus Icons Theme" "yes" "no"
 
-run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papirus" \
-  "Catppuccin Mocha Papirus" \
-  "yes"
+# Clone Catppuccin Papirus folders
+run_command "git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" "Clone Catppuccin Papirus-folders" "yes" "no"
 
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" \
-  "Chown" \
-  "yes" "no"
+# Copy Catppuccin Papirus variants into the system Papirus icons directory
+run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papirus" "Copy Catppuccin Mocha Papirus variant" "yes"
 
-run_command "sh -c 'cd /home/$SUDO_USER && cd papirus-folders && curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x ./papirus-folders && ./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && cd .. && rm -rf papirus-folders'" \
-  "Catppuccin Mocha Blue" \
-  "yes" "no"
+# Fix permissions for the cloned folder
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" "Fix permissions for papirus-folders" "yes" "no"
+
+# Apply the Catppuccin Mocha Blue Papirus variant safely from /tmp
+run_command "sh -c 'rm -rf /tmp/papirus-folders && git clone https://github.com/catppuccin/papirus-folders.git /tmp/papirus-folders && cd /tmp/papirus-folders && curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && chmod +x ./papirus-folders && ./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && rm -rf /tmp/papirus-folders'" "Apply Catppuccin Mocha Blue Papirus variant" "yes" "no"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
 run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
