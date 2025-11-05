@@ -155,7 +155,7 @@ print_info "The installation will automatically compile DKMS modules and rebuild
 
 run_command "pacman -S --noconfirm --needed linux-headers nvidia-open-dkms nvidia-utils libva libva-utils lib32-nvidia-utils libva-nvidia-driver egl-wayland mesa lib32-mesa" "Install Nvidia Open DKMS (will auto-run mkinitcpio)" "yes"
 
-run_command "pacman -S --noconfirm lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
+run_command "pacman -S --noconfirm --needed lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
 
 print_success "NVIDIA drivers installed and initramfs rebuilt automatically!"
 
