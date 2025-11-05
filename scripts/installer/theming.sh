@@ -13,7 +13,17 @@ print_info "\nStarting theming and service setup..."
 run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
 
 # Install Catppuccin GTK theme (Fausto version) - Dark Blue variant
-run_command "mkdir -p /home/$SUDO_USER/.themes && git clone https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme.git /home/$SUDO_USER/catppuccin-gtk && cd /home/$SUDO_USER/catppuccin-gtk/themes && ./install.sh -c dark -t blue && rm -rf /home/$SUDO_USER/catppuccin-gtk && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes" "Install Catppuccin Dark Blue GTK theme (Fausto repo)" "yes" "no"
+run_command "mkdir -p /home/$SUDO_USER/.themes /home/$SUDO_USER/.config/gtk-4.0; \
+TAR=\$BASE_DIR/assets/themes/Catppuccin-BL-LB-dark.tar.xz; \
+[ -f \"\$TAR\" ] || { echo \"Theme not found: \$TAR\"; exit 1; }; \
+tar -xJvf \"\$TAR\" -C /home/$SUDO_USER/.themes; \
+THEME_DIR=/home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark; \
+if [ ! -d \"\$THEME_DIR\" ]; then THEME_DIR=\$(ls -d /home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark* 2>/dev/null | grep -vE 'hdpi' | head -n1); fi; \
+rm -rf /home/$SUDO_USER/.config/gtk-4.0/assets 2>/dev/null || true; \
+ln -snf \"\$THEME_DIR/gtk-4.0/assets\" /home/$SUDO_USER/.config/gtk-4.0/assets; \
+ln -snf \"\$THEME_DIR/gtk-4.0/gtk.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk.css; \
+ln -snf \"\$THEME_DIR/gtk-4.0/gtk-dark.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk-dark.css" \
+  "Install Catppuccin GTK (tar.xz → ~/.themes + symlink GTK4, verbose)" "yes" "no"
 
 # Install Catppuccin Hyprcursor
 run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
