@@ -73,14 +73,6 @@ export WLR_NO_HARDWARE_CURSORS=1
 # export WLR_DRM_DEVICES=/dev/dri/card0                                             
 
 # =========================
-# Firefox Wayland support
-# =========================
-export MOZ_ENABLE_WAYLAND=1                                                         
-export MOZ_DISABLE_RDD_SANDBOX=1                                                    
-export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json
-# export EGL_PLATFORM=wayland                                                       
-
-# =========================
 # Qt toolkit environment
 # =========================
 export QT_QPA_PLATFORM="wayland;xcb"                                                
@@ -93,8 +85,7 @@ export SDL_VIDEODRIVER=wayland
 # =========================
 # Toolkit backend variables (GTK, Clutter)
 # =========================
-export GDK_BACKEND=wayland,x11,*
-export CLUTTER_BACKEND=wayland
+export GDK_BACKEND=wayland,x11
 
 # =========================
 # Electron / Chromium / Ozone
