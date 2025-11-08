@@ -149,6 +149,9 @@ run_command "sudo sed -i 's/filesystems\s\+/filesystems btrfs-overlayfs /' /etc/
 
 print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
 
+# -------------------- Limine Wipe limine.conf hook --------------------
+run_command "install -D -m 0644 -o root -g root \"$BASE_DIR/assets/99-limine-wipe-efi-conf.hook\" \"/etc/pacman.d/hooks/99-limine-wipe-efi-conf.hook\"" "Install Limine wipe-efi-conf pacman hook" "yes"
+
 # -------------------- NVIDIA Drivers Installation --------------------
 print_bold_blue "\n=== Installing NVIDIA Drivers ==="
 print_info "The installation will automatically compile DKMS modules and rebuild initramfs..."

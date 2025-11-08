@@ -1,0 +1,13 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = limine
+Target = limine-bin
+Target = limine-git
+
+[Action]
+Description = Remove /boot/EFI/limine/limine.conf to keep /boot/limine.conf authoritative
+When = PostTransaction
+Depends = bash
+Exec = /usr/bin/bash -c 'if [ -d /boot/EFI/limine ]; then /usr/bin/rm -f /boot/EFI/limine/limine.conf || true; fi'
