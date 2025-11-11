@@ -145,7 +145,7 @@ run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup m
 
 run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "yes" "no"
 
-run_command "sudo sed -i 's/filesystems\s\+/filesystems btrfs-overlayfs /' /etc/mkinitcpio.conf" "Add btrfs-overlayfs hook for Limine/Snapper rollback" "yes" "no"
+run_command "sudo sed -i -E '/^HOOKS=\(/ { s/(^|[[:space:]])btrfs-overlayfs($|[[:space:]])/ /g; s/[[:space:]]+/ /g; s/[[:space:]]*\)/)/; s/\)$/ btrfs-overlayfs)/ }' /etc/mkinitcpio.conf" "Put btrfs-overlayfs once at end of HOOKS" "yes" "no"
 
 print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
 
