@@ -183,7 +183,7 @@ show_restart_apps_menu() {
     "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Hypridle\n    Hyprsunset") in
   *Sudo*) present_terminal manu-reset-sudo ;;
   *Walker*) manu-restart-walker ;;
-  *Waybar*) manu-restart-waybar ;;
+  *Waybar*) manu-waybar-refresh ;;
   *Hypridle*) manu-restart-hypridle ;;
   *Hyprsunset*) manu-restart-hyprsunset ;;
   *) show_restart_menu ;;

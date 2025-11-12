@@ -5,11 +5,5 @@
 #    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┛┗┗┛┻ ┛┗┗┛┗┛┛┗
 #                          by Manu
 
-# Waybar Service STOP
-systemctl --user stop waybar.service
-
-# Waiting
-sleep 1
-
-# Service Restart
-systemctl --user start waybar.service
+# Restart Service
+systemctl --user try-restart waybar.service || systemctl --user start waybar.service
