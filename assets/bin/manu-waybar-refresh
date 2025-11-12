@@ -1,9 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┳┓┏┓┏┓┳┓┏┓┏┓┓┏
 #    ┃┃┃┣┫┗┫┣┫┣┫┣┫  ┣┫┣ ┣ ┣┫┣ ┗┓┣┫
 #    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┛┗┗┛┻ ┛┗┗┛┗┛┛┗
 #                          by Manu
 
-# Restart Service
-systemctl --user try-restart waybar.service || systemctl --user start waybar.service
+set -euo pipefail
+
+# Ensure systemd-user has the current session environment (idempotent)
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE DBUS_SESSION_BUS_ADDRESS || true
+
+# Restart Waybar (also starts it if inactive)
+systemctl --user restart waybar.service && notify-send " Waybar" "↻ Restarted" || true

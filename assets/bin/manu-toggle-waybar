@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┳┓┏┓┏┓┏┓┓ ┏┓
+#    ┃┃┃┣┫┗┫┣┫┣┫┣┫   ┃ ┃┃┃┓┃┓┃ ┣
+#    ┗┻┛┛┗┗┛┻┛┛┗┛┗   ┻ ┗┛┗┛┗┛┗┛┗┛
+#                         by Manu
+
+set -euo pipefail
+
+# Start and Stop inside Wayland (no TTY)
+if [ -z "${WAYLAND_DISPLAY:-}" ] && [ ! -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/wayland-0" ] && [ ! -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/wayland-1" ]; then
+  # opzionale: commenta la riga sotto se non vuoi notifiche
+  notify-send "Waybar toggle" "Nessuna sessione Wayland attiva" || true
+  exit 0
+fi
+
+# Important variables
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE DBUS_SESSION_BUS_ADDRESS || true
+
+if systemctl --user is-active --quiet waybar.service; then
+  systemctl --user stop waybar.service
+  notify-send " Waybar" " Hidden" || true
+else
+  systemctl --user start waybar.service
+  notify-send " Waybar" " Shown" || true
+fi

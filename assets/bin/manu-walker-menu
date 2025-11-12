@@ -136,7 +136,7 @@ show_toggle_menu() {
   case $(menu "󰨚  Toggle" "    Nightlight\n    Idle Lock\n  󰖯  Top Bar") in
   *Nightlight*) manu-night-toggle ;;
   *Idle*) manu-idle-toggle ;;
-  *Bar*) manu-waybar-toggle ;;
+  *Bar*) manu-toggle-waybar ;;
   *Mute*) manu-mute-toggle ;;
   *) show_trigger_menu ;;
   esac
