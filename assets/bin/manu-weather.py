@@ -29,6 +29,8 @@ weather_icons = {
     "default": "",
 }
 
+AQI_ICON = ""
+
 # === GET LOCATION WITH RETRIES ===
 def get_location(retries=3, delay=2):
     for _ in range(retries):
@@ -123,7 +125,11 @@ try:
             predictions = (
                 "\n<big> </big> Rain today:\n"
                 f"Max {max_chance}%\n"
-                f"Avg {int(avg_chance)}% – {trend}"
+                f"Avg {int(avg_chance)}% – mostly dry"
+                if trend == "mostly dry"
+                else "\n<big> </big> Rain today:\n"
+                     f"Max {max_chance}%\n"
+                     f"Avg {int(avg_chance)}% – " + trend
             )
         else:
             predictions = ""
@@ -131,18 +137,23 @@ try:
     except Exception:
         predictions = ""
 
-    # Tooltip (multi-line info for hover)
+    # Tooltip (multi-line info for hover, con Details in monospace)
     tooltip_text = f"""
 <span size="xx-large" weight="bold">{temp}</span>
 
 <small>{temp_feel_text}</small>
 <big>{icon}</big>  <b>{status}</b>
 
-  {temp_min}        {temp_max}
+<b>Temps</b>
+  Now: {temp}
+  Min: {temp_min}
+  Max: {temp_max}
 
- {wind_speed}      {humidity}
-  {visibility}  AQI {air_quality_index}
-
+<b>Details</b>
+<tt>  Wind {wind_speed}</tt>
+<tt>  Hum  {humidity}</tt>
+<tt>  Vis  {visibility}</tt>
+<tt>{AQI_ICON}  AQI  {air_quality_index}</tt>
 {predictions}
 """
 
