@@ -9,16 +9,11 @@ import time
 import requests
 import json
 import os
-import logging
 import re
 from pyquery import PyQuery  # install using `pip install pyquery`
 
 # === WAIT before starting ===
 time.sleep(5)  # Wait 5 seconds before running the script to prevent startup issues
-
-# === LOGGING CONFIGURATION ===
-log_path = os.path.expanduser("~/.cache/weather_error.log")
-logging.basicConfig(filename=log_path, level=logging.DEBUG)
 
 # === WEATHER ICONS ===
 weather_icons = {
@@ -36,14 +31,13 @@ weather_icons = {
 
 # === GET LOCATION WITH RETRIES ===
 def get_location(retries=3, delay=2):
-    for i in range(retries):
+    for _ in range(retries):
         try:
             response = requests.get("https://ipinfo.io", timeout=5)
             data = response.json()
             loc = data["loc"].split(",")
             return float(loc[0]), float(loc[1])
-        except Exception as e:
-            logging.warning(f"[get_location] Attempt {i+1} failed: {e}")
+        except Exception:
             time.sleep(delay)
     raise RuntimeError("Failed to get location after retries")
 
@@ -99,10 +93,10 @@ try:
 
     air_quality_index = html_data("text[data-testid='DonutChartValue']").text()
 
-    # Hourly rain prediction – formatted
+    # Hourly rain prediction – summarized (multiline, compatta)
     try:
         rain_elements = html_data("div[data-testid='SegmentPrecipPercentage'] > span")
-        prediction_lines = []
+        percentages = []
 
         for el in rain_elements.items():
             text = el.text().strip()
@@ -111,19 +105,30 @@ try:
 
             match = re.search(r"(\d+)\s*%", text)
             if match:
-                percentage = match.group(1)
-                prediction_lines.append(f"Chance of Rain {percentage}%")
-            else:
-                logging.debug(f"[rain debug] Ignored rain text: '{text}'")
+                percentages.append(int(match.group(1)))
 
-        if prediction_lines:
-            predictions = "\n".join(prediction_lines)
-            predictions = f"\n<big> </big> Hourly rain:\n{predictions}"
+        if percentages:
+            max_chance = max(percentages)
+            avg_chance = sum(percentages) / len(percentages)
+
+            if max_chance <= 10:
+                trend = "mostly dry"
+            elif max_chance <= 30:
+                trend = "few showers"
+            elif max_chance <= 60:
+                trend = "scattered showers"
+            else:
+                trend = "frequent showers"
+
+            predictions = (
+                "\n<big> </big> Rain today:\n"
+                f"Max {max_chance}%\n"
+                f"Avg {int(avg_chance)}% – {trend}"
+            )
         else:
             predictions = ""
 
-    except Exception as e:
-        logging.error(f"[rain error] Failed to parse rain predictions: {e}")
+    except Exception:
         predictions = ""
 
     # Tooltip (multi-line info for hover)
@@ -162,15 +167,14 @@ try:
     try:
         with open(os.path.expanduser("~/.cache/.weather_cache"), "w") as file:
             file.write(simple_weather)
-    except Exception as e:
-        logging.error(f"Error writing to cache: {e}")
+    except Exception:
+        # Cache write failure is non-critical
+        pass
 
 # Error fallback
-except RuntimeError as e:
-    logging.error(f"Weather script failed: {e}")
+except RuntimeError:
     print('{"text": "", "tooltip": "Network unavailable"}')
 
-except Exception as e:
-    logging.error(f"Unexpected error:\n{e}")
+except Exception:
     print('{"text": "", "tooltip": "Weather error"}')
 
