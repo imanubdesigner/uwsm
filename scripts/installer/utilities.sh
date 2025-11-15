@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm --needed localsend auto-cpufreq gpu-screen-recorder walker elephant elephant-calc elephant-clipboard elephant-desktopapplications elephant-files elephant-menus elephant-providerlist elephant-runner elephant-symbols elephant-todo elephant-unicode elephant-websearch waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities (Source-based)" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm --needed nautilus-open-any-terminal localsend-bin auto-cpufreq gpu-screen-recorder walker-bin elephant-all-bin waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "yes" "no"
 
 # -------------------- Applications & mimeinfo --------------------
 run_command "\
