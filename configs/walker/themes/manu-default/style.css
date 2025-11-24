@@ -26,7 +26,6 @@ scrollbar {
   background: alpha(@base, 0.95);
   padding: 20px;
   border: 2px solid @border;
-  border-radius: 10px;
 }
 
 .preview-box {
@@ -41,7 +40,7 @@ scrollbar {
 }
 
 .input placeholder {
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .input {
@@ -114,5 +113,4 @@ child:selected .item-box * {
 }
 
 .preview {
-  background: @background;
 }
