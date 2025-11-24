@@ -25,9 +25,6 @@ ln -snf \"\$THEME_DIR/gtk-4.0/gtk.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk.css
 ln -snf \"\$THEME_DIR/gtk-4.0/gtk-dark.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk-dark.css" \
   "Install Catppuccin GTK (tar.xz → ~/.themes + symlink GTK4, verbose)" "yes" "no"
 
-# # Install Catppuccin Hyprcursor
-# run_command "unzip -o $BASE_DIR/assets/hyprcursor/catppuccin-mocha-light-cursors.zip -d /home/$SUDO_USER/.icons && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.icons" "Install Catppuccin Hyprcursor" "yes" "no"
-
 # -------------------- Papirus Icons theme + Catppuccin --------------------
 run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
 
