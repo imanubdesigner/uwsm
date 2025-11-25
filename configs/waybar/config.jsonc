@@ -98,7 +98,7 @@
 	"cpu": {
 		"format": "󰻠 ",
 		"tooltip": true,
-    "on-click":"$TERMINAL -e btop"
+    "on-click":"manu-launch-btop"
 	},
 	"memory": {
 		"format": " "
