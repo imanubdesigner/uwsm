@@ -80,8 +80,7 @@
 		"format": "󰣇",
 		"tooltip": false,
 		"on-click": "manu-walker-menu",
-    "on-click-right": "xdg-terminal-exec",
-    "tooltip-format": "Walker Menu\n\nSuper + Alt + Space"
+    "on-click-right": "xdg-terminal-exec" 
 	},
 
 	/*--------------Pacman--------------------*/
