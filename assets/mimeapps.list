@@ -1,10 +1,10 @@
 [Default Applications]
-image/png=com.interversehq.qView.desktop
-image/jpeg=com.interversehq.qView.desktop
-image/gif=com.interversehq.qView.desktop
-image/webp=com.interversehq.qView.desktop
-image/bmp=com.interversehq.qView.desktop
-image/tiff=com.interversehq.qView.desktop
+image/png=imv.desktop
+image/jpeg=imv.desktop
+image/gif=imv.desktop
+image/webp=imv.desktop
+image/bmp=imv.desktop
+image/tiff=imv.desktop
 application/pdf=org.gnome.Evince.desktop
 text/html=chromium.desktop
 x-scheme-handler/http=chromium.desktop
@@ -26,6 +26,24 @@ video/x-ms-asf=mpv.desktop
 video/x-ogm+ogg=mpv.desktop
 video/x-theora+ogg=mpv.desktop
 application/ogg=mpv.desktop
+x-scheme-handler/mailto=HEY.desktop
+text/plain=nvim.desktop
+text/english=nvim.desktop
+text/x-makefile=nvim.desktop
+text/x-c++hdr=nvim.desktop
+text/x-c++src=nvim.desktop
+text/x-chdr=nvim.desktop
+text/x-csrc=nvim.desktop
+text/x-java=nvim.desktop
+text/x-moc=nvim.desktop
+text/x-pascal=nvim.desktop
+text/x-tcl=nvim.desktop
+text/x-tex=nvim.desktop
+application/x-shellscript=nvim.desktop
+text/x-c=nvim.desktop
+text/x-c++=nvim.desktop
+application/xml=nvim.desktop
+text/xml=nvim.desktop
 
 [Added Associations]
-image/png=com.interversehq.qView.desktop;
+application/x-trash=nvim.desktop;
