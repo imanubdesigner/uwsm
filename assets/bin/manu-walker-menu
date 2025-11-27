@@ -42,7 +42,7 @@ menu() {
 }
 
 terminal() {
-  $TERMINAL --class=Manu -e "$@"
+  xdg-terminal-exec --app-id=org.manu.terminal "$@"
 }
 
 present_terminal() {
