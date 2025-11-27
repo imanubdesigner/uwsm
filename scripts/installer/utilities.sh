@@ -31,4 +31,12 @@ run_command "cp $BASE_DIR/assets/xdg-terminals.list /home/$SUDO_USER/.config/ &&
 # -------------------- Scripts Folder Bin --------------------
 run_command "cp -r $BASE_DIR/assets/bin /home/$SUDO_USER/.local/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/bin" "Copy bin folder" "yes" "no"
 
+# -------------------- Manu Folder (.local/share) --------------------
+# manu folder in ~/.local/share/
+run_command "\
+mkdir -p /home/$SUDO_USER/.local/share/manu && \
+cp -r $BASE_DIR/assets/manu/* /home/$SUDO_USER/.local/share/manu/ && \
+chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/share/manu" \
+    "Copy manu folder content to .local/share" "yes" "no"
+
 echo "------------------------------------------------------------------------"
