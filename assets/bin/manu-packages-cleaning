@@ -17,20 +17,18 @@ export GUM_CHOOSE_HEADER_FOREGROUND="#89b4fa"
 export GUM_CONFIRM_PROMPT_FOREGROUND="#f5e0dc"
 export GUM_CONFIRM_SELECTED_FOREGROUND="#89dceb"
 export GUM_CONFIRM_UNSELECTED_FOREGROUND="#89b4fa"
-export GUM_SPIN_SPINNER_FOREGROUND="#cba6f7"
-export GUM_SPIN_TITLE_FOREGROUND="#89b4fa"
+# Removed GUM_SPIN colors to enforce direct command execution and prevent deadlocks
 
 # ──────────────────────────────────────────────────────────────────────────────
 # 󰣜  Check for gum
 # ──────────────────────────────────────────────────────────────────────────────
 if ! command -v gum &>/dev/null; then
-  echo "󰅖  Gum is not installed."
-  echo "     ➜  Install with: sudo pacman -S gum"
+  echo "󰅖  Error: gum is required. Please install it (e.g., yay -S gum)."
   exit 1
 fi
 
 # ──────────────────────────────────────────────────────────────────────────────
-# 󰍛  Sudo privileges
+# 🔑 Keep sudo active
 # ──────────────────────────────────────────────────────────────────────────────
 check_sudo() {
   gum style \
@@ -38,7 +36,8 @@ check_sudo() {
     --margin="1 0" \
     "󰍛  Checking sudo privileges..."
 
-  if ! sudo -v; then
+  # Check if sudo token exists or prompt for password
+  if ! sudo -v &>/dev/null; then
     gum style \
       --foreground="#f38ba8" \
       --bold \
@@ -46,6 +45,7 @@ check_sudo() {
     exit 1
   fi
 
+  # Keep sudo token active in the background
   while true; do
     sudo -n true
     sleep 50
@@ -54,7 +54,7 @@ check_sudo() {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# 󰣇  Header
+# 󰣖 Display Header
 # ──────────────────────────────────────────────────────────────────────────────
 show_header() {
   gum style \
@@ -69,7 +69,7 @@ show_header() {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# 󰏔  Utilities
+# 󰏔 Cache Size Utilities
 # ──────────────────────────────────────────────────────────────────────────────
 get_cache_size_bytes() {
   local path=$1
@@ -81,6 +81,7 @@ bytes_to_human() {
   if [ "$bytes" -eq 0 ]; then
     echo "0 B"
   else
+    # Use numfmt for clean human-readable output (preferred over basic shell loop)
     numfmt --to=iec-i --suffix=B "$bytes" 2>/dev/null || echo "${bytes} B"
   fi
 }
@@ -104,17 +105,33 @@ check_cache_size() {
 clean_pacman() {
   local option=$1
   local size_before=$(get_cache_size_bytes "/var/cache/pacman/pkg")
+  local success=0
+
+  # CRITICAL FIX: Check and remove Pacman lock file to prevent "unable to lock database" error
+  if [ -f /var/lib/pacman/db.lck ]; then
+    gum style --foreground="#ed8796" "󰎺  Found Pacman lock file (db.lck). Removing..."
+    sudo rm /var/lib/pacman/db.lck
+    gum style --foreground="#94e2d5" "󰎺  Lock file removed. Continuing cleanup."
+  fi
 
   case $option in
   "Keep last 3 versions")
+    # Paccache non è interattivo, l'esecuzione diretta dovrebbe funzionare.
     gum spin --title "󰮯  Cleaning pacman cache (keep last 3 versions)..." -- sudo paccache -r
+    success=$?
     ;;
   "Keep last version only")
+    # Paccache non è interattivo, l'esecuzione diretta dovrebbe funzionare.
     gum spin --title "󰮯  Cleaning pacman cache (keep last version)..." -- sudo paccache -rk1
+    success=$?
     ;;
   "Remove all cached packages")
     if gum confirm --default=false "󰗡  Remove ALL cached pacman packages?"; then
-      gum spin --title "󰮯  Removing all cached packages..." -- bash -c 'yes | sudo pacman -Scc'
+      # CORREZIONE FINALE: Forziamo l'input 'y' per rispondere a tutte le
+      # domande interattive di pacman -Scc (rimuovere repo non usati e tutti i file).
+      # Usiamo 'yes |' come nell'originale ma con 'y' per le risposte affermative.
+      gum spin --title "󰮯  Removing all cached packages..." -- bash -c 'yes y | sudo pacman -Scc'
+      success=$?
     else
       gum style --foreground="#89b4fa" "   ↳  Skipped"
       return
@@ -122,12 +139,18 @@ clean_pacman() {
     ;;
   esac
 
-  local size_after=$(get_cache_size_bytes "/var/cache/pacman/pkg")
-  local freed=$((size_before - size_after))
-  local freed_human=$(bytes_to_human $freed)
+  # Success/Error reporting
+  if [ "$success" -eq 0 ]; then
+    local size_after=$(get_cache_size_bytes "/var/cache/pacman/pkg")
+    local freed=$((size_before - size_after))
+    local freed_human=$(bytes_to_human $freed)
 
-  gum style --foreground="#94e2d5" "󰄬  Pacman cache cleaned successfully!"
-  gum style --foreground="#89dceb" --bold "   󰌪  Space freed: $freed_human"
+    gum style --foreground="#94e2d5" "󰄬  Pacman cache cleaned successfully!"
+    gum style --foreground="#89dceb" --bold "   󰌪  Space freed: $freed_human"
+  else
+    gum style --foreground="#ed8796" "󰅙  Error (Code $success) during Pacman cleanup. Check terminal output."
+  fi
+  echo ""
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -141,14 +164,23 @@ clean_yay() {
 
   local option=$1
   local size_before=$(get_cache_size_bytes "$HOME/.cache/yay")
+  local success=0
 
   case $option in
   "Remove uninstalled packages")
-    gum spin --title "󰚰  Cleaning yay cache (uninstalled packages)..." -- yay -Sc --noconfirm
+    gum confirm --default=false "󰗡  Remove uninstalled AUR packages cache?" && {
+      # Execute directly with --noconfirm
+      gum style --foreground="#89b4fa" "󰚰  Executing: Removing uninstalled packages cache (yay -Sc --noconfirm)..."
+      yay -Sc --noconfirm
+      success=$?
+    }
     ;;
   "Remove all cached packages")
-    if gum confirm --default=false "󰗡  Remove ALL yay cached packages?"; then
-      gum spin --title "󰚰  Removing all yay cached packages..." -- yay -Scc --noconfirm
+    if gum confirm --default=false "󰗡  Remove ALL AUR package cache?"; then
+      # Execute directly with --noconfirm
+      gum style --foreground="#89b4fa" "󰚰  Executing: Removing all packages cache (yay -Scc --noconfirm)..."
+      yay -Scc --noconfirm
+      success=$?
     else
       gum style --foreground="#89b4fa" "   ↳  Skipped"
       return
@@ -156,12 +188,17 @@ clean_yay() {
     ;;
   esac
 
-  local size_after=$(get_cache_size_bytes "$HOME/.cache/yay")
-  local freed=$((size_before - size_after))
-  local freed_human=$(bytes_to_human $freed)
+  if [ "$success" -eq 0 ]; then
+    local size_after=$(get_cache_size_bytes "$HOME/.cache/yay")
+    local freed=$((size_before - size_after))
+    local freed_human=$(bytes_to_human $freed)
 
-  gum style --foreground="#94e2d5" "󰄬  Yay cache cleaned successfully!"
-  gum style --foreground="#89dceb" --bold "   󰌪  Space freed: $freed_human"
+    gum style --foreground="#94e2d5" "󰄬  Yay cache cleaned successfully!"
+    gum style --foreground="#89dceb" --bold "   󰌪  Space freed: $freed_human"
+  else
+    gum style --foreground="#ed8796" "󰅙  Error (Code $success) during Yay cleanup. Check terminal output."
+  fi
+  echo ""
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -173,54 +210,59 @@ main() {
   show_header
   check_cache_size
 
-  CLEAN_CHOICE=$(gum choose --header="󰣇  What would you like to clean?" \
-    "Pacman cache" \
-    "Yay cache" \
-    "Both" \
+  while true; do
+    CLEAN_CHOICE=$(gum choose --header="󰣇  What would you like to clean?" \
+      "Pacman cache" \
+      "Yay cache" \
+      "Both" \
+      "Exit")
+
+    case $CLEAN_CHOICE in
+    "Pacman cache")
+      PACMAN_OPTION=$(gum choose --header="󰮯  Select cleaning method:" \
+        "Keep last 3 versions" \
+        "Keep last version only" \
+        "Remove all cached packages")
+      clean_pacman "$PACMAN_OPTION"
+      ;;
+    "Yay cache")
+      YAY_OPTION=$(gum choose --header="󰚰  Select cleaning method:" \
+        "Remove uninstalled packages" \
+        "Remove all cached packages")
+      clean_yay "$YAY_OPTION"
+      ;;
+    "Both")
+      PACMAN_OPTION=$(gum choose --header="󰮯  Pacman cleaning method:" \
+        "Keep last 3 versions" \
+        "Keep last version only" \
+        "Remove all cached packages")
+      clean_pacman "$PACMAN_OPTION"
+
+      echo ""
+      YAY_OPTION=$(gum choose --header="󰚰  Yay cleaning method:" \
+        "Remove uninstalled packages" \
+        "Remove all cached packages")
+      clean_yay "$YAY_OPTION"
+      ;;
     "Exit")
+      gum style --foreground="#89b4fa" "󰅖  Goodbye!"
+      # Kill the background sudo process
+      kill $(jobs -p) 2>/dev/null
+      exit 0
+      ;;
+    esac
 
-  case $CLEAN_CHOICE in
-  "Pacman cache")
-    PACMAN_OPTION=$(gum choose --header="󰮯  Select cleaning method:" \
-      "Keep last 3 versions" \
-      "Keep last version only" \
-      "Remove all cached packages")
-    clean_pacman "$PACMAN_OPTION"
-    ;;
-  "Yay cache")
-    YAY_OPTION=$(gum choose --header="󰚰  Select cleaning method:" \
-      "Remove uninstalled packages" \
-      "Remove all cached packages")
-    clean_yay "$YAY_OPTION"
-    ;;
-  "Both")
-    PACMAN_OPTION=$(gum choose --header="󰮯  Pacman cleaning method:" \
-      "Keep last 3 versions" \
-      "Keep last version only" \
-      "Remove all cached packages")
-    clean_pacman "$PACMAN_OPTION"
-
+    check_cache_size
     echo ""
-    YAY_OPTION=$(gum choose --header="󰚰  Yay cleaning method:" \
-      "Remove uninstalled packages" \
-      "Remove all cached packages")
-    clean_yay "$YAY_OPTION"
-    ;;
-  "Exit")
-    gum style --foreground="#89b4fa" "󰅖  Goodbye!"
-    exit 0
-    ;;
-  esac
 
-  echo ""
-  check_cache_size
-  echo ""
-  if gum confirm "󰄬  Clean something else?"; then
-    main
-  else
-    gum style --foreground="#94e2d5" --bold "󰄛  All done! Stay frosty ❄️"
-  fi
+    # Ask if the user wants to clean something else
+    gum confirm "󰄬  Clean something else?" || break
+  done
+
+  gum style --foreground="#94e2d5" --bold "󰄛  All done! Stay frosty ❄️"
+  # Kill the background sudo process
+  kill $(jobs -p) 2>/dev/null
 }
 
-# ──────────────────────────────────────────────────────────────────────────────
+# Run the main function
 main
