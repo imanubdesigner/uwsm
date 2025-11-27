@@ -22,6 +22,9 @@ chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/share/applications" \
 # -------------------- Logo --------------------
 run_command "cp $BASE_DIR/assets/logo.txt /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/logo.txt" "Copy logo.txt" "yes" "no"
 
+# -------------------- .XCompose --------------------
+run_command "cp $BASE_DIR/assets/.XCompose /home/$SUDO_USER/ && chown $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.XCompose" "Copy .XCompose configuration to home directory" "yes" "no"
+
 # -------------------- Mimeapps --------------------
 run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/mimeapps.list" "Copy mimeapps.list configuration" "yes" "no"
 
@@ -29,7 +32,6 @@ run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chow
 run_command "cp $BASE_DIR/assets/xdg-terminals.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xdg-terminals.list" "Copy xdg-terminals.list configuration" "yes" "no"
 
 # -------------------- Manu Folder (.local/share) --------------------
-# manu folder in ~/.local/share/
 run_command "\
 mkdir -p /home/$SUDO_USER/.local/share/manu && \
 cp -r $BASE_DIR/assets/manu/* /home/$SUDO_USER/.local/share/manu/ && \
