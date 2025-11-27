@@ -28,9 +28,6 @@ run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chow
 # -------------------- xdg-terminals.list --------------------
 run_command "cp $BASE_DIR/assets/xdg-terminals.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xdg-terminals.list" "Copy xdg-terminals.list configuration" "yes" "no"
 
-# -------------------- Scripts Folder Bin --------------------
-run_command "cp -r $BASE_DIR/assets/bin /home/$SUDO_USER/.local/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/bin" "Copy bin folder" "yes" "no"
-
 # -------------------- Manu Folder (.local/share) --------------------
 # manu folder in ~/.local/share/
 run_command "\
