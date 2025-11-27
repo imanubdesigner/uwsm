@@ -1,0 +1,53 @@
+#    ┏┓┓┏┏┓┏┓┏┳┓┏┳┓┓┏  ┏┓    ┏•         •    
+#    ┃┓┣┫┃┃┗┓ ┃  ┃ ┗┫  ┃ ┏┓┏┓╋┓┏┓┓┏┏┓┏┓╋┓┏┓┏┓
+#    ┗┛┛┗┗┛┗┛ ┻  ┻ ┗┛  ┗┛┗┛┛┗┛┗┗┫┗┻┛ ┗┻┗┗┗┛┛┗
+#                               ┛     by Manu
+
+
+
+#----Fonts----#
+font-size = 12
+font-style = medium
+theme = "Catppuccin Mocha" 
+font-family = "Liga SFMono Nerd Font"
+
+#----Programming Ligatures----#
+font-feature = +liga 
+font-feature = +calt 
+font-feature = +dlig 
+
+#----Fallback Fonts----#
+font-family = Noto Color Emoji
+font-family = Noto Sans
+
+#----GTK----#
+gtk-single-instance = desktop
+
+#----Cursor Style----#
+cursor-style = bar
+cursor-style-blink = false
+
+#----Clipboard----#
+copy-on-select = clipboard
+clipboard-trim-trailing-spaces = true
+
+#----Mouse----#
+mouse-scroll-multiplier = 3
+mouse-hide-while-typing = true
+
+#----Window Style----#
+background-opacity = 0.95   
+background-blur = 10
+window-padding-x = 25
+window-padding-y = 25
+window-padding-balance = true   
+window-padding-color = background
+confirm-close-surface=false 
+
+#----Shell Integration----#
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
+
+#----Shaders----#
+#custom-shader = /home/manu/.config/ghostty/shaders/cursor_frozen.glsl
+#custom-shader-animation = true

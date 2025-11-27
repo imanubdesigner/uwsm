@@ -79,8 +79,9 @@
 	"custom/launcher": {
 		"format": "󰣇",
 		"tooltip": false,
-		"on-click": "manu-launch-walker",
-    "on-click-right": "manu-walker-menu"
+		"on-click": "manu-walker-menu",
+    "on-click-right": "xdg-terminal-exec",
+    "tooltip-format": "Walker Menu\n\nSuper + Alt + Space"
 	},
 
 	/*--------------Pacman--------------------*/
@@ -98,7 +99,7 @@
 	"cpu": {
 		"format": "󰻠 ",
 		"tooltip": true,
-    "on-click":"manu-launch-btop"
+    "on-click":"manu-launch-or-focus-tui btop"
 	},
 	"memory": {
 		"format": " "
@@ -184,7 +185,7 @@
     "format-disabled": "󰂲",
     "format-connected": "",
     "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "manu-bluetooth-gui"
+    "on-click": "manu-launch-bluetooth"
   },
 
 	/*---------------Pulseaudio------------*/
@@ -196,7 +197,7 @@
 			]
 		},
 		"format-muted": "󰟎 Muted",
-		"on-click": "manu-audio-gui",
+		"on-click": "manu-launch-or-focus-tui wiremix",
     "on-click-right": "pamixer -t",
 		"scroll-step": 1,
     "tooltip": false

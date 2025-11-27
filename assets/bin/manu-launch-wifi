@@ -1,8 +1,4 @@
 #!/bin/bash
 
-#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┓ ┏┳  ┏┓┳
-#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┃┃┃┃━━┣ ┃
-#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┻┛┻  ┻ ┻
-#                    by Manu
-
-exec setsid uwsm-app -- "$TERMINAL" --class=Impala -e impala "$@"
+rfkill unblock wifi
+manu-launch-or-focus-tui impala

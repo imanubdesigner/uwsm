@@ -26,30 +26,30 @@ ln -snf \"\$THEME_DIR/gtk-4.0/gtk-dark.css\" /home/$SUDO_USER/.config/gtk-4.0/gt
   "Install Catppuccin GTK (tar.xz → ~/.themes + symlink GTK4, verbose)" "yes" "no"
 
 # -------------------- Papirus Icons theme + Catppuccin --------------------
-run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
-
-run_command "sudo -u $SUDO_USER git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" \
-  "Clone Papirus-folders" \
-  "yes" "no"
-
-run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papirus" \
-  "Catppuccin Mocha Papirus" \
-  "yes"
-
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" \
-  "Chown" \
-  "yes" "no"
-
-PAPIRUS_COMMANDS="cd papirus-folders && \
-curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && \
-chmod +x ./papirus-folders && \
-./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && \
-cd .. && \
-rm -rf papirus-folders"
-
-run_command "sudo -u $SUDO_USER sh -c 'cd /home/$SUDO_USER && $PAPIRUS_COMMANDS'" \
-  "Catppuccin Mocha Blue" \
-  "yes" "no"
+# run_command "wget -qO- https://git.io/papirus-icon-theme-install | sh" "Papirus Icons Theme" "yes" "no"
+#
+# run_command "sudo -u $SUDO_USER git clone https://github.com/catppuccin/papirus-folders.git /home/$SUDO_USER/papirus-folders" \
+#   "Clone Papirus-folders" \
+#   "yes" "no"
+#
+# run_command "cp -r /home/$SUDO_USER/papirus-folders/src/* /usr/share/icons/Papirus" \
+#   "Catppuccin Mocha Papirus" \
+#   "yes"
+#
+# run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/papirus-folders" \
+#   "Chown" \
+#   "yes" "no"
+#
+# PAPIRUS_COMMANDS="cd papirus-folders && \
+# curl -LO https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders && \
+# chmod +x ./papirus-folders && \
+# ./papirus-folders -C cat-mocha-blue --theme Papirus-Dark && \
+# cd .. && \
+# rm -rf papirus-folders"
+#
+# run_command "sudo -u $SUDO_USER sh -c 'cd /home/$SUDO_USER && $PAPIRUS_COMMANDS'" \
+#   "Catppuccin Mocha Blue" \
+#   "yes" "no"
 
 # -------------------- Catppuccin Kvantum Theme--------------------
 run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"

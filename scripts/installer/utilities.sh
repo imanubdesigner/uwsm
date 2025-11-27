@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm --needed localsend-bin gpu-screen-recorder walker-bin elephant-bin elephant-desktopapplications-bin elephant-files-bin elephant-websearch-bin elephant-clipboard-bin elephant-calc-bin elephant-runner-bin elephant-symbols-bin elephant-unicode-bin elephant-providerlist-bin elephant-menus-bin elephant-todo-bin waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "yes" "no"
+run_command "yay -S --sudoloop --noconfirm --needed xdg-terminal-exec humanity-icon-theme yaru-icon-theme hicolor-icon-theme localsend-bin gpu-screen-recorder walker-bin elephant-bin elephant-desktopapplications-bin elephant-files-bin elephant-websearch-bin elephant-clipboard-bin elephant-calc-bin elephant-runner-bin elephant-symbols-bin elephant-unicode-bin elephant-providerlist-bin elephant-menus-bin elephant-todo-bin waypaper gowall qview limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "yes" "no"
 
 # -------------------- Applications & mimeinfo --------------------
 run_command "\
@@ -24,6 +24,9 @@ run_command "cp $BASE_DIR/assets/logo.txt /home/$SUDO_USER/ && chown -R $SUDO_US
 
 # -------------------- Mimeapps --------------------
 run_command "cp $BASE_DIR/assets/mimeapps.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/mimeapps.list" "Copy mimeapps.list configuration" "yes" "no"
+
+# -------------------- xdg-terminals.list --------------------
+run_command "cp $BASE_DIR/assets/xdg-terminals.list /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/xdg-terminals.list" "Copy xdg-terminals.list configuration" "yes" "no"
 
 # -------------------- Scripts Folder Bin --------------------
 run_command "cp -r $BASE_DIR/assets/bin /home/$SUDO_USER/.local/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/bin" "Copy bin folder" "yes" "no"
