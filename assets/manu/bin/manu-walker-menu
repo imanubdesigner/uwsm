@@ -225,8 +225,8 @@ show_system_menu() {
   case $(menu "󰍹  System" "  󰌾  Lock\n  󰒲  Suspend\n  󰜉  Restart\n    Shutdown") in
   *Lock*) manu-lock-screen ;;
   *Suspend*) systemctl suspend ;;
-  *Restart*) manu-state clear re*-required && systemctl reboot --no-wall ;;
-  *Shutdown*) manu-state clear re*-required && systemctl poweroff --no-wall ;;
+  *Restart*) manu-cmd-reboot ;;
+  *Shutdown*) manu-cmd-shutdown ;;
   *) back_to show_main_menu ;;
   esac
 }
