@@ -15,4 +15,7 @@ run_command "pacman -S --needed --noconfirm hyprland hyprland-guiutils satty jq 
 run_command "systemctl --global enable waybar.service" \
   "Enable Waybar packaged user unit (no start now)" "yes" "yes"
 
+run_command "systemctl --global enable hyprsunset.service" \
+  "Enable Waybar packaged user unit (no start now)" "yes" "yes"
+
 echo "------------------------------------------------------------------------"
