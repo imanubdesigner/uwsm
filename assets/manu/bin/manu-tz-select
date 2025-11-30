@@ -55,4 +55,4 @@ gum style \
   --padding "0 1" \
   "$icon_restart  Restarting Waybar..."
 
-manu-waybar-refresh
+manu-restart-waybar
