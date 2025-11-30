@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┳┓┏┓┏┓┏┓┓ ┏┓  ┓ ┏┏┓┓┏┳┓┏┓┳┓
+#     ┃ ┃┃┃┓┃┓┃ ┣   ┃┃┃┣┫┗┫┣┫┣┫┣┫
+#     ┻ ┗┛┗┛┗┛┗┛┗┛  ┗┻┛┛┗┗┛┻┛┛┗┛┗
+#                         by Manu
+
 if pgrep -x waybar >/dev/null; then
   pkill -x waybar
 else

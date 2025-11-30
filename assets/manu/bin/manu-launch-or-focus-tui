@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┓ ┏┓┳┳┳┓┏┓┓┏        ┏┓┏┓┏┓┳┳┏┓  ┏┳┓┳┳┳
+#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┏┓┏┓  ┣ ┃┃┃ ┃┃┗┓   ┃ ┃┃┃
+#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┛   ┻ ┗┛┗┛┗┛┗┛   ┻ ┗┛┻
+#                                   by Manu
+
 APP_ID="org.manu.$(basename $1)"
 LAUNCH_COMMAND="manu-launch-tui $@"
 

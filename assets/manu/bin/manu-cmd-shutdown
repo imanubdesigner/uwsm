@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┓┳┳┓┳┓  ┏┓┓┏┳┳┏┳┓┳┓┏┓┓ ┏┳┓
+#    ┃ ┃┃┃┃┃  ┗┓┣┫┃┃ ┃ ┃┃┃┃┃┃┃┃┃
+#    ┗┛┛ ┗┻┛  ┗┛┛┗┗┛ ┻ ┻┛┗┛┗┻┛┛┗
+#                        by Manu
+
 manu-state clear re*-required
 manu-hyprland-window-close-all
 sleep 1 # Allow apps like Chrome to shutdown correctly
