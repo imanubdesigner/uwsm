@@ -13,5 +13,5 @@ if pgrep -x "1password" >/dev/null; then
   1password --lock &
 fi
 
-# # Avoid running screensaver when locked
-# pkill -f "kitty --class Screensaver"
+# Avoid running screensaver when locked
+pkill -f org.manu.screensaver
