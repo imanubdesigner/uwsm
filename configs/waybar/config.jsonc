@@ -101,7 +101,7 @@
     "on-click":"manu-launch-or-focus-tui btop"
 	},
 	"memory": {
-		"format": " "
+		"format": " "
 	},
   "temperature": {
     "hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
