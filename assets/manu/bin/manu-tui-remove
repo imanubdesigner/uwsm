@@ -11,7 +11,7 @@ DESKTOP_DIR="$HOME/.local/share/applications/"
 if [ "$#" -eq 0 ]; then
   # Find all TUIs
   while IFS= read -r -d '' file; do
-    if grep -q '^Exec=.*$TERMINAL.*-e' "$file"; then
+    if grep -qE '^Exec=.*(\$TERMINAL|xdg-terminal-exec).*-e' "$file"; then
       TUIS+=("$(basename "${file%.desktop}")")
     fi
   done < <(find "$DESKTOP_DIR" -name '*.desktop' -print0)
@@ -26,7 +26,7 @@ if [ "$#" -eq 0 ]; then
       [[ -n "$line" ]] && APP_NAMES+=("$line")
     done <<<"$APP_NAMES_STRING"
   else
-    echo "   No TUIs to remove."
+    echo "  No TUIs to remove."
     exit 1
   fi
 else
