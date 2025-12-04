@@ -110,14 +110,12 @@ show_capture_menu() {
 
 show_screenshot_menu() {
   case $(menu "󰄄  Screenshot" \
-    "  󰩬  Region – Copy only\n  󰩬  Region – Save file\n  󰩬  Region – Edit in Satty\n    Fullscreen – Copy only\n    Fullscreen – Save file\n    Fullscreen – Edit in Satty") in
+    "  󰩬  Region – Edit in Satty\n  󰩬  Region – Copy only\n    Fullscreen – Edit in Satty\n    Fullscreen – Copy only") in
 
-  *"Region – Copy"*) manu-screenshot rc ;;
-  *"Region – Save"*) manu-screenshot rf ;;
-  *"Region – Edit"*) manu-screenshot ri ;;
-  *"Fullscreen – Copy"*) manu-screenshot sc ;;
-  *"Fullscreen – Save"*) manu-screenshot sf ;;
-  *"Fullscreen – Edit"*) manu-screenshot si ;;
+  *"Region – Edit"*) manu-screenshot ;;
+  *"Region – Copy"*) manu-screenshot smart clipboard ;;
+  *"Fullscreen – Edit"*) manu-screenshot fullscreen ;;
+  *"Fullscreen – Copy"*) manu-screenshot fullscreen clipboard ;;
   *) show_capture_menu ;;
   esac
 }

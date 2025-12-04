@@ -5,98 +5,115 @@
 #    ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛ ┻   ┗┛┗┛┛┗┻┣┛ ┻
 #                                by Manu
 
-# ┌──────────────────────────────┐
-# │          FLAGS               │
-# ├──────────┬───────────────────┤
-# │   r c    │ region → clipboard│
-# │   r f    │ region → file     │
-# │   r i    │ region → i(satty) │
-# │   s c    │ screen → clipboard│
-# │   s f    │ screen → file     │
-# │   s i    │ screen → i(satty) │
-# │   p      │ pick color        │
-# └──────────┴───────────────────┘
+set -euo pipefail
 
-OUTPUT_DIR="${HOME}/Pictures/Screenshots"
-mkdir -p "$OUTPUT_DIR"
+# Output directory: MANU_SCREENSHOT_DIR or default ~/Pictures/screenshots
+MANU_SCREENSHOT_DIR="${MANU_SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
+OUTPUT_DIR="$MANU_SCREENSHOT_DIR"
 
-# ────────────────────────────────────────────────
-# Region → Clipboard
-# ────────────────────────────────────────────────
-if [[ $1 == rc ]]; then
-  region=$(slurp -b '#000000b0' -c '#00000000') || exit 0
-  [[ -z "$region" ]] && exit 0
+# Ensure output directory exists
+if ! mkdir -p "$OUTPUT_DIR"; then
+  notify-send "  manu-screenshot" "  Failed to create directory: $OUTPUT_DIR" -u critical -t 4000
+  exit 1
+fi
 
-  grim -g "$region" - | wl-copy
-  notify-send "󰄄  Screenshot" "󰅍  Region copied to clipboard"
+# Nerd Font PUA icons
+ICON_TITLE=$'\uF030'  # camera
+ICON_CLIP=$'\uF0C5'   # clipboard
+ICON_ERROR=$'\uF06A'  # warning/error
+ICON_CANCEL=$'\uF00D' # cancel
 
-# ────────────────────────────────────────────────
-# Region → File
-# ────────────────────────────────────────────────
-elif [[ $1 == rf ]]; then
-  region=$(slurp -b '#000000b0' -c '#00000000') || exit 0
-  [[ -z "$region" ]] && exit 0
+# Kill existing slurp (double press cancels)
+pkill slurp && exit 0 || true
 
-  filename="$OUTPUT_DIR/$(date +%Y-%m-%d_%H-%M-%S).png"
-  grim -g "$region" "$filename" &&
-    notify-send "󰄄  Screenshot" "󰆓  Saved to $filename"
+MODE="${1:-smart}"
+PROCESSING="${2:-slurp}"
 
-# ────────────────────────────────────────────────
-# Region → Interactive (Satty)
-# ────────────────────────────────────────────────
-elif [[ $1 == ri ]]; then
-  region=$(slurp -b '#000000b0' -c '#00000000') || exit 0
-  [[ -z "$region" ]] && exit 0
+# Get monitor + window rectangles for active workspace
+get_rectangles() {
+  local active_workspace
+  active_workspace=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .activeWorkspace.id')
+  hyprctl monitors -j | jq -r --arg ws "$active_workspace" \
+    '.[] | select(.activeWorkspace.id == ($ws | tonumber)) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"'
+  hyprctl clients -j | jq -r --arg ws "$active_workspace" \
+    '.[] | select(.workspace.id == ($ws | tonumber)) | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"'
+}
 
-  out="$OUTPUT_DIR/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
+# Selection logic
+case "$MODE" in
+region)
+  wayfreeze &
+  PID=$!
+  sleep 0.1
+  SELECTION=$(slurp 2>/dev/null || true)
+  kill $PID 2>/dev/null || true
+  ;;
+windows)
+  wayfreeze &
+  PID=$!
+  sleep 0.1
+  SELECTION=$(get_rectangles | slurp -r 2>/dev/null || true)
+  kill $PID 2>/dev/null || true
+  ;;
+fullscreen)
+  SELECTION=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"')
+  ;;
+smart | *)
+  RECTS=$(get_rectangles)
+  wayfreeze &
+  PID=$!
+  sleep 0.1
+  SELECTION=$(echo "$RECTS" | slurp 2>/dev/null || true)
+  kill $PID 2>/dev/null || true
 
-  grim -g "$region" - | satty --filename - \
-    --output-filename "$out" \
+  # Tiny click -> choose window/monitor
+  if [[ "$SELECTION" =~ ^([0-9]+),([0-9]+)[[:space:]]([0-9]+)x([0-9]+)$ ]]; then
+    if ((${BASH_REMATCH[3]} * ${BASH_REMATCH[4]} < 20)); then
+      click_x="${BASH_REMATCH[1]}"
+      click_y="${BASH_REMATCH[2]}"
+      while IFS= read -r rect; do
+        if [[ "$rect" =~ ^([0-9]+),([0-9]+)[[:space:]]([0-9]+)x([0-9]+) ]]; then
+          rect_x="${BASH_REMATCH[1]}"
+          rect_y="${BASH_REMATCH[2]}"
+          rect_width="${BASH_REMATCH[3]}"
+          rect_height="${BASH_REMATCH[4]}"
+          if ((click_x >= rect_x && click_x < rect_x + rect_width && click_y >= rect_y && click_y < rect_y + rect_height)); then
+            SELECTION="${rect_x},${rect_y} ${rect_width}x${rect_height}"
+            break
+          fi
+        fi
+      done <<<"$RECTS"
+    fi
+  fi
+  ;;
+esac
+
+# Cancel selection
+if [ -z "${SELECTION:-}" ]; then
+  notify-send "${ICON_TITLE}  manu-screenshot" "${ICON_CANCEL}  Selection cancelled." -u low -t 1200
+  exit 0
+fi
+
+TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')
+OUTPUT_FILE="$OUTPUT_DIR/screenshot-$TIMESTAMP.png"
+
+# Capture & processing
+if [[ $PROCESSING == "slurp" ]]; then
+  # Slurp mode: handled interactively by Satty, no extra notifications
+  grim -g "$SELECTION" - | satty --filename - \
+    --output-filename "$OUTPUT_FILE" \
     --early-exit \
     --actions-on-enter save-to-clipboard \
     --save-after-copy \
-    --copy-command 'wl-copy'
-
-  # notify only if the file was actually created (not canceled)
-  [[ -f "$out" ]] && notify-send "󰄄  Screenshot" "󰙀  Region edited & copied"
-
-# ────────────────────────────────────────────────
-# Screen → Clipboard
-# ────────────────────────────────────────────────
-elif [[ $1 == sc ]]; then
-  grim - | wl-copy &&
-    notify-send "󰄄  Screenshot" "󰅍  Screen copied to clipboard"
-
-# ────────────────────────────────────────────────
-# Screen → File
-# ────────────────────────────────────────────────
-elif [[ $1 == sf ]]; then
-  filename="$OUTPUT_DIR/$(date +%Y-%m-%d_%H-%M-%S).png"
-  grim "$filename" &&
-    notify-send "󰄄  Screenshot" "󰆓  Saved to $filename"
-
-# ────────────────────────────────────────────────
-# Screen → Interactive (Satty)
-# ────────────────────────────────────────────────
-elif [[ $1 == si ]]; then
-  out="$OUTPUT_DIR/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
-
-  grim - | satty --filename - \
-    --output-filename "$out" \
-    --early-exit \
-    --actions-on-enter save-to-clipboard \
-    --save-after-copy \
-    --copy-command 'wl-copy'
-
-  [[ -f "$out" ]] && notify-send "󰄄  Screenshot" "󰙀  Screen edited & copied"
-
-# ────────────────────────────────────────────────
-# Color Picker
-# ────────────────────────────────────────────────
-elif [[ $1 == p ]]; then
-  color=$(hyprpicker -a)
-  if [[ $? -eq 0 && -n $color ]]; then
-    wl-copy "$color"
-    notify-send "󰏘  Color Picker" "󰅍  Copied $color to clipboard"
+    --copy-command 'wl-copy' || true
+else
+  # Clipboard mode: notify user
+  if grim -g "$SELECTION" - | wl-copy; then
+    notify-send "${ICON_TITLE}  manu-screenshot" "${ICON_CLIP}  Image copied to clipboard" -u low -t 2000
+  else
+    notify-send "${ICON_TITLE}  manu-screenshot" "${ICON_ERROR}  Failed to copy image to clipboard." -u critical -t 4000
+    exit 1
   fi
 fi
+
+exit 0
