@@ -1,18 +1,33 @@
+# ============================
+# Bat universal configuration
+# Catppuccin Mocha theme
+# ============================
+
 # Theme
 --theme="Catppuccin Mocha"
 
-# Display style options:
+# Display style options
 # numbers  = show line numbers
 # changes  = highlight modified lines in git
 # header   = show file header
---style=numbers,changes,header
+--style="numbers,changes,header"
 
-# Pager (must be quoted)
---pager="less -FR"
+# Pager (must be quoted to preserve options)
+--pager="less -FRX"
 
 # Automatic wrapping for long lines
---wrap=auto
+--wrap="auto"
 
-# Always show colors, even when output is piped
---color=always
+# Always show colors, even when output is redirected or piped
+--color="always"
 
+# Map custom syntaxes for config files
+# Ensures that Hyprland config files use 'conf' highlighting
+--map-syntax="hypr*.conf:conf"
+
+# Optional additional mappings for other config-like files
+--map-syntax="*.cfg:conf"
+--map-syntax="*.ini:conf"
+--map-syntax="*.toml:toml"
+--map-syntax="*.yaml:yaml"
+--map-syntax="*.yml:yaml"
