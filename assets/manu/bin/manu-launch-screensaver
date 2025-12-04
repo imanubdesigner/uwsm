@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┓┏┓┳┓┏┓┏┓┳┓┏┓┏┓┓┏┏┓┳┓
+#    ┗┓┃ ┣┫┣ ┣ ┃┃┗┓┣┫┃┃┣ ┣┫
+#    ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛┗┛┛┗
+#    Thanks to DHH/Omarchy
+
 # Exit early if we don't have the tte show
 if ! command -v tte &>/dev/null; then
   exit 1

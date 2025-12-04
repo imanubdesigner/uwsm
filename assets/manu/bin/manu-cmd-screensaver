@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┓┏┓┳┓┏┓┏┓┳┓┏┓┏┓┓┏┏┓┳┓
+#    ┗┓┃ ┣┫┣ ┣ ┃┃┗┓┣┫┃┃┣ ┣┫
+#    ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛┗┛┛┗
+#    Thanks to DHH/Omarchy
+
 screensaver_in_focus() {
   hyprctl activewindow -j | jq -e '.class == "org.manu.screensaver"' >/dev/null 2>&1
 }

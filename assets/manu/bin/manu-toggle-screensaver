@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#    ┏┓┏┓┳┓┏┓┏┓┳┓┏┓┏┓┓┏┏┓┳┓
+#    ┗┓┃ ┣┫┣ ┣ ┃┃┗┓┣┫┃┃┣ ┣┫
+#    ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛┗┛┛┗
+#    Thanks to DHH/Omarchy
+
 STATE_FILE=~/.local/state/manu/toggles/screensaver-off
 
 if [[ -f $STATE_FILE ]]; then
