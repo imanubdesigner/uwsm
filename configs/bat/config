@@ -1,22 +1,18 @@
-# -------------------------
-# Bat config - Catppuccin base
-# -------------------------
-
-# Tema Catppuccin
+# Theme
 --theme="Catppuccin Mocha"
 
-# Stile del file
-# numbers = numeri di riga
-# changes = evidenzia righe modificate in git
-# header = mostra intestazione con nome file
+# Display style options:
+# numbers  = show line numbers
+# changes  = highlight modified lines in git
+# header   = show file header
 --style=numbers,changes,header
 
-# Pager integrato
+# Pager (must be quoted)
 --pager="less -FR"
 
-# Evidenziazione automatica dei file
+# Automatic wrapping for long lines
 --wrap=auto
 
-# Mostra sempre i colori anche se output ridirezionato
+# Always show colors, even when output is piped
 --color=always
 
