@@ -109,12 +109,9 @@ show_capture_menu() {
 }
 
 show_screenshot_menu() {
-  case $(menu "󰄄  Screenshot" \
-    "  󰩬  Region – Edit in Satty\n  󰩬  Region – Copy only\n    Fullscreen – Edit in Satty") in
-
-  *"Region – Edit"*) manu-screenshot ;;
-  *"Region – Copy"*) manu-screenshot smart ;;
-  *"Fullscreen – Edit"*) manu-screenshot fullscreen ;;
+  case $(menu "󰄄  Screenshot" "  Snap with Editing\n  Straight to Clipboard") in
+  *Editing*) manu-screenshot smart ;;
+  *Clipboard*) manu-screenshot smart clipboard ;;
   *) show_capture_menu ;;
   esac
 }
