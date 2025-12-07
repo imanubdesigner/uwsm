@@ -5,7 +5,7 @@
 #    ┛ ┗┗┛┻┛┻┛┗  ┻┛┗┛┗┻┛┛┗┗┛┗┛┛┗┻┛┗┛┛┗
 #                              by Manu
 
-source "$HOME/.local/bin/manu-helper"
+source "$HOME/.local/share/manu/bin/manu-helper"
 
 clear
 log_header "Media Downloader"
