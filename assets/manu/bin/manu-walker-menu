@@ -186,10 +186,11 @@ show_restart_menu() {
 
 show_restart_apps_menu() {
   case $(menu "  Restart Apps" \
-    "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Hypridle\n    Hyprsunset") in
+    "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Swayosd\n    Hypridle\n    Hyprsunset") in
   *Sudo*) present_terminal manu-reset-sudo ;;
   *Walker*) manu-restart-walker ;;
   *Waybar*) manu-restart-waybar ;;
+  *Swayosd*) manu-restart-swayosd ;;
   *Hypridle*) manu-restart-hypridle ;;
   *Hyprsunset*) manu-restart-hyprsunset ;;
   *) show_restart_menu ;;
