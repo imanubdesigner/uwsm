@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#         ┓  ┳┳┓┳┏┓┏┓┳┳┓┏┓
+#    ┏┏┳┓┏┫  ┃┃┃┃┗┓┗┓┃┃┃┃┓
+#    ┗┛┗┗┗┻  ┛ ┗┻┗┛┗┛┻┛┗┗┛
+#                  by Manu
+
 for cmd in "$@"; do
   if ! command -v "$cmd" &>/dev/null; then
     exit 0
