@@ -10,10 +10,5 @@ Target = limine-git
 Description = Remove /boot/EFI/.../limine.conf to keep /boot/limine.conf authoritative
 When = PostTransaction
 Depends = bash
-Exec = /usr/bin/bash -c '
-for dir in /boot/EFI/arch-limine /boot/EFI/limine; do
-    if [ -d "$dir" ]; then
-        /usr/bin/rm -f "$dir/limine.conf" || true
-    fi
-done
-'
+Exec = /usr/bin/bash -c 'for dir in /boot/EFI/arch-limine /boot/EFI/limine; do if [ -d "$dir" ]; then /usr/bin/rm -f "$dir/limine.conf" || true; fi; done'
+
