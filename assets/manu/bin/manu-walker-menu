@@ -137,7 +137,7 @@ show_share_menu() {
 }
 
 show_toggle_menu() {
-  case $(menu "Toggle" "󱄄  Screensaver\n    Nightlight\n    Idle Lock\n  󰖯  Top Bar") in
+  case $(menu "Toggle" "󱄄  Screensaver\n    Nightlight\n  󱫖  Idle Lock\n  󰖯  Top Bar") in
   *Screensaver*) manu-toggle-screensaver ;;
   *Nightlight*) manu-night-toggle ;;
   *Idle*) manu-idle-toggle ;;
@@ -186,7 +186,7 @@ show_restart_menu() {
 
 show_restart_apps_menu() {
   case $(menu "Restart Apps" \
-    "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Swayosd\n    Hypridle\n    Hyprsunset\n  󰞅  XCompose") in
+    "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Swayosd\n  󱫖  Hypridle\n    Hyprsunset\n  󰞅  XCompose") in
   *Sudo*) present_terminal manu-reset-sudo ;;
   *Walker*) manu-restart-walker ;;
   *Waybar*) manu-restart-waybar ;;
@@ -220,10 +220,9 @@ show_tools_menu() {
 }
 
 show_system_menu() {
-  case $(menu "System" "  󰌾  Lock\n  󱄄  Screensaver\n  󰒲  Suspend\n  󰜉  Restart\n    Shutdown") in
+  case $(menu "System" "  󰌾  Lock\n  󱄄  Screensaver\n  󰜉  Restart\n    Shutdown") in
   *Lock*) manu-lock-screen ;;
   *Screensaver*) manu-launch-screensaver force ;;
-  *Suspend*) systemctl suspend ;;
   *Restart*) manu-cmd-reboot ;;
   *Shutdown*) manu-cmd-shutdown ;;
   *) back_to show_main_menu ;;
