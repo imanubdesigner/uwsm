@@ -5,7 +5,7 @@
 }
 
 * {
-  font-family: "Liga SFMono Nerd Font", "JetBrainsMono Nerd Font Propo", "Symbols Nerd Font Mono", monospace;
+  font-family: monospace;
   font-size: 18px;
   color: @text;
 }
