@@ -35,7 +35,7 @@ if [[ -n "$font_name" && "$font_name" != "CNCLD" ]]; then
     manu-restart-swayosd
 
     if pgrep -x ghostty; then
-      notify-send "    You must restart Ghostty to see font change"
+      notify-send "  You must restart Ghostty to see font change"
     fi
 
     manu-hook font-set "$font_name"
