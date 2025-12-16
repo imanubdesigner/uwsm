@@ -1,6 +1,8 @@
 # Changes require a restart to take effect.
-# Ensure Bin are in the path
-export PATH="$HOME/.local/share/manu/bin:$PATH"
+
+# Ensure Manu bins are in the path
+export MANU_PATH=$HOME/.local/share/manu
+export PATH=$MANU_PATH/bin:$PATH
 
 # Set default terminal and editor
 source ~/.config/uwsm/default
