@@ -19,7 +19,7 @@ fi
 # ────────────────────────────────────────────────
 #  Settings
 # ────────────────────────────────────────────────
-PACMAN="sudo pacman -Syu"
+PACMAN="sudo pacman -Syyu"
 PACMAN_LOG="/var/log/pacman.log"
 STATE_DIR="$HOME/.local/state/manu"
 mkdir -p "$STATE_DIR"
