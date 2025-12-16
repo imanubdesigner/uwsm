@@ -79,7 +79,7 @@ aur_install_and_launch() {
 }
 
 show_learn_menu() {
-  case $(menu "Learn" "    Hyprland\n    Arch\n    Neovim\n    Bash\n  󱣻  Gowall\n  󰇥  Yazi") in
+  case $(menu "Learn" "  Hyprland\n  Arch\n  Neovim\n  Bash\n󱣻  Gowall\n󰇥  Yazi") in
   *Hyprland*) manu-launch-webapp "https://wiki.hypr.land/" ;;
   *Arch*) manu-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
   *Bash*) manu-launch-webapp "https://devhints.io/bash" ;;
@@ -91,7 +91,7 @@ show_learn_menu() {
 }
 
 show_trigger_menu() {
-  case $(menu "Trigger" "    Capture\n    Share\n  󰨚  Toggle") in
+  case $(menu "Trigger" "  Capture\n  Share\n󰨚  Toggle") in
   *Capture*) show_capture_menu ;;
   *Share*) show_share_menu ;;
   *Toggle*) show_toggle_menu ;;
@@ -100,7 +100,7 @@ show_trigger_menu() {
 }
 
 show_capture_menu() {
-  case $(menu "Capture" "  󰄄  Screenshot\n    Screenrecord\n    Color") in
+  case $(menu "Capture" "󰄄  Screenshot\n  Screenrecord\n  Color") in
   *Screenshot*) show_screenshot_menu ;;
   *Screenrecord*) show_screenrecord_menu ;;
   *Color*) pkill hyprpicker || hyprpicker -a ;;
@@ -118,7 +118,7 @@ show_screenshot_menu() {
 
 show_screenrecord_menu() {
   case $(menu "Screen Record" \
-    "  󰩬  Region\n  󰩬  Region + Audio\n    Fullscreen\n    Fullscreen + Audio") in
+    "󰩬  Region\n󰩬  Region + Audio\n  Fullscreen\n  Fullscreen + Audio") in
   *"Region + Audio"*) manu-cmd-screenrecord region --with-audio ;;
   *Region*) manu-cmd-screenrecord region ;;
   *"Fullscreen + Audio"*) manu-cmd-screenrecord output --with-audio ;;
@@ -137,7 +137,7 @@ show_share_menu() {
 }
 
 show_toggle_menu() {
-  case $(menu "Toggle" "󱄄  Screensaver\n    Nightlight\n  󱫖  Idle Lock\n  󰖯  Top Bar") in
+  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar") in
   *Screensaver*) manu-toggle-screensaver ;;
   *Nightlight*) manu-night-toggle ;;
   *Idle*) manu-idle-toggle ;;
@@ -166,7 +166,7 @@ show_font_menu() {
 }
 
 show_install_menu() {
-  case $(menu "Install" "  󰣇  Package\n  󰂓  AUR\n  󰖟  Web App\n  󰞷  TUI\n    Chromium") in
+  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
@@ -177,7 +177,7 @@ show_install_menu() {
 }
 
 show_remove_menu() {
-  case $(menu "Remove" "  󰣇  Package\n    Web App\n    TUI\n  󰮯  Cache Packages") in
+  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages") in
   *Cache*) terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
@@ -187,7 +187,7 @@ show_remove_menu() {
 }
 
 show_update_menu() {
-  case $(menu "Update" "  󰣇  Pacman\n    Firmware") in
+  case $(menu "Update" "󰣇  Pacman\n  Firmware") in
   *Pacman*) present_terminal manu-update-system ;;
   *Firmware*) present_terminal manu-update-firmware ;;
   *) show_main_menu ;;
@@ -195,7 +195,7 @@ show_update_menu() {
 }
 
 show_restart_menu() {
-  case $(menu "Restart" "  󰄄  Apps\n  󰘓  Hardware") in
+  case $(menu "Restart" "󰄄  Apps\n󰘓  Hardware") in
   *Apps*) show_restart_apps_menu ;;
   *Hardware*) show_restart_hardware_menu ;;
   *) show_main_menu ;;
@@ -204,7 +204,7 @@ show_restart_menu() {
 
 show_restart_apps_menu() {
   case $(menu "Restart Apps" \
-    "  󰡗  Sudo\n  󱓞  Walker\n    Waybar\n    Swayosd\n  󱫖  Hypridle\n    Hyprsunset\n  󰞅  XCompose") in
+    "󰡗  Sudo\n󱓞  Walker\n  Waybar\n  Swayosd\n󱫖  Hypridle\n  Hyprsunset\n󰞅  XCompose") in
   *Sudo*) present_terminal manu-reset-sudo ;;
   *Walker*) manu-restart-walker ;;
   *Waybar*) manu-restart-waybar ;;
@@ -227,7 +227,7 @@ show_restart_hardware_menu() {
 }
 
 show_tools_menu() {
-  case $(menu "  Tools" " 󰦗  Media Downloader\n  󱣻  Gowall\n  󱊞  ISO to USB\n  󰣌  Image Converter\n    Video Converter") in
+  case $(menu "Tools" "󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
   *"Media Downloader"*) present_terminal manu-media-download ;;
   *Gowall*) present_terminal manu-gowall-tool ;;
   *"ISO to USB"*) present_terminal manu-write-iso ;;
@@ -238,7 +238,7 @@ show_tools_menu() {
 }
 
 show_system_menu() {
-  case $(menu "System" "  󰌾  Lock\n  󱄄  Screensaver\n  󰜉  Restart\n    Shutdown") in
+  case $(menu "System" "󰌾  Lock\n󱄄  Screensaver\n󰜉  Restart\n  Shutdown") in
   *Lock*) manu-lock-screen ;;
   *Screensaver*) manu-launch-screensaver force ;;
   *Restart*) manu-cmd-reboot ;;
@@ -249,7 +249,7 @@ show_system_menu() {
 
 show_main_menu() {
   go_to_menu "$(menu "󰕰  Go" \
-    "  󰵆  App\n    Learn\n    Trigger\n    Style\n    Install\n    Remove\n  󰚰  Update\n    Restart\n    Tools\n  󰋽  About\n    System")"
+    "󰵆  App\n  Learn\n  Trigger\n  Style\n  Install\n  Remove\n󰚰  Update\n  Restart\n  Tools\n󰋽  About\n  System")"
 }
 
 go_to_menu() {
