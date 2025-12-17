@@ -17,7 +17,6 @@ export GUM_CHOOSE_HEADER_FOREGROUND="#89b4fa"
 export GUM_CONFIRM_PROMPT_FOREGROUND="#f5e0dc"
 export GUM_CONFIRM_SELECTED_FOREGROUND="#89dceb"
 export GUM_CONFIRM_UNSELECTED_FOREGROUND="#89b4fa"
-# Removed GUM_SPIN colors to enforce direct command execution and prevent deadlocks
 
 # ──────────────────────────────────────────────────────────────────────────────
 # 󰣜  Check for gum
@@ -81,7 +80,6 @@ bytes_to_human() {
   if [ "$bytes" -eq 0 ]; then
     echo "0 B"
   else
-    # Use numfmt for clean human-readable output (preferred over basic shell loop)
     numfmt --to=iec-i --suffix=B "$bytes" 2>/dev/null || echo "${bytes} B"
   fi
 }
@@ -107,7 +105,7 @@ clean_pacman() {
   local size_before=$(get_cache_size_bytes "/var/cache/pacman/pkg")
   local success=0
 
-  # CRITICAL FIX: Check and remove Pacman lock file to prevent "unable to lock database" error
+  # Check and remove Pacman lock file to prevent "unable to lock database" error
   if [ -f /var/lib/pacman/db.lck ]; then
     gum style --foreground="#ed8796" "󰎺  Found Pacman lock file (db.lck). Removing..."
     sudo rm /var/lib/pacman/db.lck
@@ -116,22 +114,43 @@ clean_pacman() {
 
   case $option in
   "Keep last 3 versions")
-    # Paccache non è interattivo, l'esecuzione diretta dovrebbe funzionare.
     gum spin --title "󰮯  Cleaning pacman cache (keep last 3 versions)..." -- sudo paccache -r
     success=$?
     ;;
   "Keep last version only")
-    # Paccache non è interattivo, l'esecuzione diretta dovrebbe funzionare.
     gum spin --title "󰮯  Cleaning pacman cache (keep last version)..." -- sudo paccache -rk1
     success=$?
     ;;
   "Remove all cached packages")
     if gum confirm --default=false "󰗡  Remove ALL cached pacman packages?"; then
-      # CORREZIONE FINALE: Forziamo l'input 'y' per rispondere a tutte le
-      # domande interattive di pacman -Scc (rimuovere repo non usati e tutti i file).
-      # Usiamo 'yes |' come nell'originale ma con 'y' per le risposte affermative.
-      gum spin --title "󰮯  Removing all cached packages..." -- bash -c 'yes y | sudo pacman -Scc'
-      success=$?
+      # Check if cache is empty
+      local pkg_count=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
+
+      if [ "$pkg_count" -eq 0 ]; then
+        gum style --foreground="#89b4fa" "   ↳  Cache already empty, nothing to remove"
+        return
+      fi
+
+      gum style --foreground="#89b4fa" "󰮯  Removing all cached packages..."
+
+      # Run pacman -Scc and capture output/errors separately
+      yes y | sudo pacman -Scc >/tmp/pacman_clean.log 2>&1
+      success=${PIPESTATUS[1]}
+
+      # Clean up temporary download directories AFTER pacman runs
+      sudo find /var/cache/pacman/pkg -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
+
+      # Check if cache was actually cleaned
+      local pkg_count_after=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
+
+      if [ "$pkg_count_after" -eq 0 ]; then
+        # Cache is empty = success, ignore error 253
+        success=0
+        gum style --foreground="#94e2d5" "󰮯  All cached packages removed successfully"
+      else
+        # Cache still has files = real error
+        gum style --foreground="#ed8796" "󰅙  Failed to clean cache completely. Check /tmp/pacman_clean.log"
+      fi
     else
       gum style --foreground="#89b4fa" "   ↳  Skipped"
       return
@@ -148,7 +167,7 @@ clean_pacman() {
     gum style --foreground="#94e2d5" "󰄬  Pacman cache cleaned successfully!"
     gum style --foreground="#89dceb" --bold "   󰌪  Space freed: $freed_human"
   else
-    gum style --foreground="#ed8796" "󰅙  Error (Code $success) during Pacman cleanup. Check terminal output."
+    gum style --foreground="#ed8796" "󰅙  Error (Code $success) during Pacman cleanup."
   fi
   echo ""
 }
@@ -168,19 +187,46 @@ clean_yay() {
 
   case $option in
   "Remove uninstalled packages")
-    gum confirm --default=false "󰗡  Remove uninstalled AUR packages cache?" && {
-      # Execute directly with --noconfirm
-      gum style --foreground="#89b4fa" "󰚰  Executing: Removing uninstalled packages cache (yay -Sc --noconfirm)..."
-      yay -Sc --noconfirm
-      success=$?
-    }
+    if gum confirm --default=false "󰗡  Remove uninstalled AUR packages cache?"; then
+      gum style --foreground="#89b4fa" "󰚰  Removing uninstalled packages cache..."
+      yes | yay -Sc 2>&1 | tee /tmp/yay_clean.log
+      success=${PIPESTATUS[1]}
+
+      if [ "$success" -ne 0 ]; then
+        gum style --foreground="#ed8796" "󰅙  Yay returned code $success. Log saved to /tmp/yay_clean.log"
+      fi
+    else
+      gum style --foreground="#89b4fa" "   ↳  Skipped"
+      return
+    fi
     ;;
   "Remove all cached packages")
     if gum confirm --default=false "󰗡  Remove ALL AUR package cache?"; then
-      # Execute directly with --noconfirm
-      gum style --foreground="#89b4fa" "󰚰  Executing: Removing all packages cache (yay -Scc --noconfirm)..."
-      yay -Scc --noconfirm
-      success=$?
+      gum style --foreground="#89b4fa" "󰚰  Removing all packages cache..."
+
+      # Run yay -Scc and capture output/errors separately
+      yes | yay -Scc >/tmp/yay_clean.log 2>&1
+      success=${PIPESTATUS[1]}
+
+      # Clean up temporary download directories AFTER yay runs
+      if [ -d "$HOME/.cache/yay" ]; then
+        find "$HOME/.cache/yay" -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
+      fi
+
+      # Check if yay cache was actually cleaned
+      local remaining_pkgs=0
+      if [ -d "$HOME/.cache/yay" ]; then
+        remaining_pkgs=$(find "$HOME/.cache/yay" -name "*.pkg.tar*" 2>/dev/null | wc -l)
+      fi
+
+      if [ "$remaining_pkgs" -eq 0 ]; then
+        # Cache is empty = success, ignore error 253
+        success=0
+        gum style --foreground="#94e2d5" "󰚰  All cached packages removed successfully"
+      else
+        # Cache still has files = real error
+        gum style --foreground="#ed8796" "󰅙  Failed to clean cache completely. Check /tmp/yay_clean.log"
+      fi
     else
       gum style --foreground="#89b4fa" "   ↳  Skipped"
       return
@@ -196,7 +242,7 @@ clean_yay() {
     gum style --foreground="#94e2d5" "󰄬  Yay cache cleaned successfully!"
     gum style --foreground="#89dceb" --bold "   󰌪  Space freed: $freed_human"
   else
-    gum style --foreground="#ed8796" "󰅙  Error (Code $success) during Yay cleanup. Check terminal output."
+    gum style --foreground="#ed8796" "󰅙  Error (Code $success) during Yay cleanup."
   fi
   echo ""
 }
