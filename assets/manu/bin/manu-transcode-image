@@ -5,7 +5,7 @@
 #     ┻ ┛┗┛┗┛┗┗┛┗┛┗┛┻┛┗┛  ┻┛ ┗┛┗┗┛┗┛
 #                            by Manu
 
-source "$HOME/.local/share/manu/bin/manu-helper"
+source "$MANU_PATH/bin/manu-helper"
 
 set -e
 
