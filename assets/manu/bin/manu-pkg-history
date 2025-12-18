@@ -15,15 +15,15 @@ fetch_events() {
         case "$action" in
             installed)
                 icon=""
-                color="#A6E3A1"  # Green
+                color="#A6E3A1"
                 ;;
             upgraded)
                 icon=""
-                color="#89B4FA"  # Blue
+                color="#89B4FA"
                 ;;
             removed)
                 icon=""
-                color="#F28FAD"  # Red
+                color="#F28FAD"
                 ;;
             *)
                 icon=""
@@ -31,19 +31,42 @@ fetch_events() {
                 ;;
         esac
 
-        # Print with color using gum style
         gum style --foreground "$color" <<< "$date_time $icon $package"
     done
 }
 
-choice=$(gum choose "Show last 10 events" "Show last 20 events" "Show last 50 events" "Exit")
+# ── Title box ────────────────────────────────────────────────────────────────
+gum style \
+  --border normal \
+  --border-foreground "#89B4FA" \
+  --foreground "#89B4FA" \
+  --bold \
+  --align center \
+  --width 60 \
+  "  Recent Pacman Package Events"
+
+# ── Legend ───────────────────────────────────────────────────────────────────
+gum style --align center --width 60 <<EOF
+$(gum style --foreground "#A6E3A1" " installed")   \
+$(gum style --foreground "#89B4FA" " upgraded")   \
+$(gum style --foreground "#F28FAD" " removed")
+EOF
+
+# ── Menu ─────────────────────────────────────────────────────────────────────
+choice=$(gum choose \
+  "󰈙  Show last 10 events" \
+  "󰈚  Show last 20 events" \
+  "󰆍  Show last 50 events" \
+  "  Exit")
+
 case "$choice" in
-    "Show last 10 events") limit=10 ;;
-    "Show last 20 events") limit=20 ;;
-    "Show last 50 events") limit=50 ;;
-    "Exit") exit 0 ;;
+    "󰈙  Show last 10 events") limit=10 ;;
+    "󰈚  Show last 20 events") limit=20 ;;
+    "󰆍  Show last 50 events") limit=50 ;;
+    "  Exit") exit 0 ;;
     *) exit 0 ;;
 esac
 
+# ── Output ───────────────────────────────────────────────────────────────────
 fetch_events "$limit"
 
