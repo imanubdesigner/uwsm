@@ -227,7 +227,8 @@ show_restart_hardware_menu() {
 }
 
 show_tools_menu() {
-  case $(menu "Tools" "󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
+  case $(menu "Tools" "󰏔  Pkg History\n󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
+  *"Pkg History"*) present_terminal manu-pkg-history ;;
   *"Media Downloader"*) present_terminal manu-media-download ;;
   *Gowall*) present_terminal manu-gowall-tool ;;
   *"ISO to USB"*) present_terminal manu-write-iso ;;
