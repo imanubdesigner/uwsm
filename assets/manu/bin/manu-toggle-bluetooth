@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#    ┏┳┓      ┓    ┳┓┓ ┳┳┏┓┏┳┓┏┓┏┓┏┳┓┓┏
+#     ┃ ┏┓┏┓┏┓┃┏┓  ┣┫┃ ┃┃┣  ┃ ┃┃┃┃ ┃ ┣┫
+#     ┻ ┗┛┗┫┗┫┗┗   ┻┛┗┛┗┛┗┛ ┻ ┗┛┗┛ ┻ ┛┗
+#          ┛ ┛                  by Manu
+
+# Check if bluetooth is soft blocked
+if rfkill list bluetooth | grep -q "yes"; then
+  rfkill unblock bluetooth
+  notify-send "󰔡 Bluetooth" "󰂯 Enabled"
+else
+  rfkill block bluetooth
+  notify-send "󰔢 Bluetooth" "󰂲 Disabled"
+fi
