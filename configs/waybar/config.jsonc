@@ -98,7 +98,7 @@
 	"cpu": {
 		"format": "󰻠 ",
 		"tooltip": true,
-    "on-click":"manu-launch-or-focus-tui btop"
+    "on-click":"manu-launch-btop"
 	},
 	"memory": {
 		"format": " "
@@ -181,8 +181,10 @@
 /*---------------Bluetooth------------*/
 "bluetooth": {
     "format": "",
+    "format-off": "󰂲",
     "format-disabled": "󰂲",
     "format-connected": "",
+    "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "manu-launch-bluetooth"
   },
@@ -196,7 +198,7 @@
 			]
 		},
 		"format-muted": "󰟎 Muted",
-		"on-click": "manu-launch-or-focus-tui wiremix",
+		"on-click": "manu-launch-audio",
     "on-click-right": "pamixer -t",
 		"scroll-step": 1,
     "tooltip": false

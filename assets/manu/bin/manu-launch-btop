@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┓      
+#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣┓╋┏┓┏┓
+#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┗┗┛┣┛
+#               by Manu ┛ 
+
+manu-launch-or-focus-tui btop
