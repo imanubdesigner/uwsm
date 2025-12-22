@@ -17,5 +17,5 @@ sudo journalctl --user --vacuum-time=1s
 
 # Optional: Notification (useful when launched from a menu like Walker)
 if command -v notify-send >/dev/null; then
-  notify-send "System Maintenance" "Journals have been cleared successfully."
+  notify-send "  System Maintenance" "  Logs have been cleared successfully."
 fi
