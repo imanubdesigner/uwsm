@@ -5,32 +5,32 @@
 #    ┗┻┛┛┗┗┛┗┛┣┛┛┗┣┛┗┛┛┗  ┗┛┗┛┛┗┻┣┛ ┻
 #                              by Manu
 
-# Cartella dei wallpaper
+# Wallpapers folder
 DIR=$HOME/Pictures/wallpapers/
 PICS=($(ls ${DIR}))
 
-# Seleziona una foto casuale
+# Select random wallpaper
 RANDOMPICS=${PICS[$RANDOM % ${#PICS[@]}]}
 
-# Nome del file senza estensione (senza il percorso)
+# Name without the path
 BASENAME=$(basename "$RANDOMPICS" .${RANDOMPICS##*.})
 
-# Path completo dell'immagine selezionata
+# Image path
 IMAGE_PATH="${DIR}/${RANDOMPICS}"
 
-# Path per il file .current_wallpaper
+# .current_wallpaper path
 CURRENT_WALLPAPER_PATH="$HOME/.cache/swww/.current_wallpaper"
 
-# Copia l'immagine selezionata nella cache come .current_wallpaper
+# Copy selected image into cache folder as .current_wallpaper
 cp "$IMAGE_PATH" "$CURRENT_WALLPAPER_PATH"
 
-# Controlla se il processo swaybg è attivo, se sì, termina
+# Check if swaybg is on
 if [[ $(pidof swaybg) ]]; then
   pkill swaybg
 fi
 
-# Avvia o interroga swww-daemon
+# Check and start swww-daemon
 swww query || swww-daemon
 
-# Imposta il wallpaper normale con transizioni
+# Set the wallpaper with custom transition
 swww img "$IMAGE_PATH" --transition-fps 60 --transition-type any --transition-duration 3
