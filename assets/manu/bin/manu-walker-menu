@@ -231,7 +231,7 @@ show_tools_menu() {
   *"Pkg History"*) present_terminal manu-pkg-history ;;
   *"Clear Logs"*) present_terminal manu-clear-journalctl ;;
   *"Media Downloader"*) present_terminal manu-media-download ;;
-  *Gowall*) present_terminal manu-gowall-tool ;;
+  *Gowall*) terminal manu-gowall-tool ;;
   *"ISO to USB"*) present_terminal manu-write-iso ;;
   *"Image Converter"*) present_terminal manu-transcode-image ;;
   *"Video Converter"*) present_terminal manu-transcode-video ;;
