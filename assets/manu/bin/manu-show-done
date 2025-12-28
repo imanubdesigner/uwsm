@@ -19,7 +19,7 @@ RESET="\033[0m"
 gum spin \
   --spinner "meter" \
   --spinner.foreground="#89B4FA" \
-  --title "$(echo -e "${BLUE} ${GREEN}Done!${RESET} 󰛨  Press any key to close...")" \
+  --title "$(echo -e "${BLUE} ${GREEN}Done!${RESET} Press any key to close...")" \
   -- bash -c 'read -n 1 -s'
 
 # Desktop notification (Nerd Font icons)
