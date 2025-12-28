@@ -6,65 +6,98 @@
 #            ┏┓┏┓┳┓┳┏┓┏┳┓
 #            ┗┓┃ ┣┫┃┃┃ ┃
 #            ┗┛┗┛┛┗┻┣┛ ┻
-#                        by Manu
-#
+#                       by Manu
 
 # ────────────────────────────────────────────────
-#  Check for terminal
+#  Terminal Check
 # ────────────────────────────────────────────────
+# Ensures the script runs in a terminal window
 if [ ! -t 1 ]; then
   exec uwsm-app -- xdg-terminal-exec --class=org.manu.terminal -e bash "$0" "$@"
 fi
 
 # ────────────────────────────────────────────────
-#  Settings
+#  Settings & Catppuccin Colors
 # ────────────────────────────────────────────────
 PACMAN="sudo pacman -Syyu"
 PACMAN_LOG="/var/log/pacman.log"
 STATE_DIR="$HOME/.local/state/manu"
 mkdir -p "$STATE_DIR"
 
-# Colors
-GREEN="\e[32m"
-YELLOW="\e[33m"
-RED="\e[31m"
+# Catppuccin Mocha Palette
+MAUVE="#cba6f7"
+BLUE="#89b4fa"
+GREEN="#a6e3a1"
+YELLOW="#f9e2af"
+RED="#f38ba8"
+WHITE="#cdd6f4"
 RESET="\e[0m"
 
 # ────────────────────────────────────────────────
 #  Functions
 # ────────────────────────────────────────────────
 print_info() {
-  printf "%b\n" "${YELLOW}󰣇  [$(date '+%H:%M:%S')] $1${RESET}"
+  # Catppuccin Blue without date and without ellipsis (...)
+  printf "\e[38;2;137;180;250m󰣇 %s${RESET}\n" "$1"
 }
 
 print_ok() {
-  echo -e "${GREEN}󰄬  $1${RESET}"
+  echo -e "\e[32m󰄬 $1${RESET}"
 }
 
 print_err() {
-  echo -e "${RED}󰅚  $1${RESET}"
+  echo -e "\e[31m󰅚 $1${RESET}"
 }
 
 # ────────────────────────────────────────────────
-#  Start update
+#  Presentation Box
 # ────────────────────────────────────────────────
-print_info "  Starting system update..."
-notify-send "  System update" "󰏔  Starting update..." -a "Update Script"
+# No 'clear' here so the logo from 'manu-show-logo' stays visible
+
+echo "" # Space below the logo
+
+# BLUE border with White text
+gum style \
+  --border double \
+  --border-foreground "$BLUE" \
+  --padding "1 2" \
+  --margin "1 2" \
+  --width 65 \
+  --foreground "$WHITE" \
+  "Ready to update Pacman packages?" \
+  "" \
+  "• You cannot stop the update once you start!" \
+  "• Don't worry! A backup will be performed using snapshots."
+
+# Confirmation prompt in Blue Catppuccin
+echo -e "\e[38;2;137;180;250mContinue with update?\e[0m"
+
+# GREEN selection buttons for Yes/No
+if ! gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" ""; then
+  echo -e "${RED}Update aborted by user.${RESET}"
+  exit 0
+fi
+
+# ────────────────────────────────────────────────
+#  Update Execution
+# ────────────────────────────────────────────────
+# Clean message: No dots, no extra lines
+print_info "Starting system update"
+notify-send " System update" "Starting update..." -a "Update Script"
 
 LAST_LOG_LINE=$(wc -l <"$PACMAN_LOG")
 
-print_info "󰏔  Updating official packages..."
 if $PACMAN; then
-  print_ok "󰄳  Pacman update completed."
-  notify-send "  System update" "󰄳  All packages are up to date." -a "Update Script"
+  print_ok "Pacman update completed."
+  notify-send " System update" "󰄳 All packages are up to date." -a "Update Script"
 else
-  print_err "󰅚  Pacman update failed."
-  notify-send "  System update" "󰅚  Update failed!" -a "Update Script" -u critical
+  print_err "Pacman update failed."
+  notify-send " System update" "󰅚 Update failed!" -a "Update Script" -u critical
   exit 1
 fi
 
 # ────────────────────────────────────────────────
-#  Kernel update check
+#  Kernel Update Detection
 # ────────────────────────────────────────────────
 KERNEL_UPDATED=false
 if tail -n +$LAST_LOG_LINE "$PACMAN_LOG" | grep -qE "\[ALPM\] (upgraded|installed) linux(-[a-z0-9]+)? "; then
@@ -73,78 +106,75 @@ if tail -n +$LAST_LOG_LINE "$PACMAN_LOG" | grep -qE "\[ALPM\] (upgraded|installe
 fi
 
 # ────────────────────────────────────────────────
-#  Waybar cache refresh
+#  Waybar Cache Refresh
 # ────────────────────────────────────────────────
 sleep 0.5
-print_info "󰩹  Clearing Waybar update cache..."
+print_info "Clearing Waybar update cache"
 rm -f /tmp/waybar-updates-cache 2>/dev/null
 pkill -SIGRTMIN+8 waybar 2>/dev/null
-print_ok "󰩹  Waybar cache cleared and refreshed."
+print_ok "Waybar cache refreshed."
 
 # ────────────────────────────────────────────────
-#  Post-update checks
+#  Post-update Reboot Checks
 # ────────────────────────────────────────────────
 
-# Kernel update detected
 if [ "$KERNEL_UPDATED" = true ]; then
   echo ""
-  notify-send "  Kernel update detected" "  Reboot recommended." -a "Update Script"
+  notify-send " Kernel update detected" " Reboot recommended." -a "Update Script"
   gum style \
     --border double \
-    --border-foreground 111 \
+    --border-foreground "$BLUE" \
     --margin "1 2" \
     --padding "1 2" \
-    "  Linux kernel update detected!" \
-    "  A new kernel version was installed." \
-    "󰜉  Reboot required to apply changes."
+    " Linux kernel update detected!" \
+    " A new kernel version was installed." \
+    "󰜉 Reboot required to apply changes."
   echo ""
-  if gum confirm "󰜱  Reboot now?"; then
+  if gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" "Reboot now?"; then
     rm -f "$STATE_DIR"/re*-required
     sudo reboot now
   else
-    gum style --foreground 245 "󰒤  Remember to reboot later."
-    notify-send "  Reboot postponed" "󰒤  Remember to reboot later." -a "Update Script"
+    gum style --foreground 245 "󰒤 Remember to reboot later."
   fi
 
-# Previous reboot still required
 elif [ -f "$STATE_DIR/reboot-required" ]; then
   echo ""
-  notify-send "  Reboot required" "󰜉  Previous updates need reboot." -a "Update Script"
+  notify-send " Reboot required" "󰜉 Previous updates need reboot." -a "Update Script"
   gum style \
     --border double \
-    --border-foreground 214 \
+    --border-foreground "$BLUE" \
     --margin "1 2" \
     --padding "1 2" \
-    "󰜉  System reboot required" \
-    "  Previous updates need a reboot to take effect."
+    "󰜉 System reboot required" \
+    " Previous updates need a reboot to take effect."
   echo ""
-  if gum confirm "󰜱  Reboot now?"; then
+  if gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" "Reboot now?"; then
     rm -f "$STATE_DIR"/re*-required
     sudo reboot now
   else
-    gum style --foreground 245 "󰒤  Reboot later."
+    gum style --foreground 245 "󰒤 Reboot later."
   fi
 fi
 
 # ────────────────────────────────────────────────
-#  Service restart checks
+#  Service Restart Checks
 # ────────────────────────────────────────────────
 for file in "$STATE_DIR"/restart-*-required; do
   if [ -f "$file" ]; then
     service=$(basename "$file" | sed 's/restart-\(.*\)-required/\1/')
     echo ""
-    print_info "  Service restart required: $service"
-    if gum confirm "  Restart $service now?"; then
-      print_info "󰑓  Restarting $service..."
+    print_info "Service restart required: $service"
+    if gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" "Restart $service now?"; then
+      print_info "Restarting $service"
       rm -f "$file"
       if command -v manu-restart-"$service" &>/dev/null; then
         manu-restart-"$service"
-        print_ok "󰄳  $service restarted successfully."
+        print_ok "$service restarted successfully."
       else
-        print_err "󰅚  manu-restart-$service command not found!"
+        print_err "Command manu-restart-$service not found!"
       fi
     else
-      gum style --foreground 245 "󰒤  $service restart postponed."
+      gum style --foreground 245 "󰒤 $service restart postponed."
     fi
   fi
 done
