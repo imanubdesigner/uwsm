@@ -8,7 +8,7 @@
 manu-cmd-present "$EDITOR" || EDITOR=nvim
 
 case "$EDITOR" in
-nvim | vim | nano | micro | hx | helix)
+nvim | vim | nano | micro | hx | helix | fresh)
   exec manu-launch-tui "$EDITOR" "$@"
   ;;
 *)

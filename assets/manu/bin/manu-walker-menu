@@ -177,11 +177,12 @@ show_install_menu() {
 }
 
 show_remove_menu() {
-  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages") in
+  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs") in
   *Cache*) terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
   *TUI*) present_terminal manu-tui-remove ;;
+  *"Clear Logs"*) present_terminal manu-clear-journalctl ;;
   *) show_main_menu ;;
   esac
 }
@@ -227,9 +228,8 @@ show_restart_hardware_menu() {
 }
 
 show_tools_menu() {
-  case $(menu "Tools" "󰏔  Pkg History\n  Clear Logs\n󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
+  case $(menu "Tools" "󰏔  Pkg History\n󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
   *"Pkg History"*) present_terminal manu-pkg-history ;;
-  *"Clear Logs"*) present_terminal manu-clear-journalctl ;;
   *"Media Downloader"*) present_terminal manu-media-download ;;
   *Gowall*) terminal manu-gowall-tool ;;
   *"ISO to USB"*) present_terminal manu-write-iso ;;
