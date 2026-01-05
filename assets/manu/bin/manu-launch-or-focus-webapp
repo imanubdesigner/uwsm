@@ -9,8 +9,12 @@
 #                       ┛ ┛ by Manu
 
 if (($# == 0)); then
-  echo "Usage: manu-launch-or-focus-webapp [window-pattern] [url]"
+  echo "Usage: manu-launch-or-focus-webapp [window-pattern] [url-and-flags...]"
   exit 1
 fi
 
-exec manu-launch-or-focus "$1" "manu-launch-webapp '$2'"
+WINDOW_PATTERN="$1"
+shift
+LAUNCH_COMMAND="manu-launch-webapp $@"
+
+exec manu-launch-or-focus "$WINDOW_PATTERN" "$LAUNCH_COMMAND"
