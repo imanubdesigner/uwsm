@@ -1,7 +1,34 @@
-[plugin]
-deps = []
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-preview"
+rev = "230b9c6"
+hash = "99aa06d3014798d86001c324468d497f"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:file"
+rev = "230b9c6"
+hash = "99aa06d3014798d86001c324468d497f"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:code"
+rev = "230b9c6"
+hash = "99aa06d3014798d86001c324468d497f"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:image"
+rev = "230b9c6"
+hash = "99aa06d3014798d86001c324468d497f"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:pdf"
+rev = "230b9c6"
+hash = "99aa06d3014798d86001c324468d497f"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:archive"
+rev = "230b9c6"
+hash = "99aa06d3014798d86001c324468d497f"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-mocha"
 rev = "f6b425a"
-hash = "14b111562c00eb1917fe3ca3ae9bb771"
+hash = "76b921b2d734331854d4a55b59a21388"
