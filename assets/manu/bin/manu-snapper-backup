@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#    ┏┓┳┓┏┓┏┓┏┓┏┓┳┓  ┳┓┏┓┏┓┓┏┓┳┳┏┓
+#    ┗┓┃┃┣┫┃┃┃┃┣ ┣┫  ┣┫┣┫┃ ┃┫ ┃┃┃┃
+#    ┗┛┛┗┛┗┣┛┣┛┗┛┛┗  ┻┛┛┗┗┛┛┗┛┗┛┣┛
+#                          by Manu
+
 # Configurations to manage
 CONFIGS=("root" "home")
 
