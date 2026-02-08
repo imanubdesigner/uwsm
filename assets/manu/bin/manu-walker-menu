@@ -228,7 +228,8 @@ show_restart_hardware_menu() {
 }
 
 show_tools_menu() {
-  case $(menu "Tools" "󰏔  Pkg History\n󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
+  case $(menu "Tools" "󰁯  Snapper Backup\n󰏔  Pkg History\n󰦗  Media Downloader\n󱣻  Gowall\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
+  *"Snapper Backup"*) present_terminal manu-snapper-backup ;;
   *"Pkg History"*) present_terminal manu-pkg-history ;;
   *"Media Downloader"*) present_terminal manu-media-download ;;
   *Gowall*) terminal manu-gowall-tool ;;

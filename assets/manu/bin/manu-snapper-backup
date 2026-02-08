@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+# Configurations to manage
+CONFIGS=("root" "home")
+
+# Catppuccin colors
+MAUVE="#cba6f7"
+BLUE="#89b4fa"
+GREEN="#a6e3a1"
+RED="#f38ba8"
+TEXT="#cdd6f4"
+BASE="#1e1e2e"
+
+gum style \
+  --foreground "$MAUVE" \
+  --border foreground \
+  --border-foreground "$BLUE" \
+  --border rounded \
+  --padding "1 2" \
+  "󰁯  Creating A Snapshot Point..."
+
+# 1. Ask for description once
+SNAP_NAME=$(gum input \
+  --placeholder "e.g. 󰏗 pre-upgrade | 󰍛 before-nvidia" \
+  --prompt "󰘧 " \
+  --prompt.foreground "$BLUE" \
+  --cursor.foreground "$MAUVE")
+
+if [[ -z "$SNAP_NAME" ]]; then
+  gum style --foreground "$RED" "󰅙 Snapshot cancelled"
+  exit 1
+fi
+
+# 2. Create both snapshots
+for CONF in "${CONFIGS[@]}"; do
+  gum style --foreground "$GREEN" "󰆓 Creating snapshot for $CONF..."
+  sudo snapper -c "$CONF" create --description "$SNAP_NAME" --cleanup-algorithm number
+  NEW_ID=$(sudo snapper -c "$CONF" list | awk 'NR>3 {print $1}' | tail -n 1)
+  gum style --foreground "$GREEN" "󰄬 $CONF created (ID $NEW_ID)"
+done
+
+echo
+# 3. Single confirmation for cleanup
+if gum confirm \
+  --prompt.foreground "$BLUE" \
+  --selected.background "$MAUVE" \
+  --selected.foreground "$BASE" \
+  --unselected.foreground "$TEXT" \
+  "󰆴 Delete ALL previous snapshots for Root & Home?"; then
+
+  for CONF in "${CONFIGS[@]}"; do
+    # Get the ID we just created to exclude it
+    CURRENT_ID=$(sudo snapper -c "$CONF" list | awk 'NR>3 {print $1}' | tail -n 1)
+    # Get all other IDs
+    OLD_IDS=$(sudo snapper -c "$CONF" list | awk 'NR>3 {print $1}' | grep -v "^$CURRENT_ID$")
+
+    if [[ -n "$OLD_IDS" ]]; then
+      gum style --foreground "$TEXT" "󰆴 Cleaning $CONF snapshots..."
+      for id in $OLD_IDS; do
+        sudo snapper -c "$CONF" delete "$id"
+      done
+    fi
+  done
+  gum style --foreground "$GREEN" "󰆴 Cleanup completed"
+else
+  gum style --foreground "$TEXT" "󰆒 All snapshots kept"
+fi
+
+echo
+gum style --foreground "$MAUVE" "󰄬 Operation completed"
