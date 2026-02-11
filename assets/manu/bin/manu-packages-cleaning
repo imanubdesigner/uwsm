@@ -251,7 +251,6 @@ clean_yay() {
 # 󰣇  Main Menu
 # ──────────────────────────────────────────────────────────────────────────────
 main() {
-  clear
   check_sudo
   show_header
   check_cache_size
