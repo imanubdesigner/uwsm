@@ -101,18 +101,10 @@ show_trigger_menu() {
 
 show_capture_menu() {
   case $(menu "Capture" "󰄄  Screenshot\n  Screenrecord\n  Color") in
-  *Screenshot*) show_screenshot_menu ;;
+  *Screenshot*) manu-cmd-screenshot ;;
   *Screenrecord*) show_screenrecord_menu ;;
   *Color*) pkill hyprpicker || hyprpicker -a ;;
   *) show_trigger_menu ;;
-  esac
-}
-
-show_screenshot_menu() {
-  case $(menu "Screenshot" "  Snap with Editing\n  Straight to Clipboard") in
-  *Editing*) manu-screenshot smart ;;
-  *Clipboard*) manu-screenshot smart clipboard ;;
-  *) show_capture_menu ;;
   esac
 }
 
@@ -178,7 +170,7 @@ show_install_menu() {
 
 show_remove_menu() {
   case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs") in
-  *Cache*) terminal manu-packages-cleaning ;;
+  *Cache*) present_terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
   *TUI*) present_terminal manu-tui-remove ;;
