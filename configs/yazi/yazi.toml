@@ -1,17 +1,88 @@
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 
-[manager]
-ratio = [1, 3, 6]
-show_hidden = true
-sort_by = "alphabetical"
-sort_dir_first = true
-scrolloff = 5
-title_format = "Yazi: {cwd}"
+############################
+# FILE MANAGER
+############################
+[mgr]
 
+# Layout: parent / current / preview
+ratio = [1, 4, 5]
+
+# Show hidden (dot) files on startup
+show_hidden = true
+
+# Natural sorting: file1, file2, file10
+sort_by = "natural"
+
+# Keep directories grouped first
+sort_dir_first = true
+
+# Case-insensitive sorting
+sort_sensitive = false
+
+# Do not reverse sort order
+sort_reverse = false
+
+# Keep cursor away from screen edges for smooth scrolling
+scrolloff = 10
+
+# Display file permissions in the list
+linemode = "permissions"
+
+# Minimal title showing current directory
+title_format = "{cwd}"
+
+# Visually indicate symbolic links
+show_symlink = true
+
+
+############################
+# PREVIEW PANEL
+############################
 [preview]
+
+# Disable line wrapping (better for code/files)
 wrap = "no"
-tab_size = 2
-max_width  = 2400
-max_height = 2400
+
+# Tab width for text preview
+tab_size = 4
+
+# Show image preview immediately
 image_delay = 0
 
+# Allow large high-quality previews
+max_width  = 2400
+max_height = 2400
+
+# Image rendering quality (if supported)
+image_quality = 90
+
+
+############################
+# FILE OPERATIONS (COPY/MOVE)
+############################
+[tasks]
+
+# Small tasks (I/O bound)
+micro_workers = 10
+
+# Large tasks (CPU bound)
+macro_workers = 4
+
+
+############################
+# UI POPUPS POSITIONING
+############################
+[input]
+# Centered rename / input dialogs
+cd_origin = "center"
+rename_origin = "center"
+
+[confirm]
+origin = "center"
+
+[pick]
+origin = "center"
+
+[which]
+origin = "center"
