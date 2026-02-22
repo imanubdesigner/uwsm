@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+#    ┏┓┓        ┏┳┏┓┳┳┳┓┳┓┏┓┓ ┏┓┏┳┓┓   ┓
+#    ┃ ┃┏┓┏┓┏┓   ┃┃┃┃┃┣┫┃┃┣┫┃ ┃  ┃ ┃   ┃ ┏┓┏┓
+#    ┗┛┗┗ ┗┻┛   ┗┛┗┛┗┛┛┗┛┗┛┗┗┛┗┛ ┻ ┗┛  ┗┛┗┛┗┫
+#                                   by Manu ┛
+
+# Fancy header (gum - Catppuccin Mocha, blue border)
+if command -v gum >/dev/null; then
+  gum style \
+    --border double \
+    --border-foreground "#89B4FA" \
+    --foreground "#CDD6F4" \
+    --padding "1 3" \
+    --margin "1 0" \
+    --align center \
+    "󰃢  Log Maintenance" \
+    "" \
+    "Welcome!" \
+    "This tool rotates and cleans system and user journals."
+fi
+
+# 1. Rotate journals: marks current active journal files as archive
+# and starts new ones. This makes current logs eligible for vacuuming.
+sudo journalctl --rotate
+
+# 2. Vacuum system journals: remove all archived system logs older than 1 second.
+sudo journalctl --vacuum-time=1s
+
+# 3. Vacuum user journals: specifically target user-level archived logs.
+sudo journalctl --user --vacuum-time=1s
+
+# Optional: Notification (useful when launched from a menu like Walker)
+if command -v notify-send >/dev/null; then
+  notify-send "  System Maintenance" "  Logs have been cleared successfully."
+fi

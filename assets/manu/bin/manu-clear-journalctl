@@ -5,7 +5,13 @@
 #    ┗┛┗┗ ┗┻┛   ┗┛┗┛┗┛┛┗┛┗┛┗┗┛┗┛ ┻ ┗┛  ┗┛┗┛┗┫
 #                                   by Manu ┛
 
-# Fancy header (gum - Catppuccin Mocha, blue border)
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# ─────────────────────────────────────────────
+# Fancy header (only if gum is installed)
+# ─────────────────────────────────────────────
 if command -v gum >/dev/null; then
   gum style \
     --border double \
@@ -14,23 +20,50 @@ if command -v gum >/dev/null; then
     --padding "1 3" \
     --margin "1 0" \
     --align center \
-    "󰃢  Log Maintenance" \
+    "󰃢  Log Maintenance — Ultimate Edition" \
     "" \
-    "Welcome!" \
-    "This tool rotates and cleans system and user journals."
+    "Cleaning system and user journals safely"
 fi
 
-# 1. Rotate journals: marks current active journal files as archive
-# and starts new ones. This makes current logs eligible for vacuuming.
+echo "󰑓  Rotating journals..."
 sudo journalctl --rotate
 
-# 2. Vacuum system journals: remove all archived system logs older than 1 second.
+echo "󰃢  Vacuuming archived journals..."
 sudo journalctl --vacuum-time=1s
-
-# 3. Vacuum user journals: specifically target user-level archived logs.
 sudo journalctl --user --vacuum-time=1s
 
-# Optional: Notification (useful when launched from a menu like Walker)
+# ─────────────────────────────────────────────
+# HARD CLEAN: remove persistent journals on disk
+# ─────────────────────────────────────────────
+if [ -d /var/log/journal ]; then
+  echo "󰋊  Removing persistent journals..."
+
+  sudo systemctl stop systemd-journald
+  sudo rm -rf /var/log/journal/*
+  sudo systemctl start systemd-journald
+fi
+
+# ─────────────────────────────────────────────
+# Clean runtime journals (current boot)
+# ─────────────────────────────────────────────
+if [ -d /run/log/journal ]; then
+  echo "󰉁  Cleaning runtime journals..."
+
+  sudo rm -rf /run/log/journal/*
+  sudo systemctl restart systemd-journald
+fi
+
+# ─────────────────────────────────────────────
+# Clean temporary directories
+# ─────────────────────────────────────────────
+echo "󰩺  Cleaning temporary files..."
+
+sudo rm -rf /tmp/*
+sudo rm -rf /var/tmp/*
+
+# ─────────────────────────────────────────────
+# Desktop notification (if available)
+# ─────────────────────────────────────────────
 if command -v notify-send >/dev/null; then
-  notify-send "  System Maintenance" "  Logs have been cleared successfully."
+  notify-send "󰍹  System Maintenance" "Logs and temp files cleaned successfully."
 fi
