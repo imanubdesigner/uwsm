@@ -53,8 +53,4 @@ keybind = super+control+shift+alt+arrow_right=resize_split:right,100
 # Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
 async-backend = epoll
 
-# Fix Selection 
-palette = 4=#585b70
-palette = 12=#585b70
-
 
