@@ -135,6 +135,35 @@ run_command "pacman -S --noconfirm --needed lact && systemctl enable --now lactd
 
 print_success "NVIDIA drivers installed and initramfs rebuilt automatically!"
 
+# -------------------- Limine Customization (Hypruccin Theme) --------------------
+print_bold_blue "\n=== Customizing Limine Bootloader ==="
+
+# 1. Remove the redundant /boot/limine directory to avoid configuration conflicts
+# Using "yes" "yes" because this requires sudo and we want confirmation
+run_command "rm -rf /boot/limine" "Remove redundant /boot/limine directory" "yes" "yes"
+
+# 2. Update Timeout and Branding
+# We use | as a delimiter in sed so that the slashes / in paths don't break the command
+run_command "sed -i 's|^#timeout: 3|timeout: 2|' /boot/limine.conf && \
+sed -i 's|^#interface_branding:.*|interface_branding: Hypruccin Bootloader|' /boot/limine.conf && \
+sed -i 's|^#interface_branding_color:.*|interface_branding_color: 2|' /boot/limine.conf" \
+  "Update Limine timeout and branding text" "yes" "yes"
+
+# 3. Apply Tokyo Night Color Palette
+# We define the block as a variable for readability.
+# Note the escaped newlines \n for the echo inside run_command.
+THEME_BLOCK="\nterm_background: 1a1b26\nbackdrop: 1a1b26\n\n# Terminal colors (Tokyo Night palette)\nterm_palette: 15161e;f7768e;9ece6a;e0af68;7aa2f7;bb9af7;7dcfff;a9b1d6\nterm_palette_bright: 414868;f7768e;9ece6a;e0af68;7aa2f7;bb9af7;7dcfff;c0caf5\n\n# Text colors\nterm_foreground: c0caf5\nterm_foreground_bright: c0caf5\nterm_background_bright: 24283b"
+
+run_command "sed -i '/hash_mismatch_panic: no/a '"$THEME_BLOCK"'' /boot/limine.conf" \
+  "Apply Tokyo Night color palette to limine.conf" "yes" "yes"
+
+# 4. Rename OS Entry from 'Arch Linux' to 'Hypruccin'
+# This targets both the entry path and the display comment
+run_command "sed -i 's|^\/+Arch Linux|/+Hypruccin|' /boot/limine.conf && \
+sed -i 's|^comment: Arch Linux|comment: Hypruccin|' /boot/limine.conf" \
+  "Rename boot menu entry to Hypruccin" "yes" "yes"
+
+print_success "Limine configuration updated successfully!"
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
 print_bold_blue "Set themes and icons:"
