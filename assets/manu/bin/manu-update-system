@@ -6,7 +6,7 @@
 #            ┏┓┏┓┳┓┳┏┓┏┳┓
 #            ┗┓┃ ┣┫┃┃┃ ┃
 #            ┗┛┗┛┛┗┻┣┛ ┻
-#                       
+#
 
 # ────────────────────────────────────────────────
 #  Terminal Check
@@ -89,7 +89,7 @@ LAST_LOG_LINE=$(wc -l <"$PACMAN_LOG")
 
 if $PACMAN; then
   print_ok "Pacman update completed."
-  notify-send " System update" "󰄳 All packages are up to date." -a "Update Script"
+  notify-send "󰄳 System update" "All packages are up to date." -a "Update Script"
 else
   print_err "Pacman update failed."
   notify-send " System update" "󰅚 Update failed!" -a "Update Script" -u critical
