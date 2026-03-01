@@ -3,7 +3,7 @@
 #    ┓ ┏┓┏┓┓┏┓  ┏┓┏┓┳┓┏┓┏┓┳┓
 #    ┃ ┃┃┃ ┃┫   ┗┓┃ ┣┫┣ ┣ ┃┃
 #    ┗┛┗┛┗┛┛┗┛  ┗┛┗┛┛┗┗┛┗┛┛┗
-#                    by Manu
+#                    
 
 # Lock the screen
 pidof hyprlock || hyprlock &

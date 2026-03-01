@@ -3,7 +3,7 @@
 #    ┏┳┓      ┓    ┳┓┓ ┳┳┏┓┏┳┓┏┓┏┓┏┳┓┓┏
 #     ┃ ┏┓┏┓┏┓┃┏┓  ┣┫┃ ┃┃┣  ┃ ┃┃┃┃ ┃ ┣┫
 #     ┻ ┗┛┗┫┗┫┗┗   ┻┛┗┛┗┛┗┛ ┻ ┗┛┗┛ ┻ ┛┗
-#          ┛ ┛                  by Manu
+#          ┛ ┛                  
 
 # Check if bluetooth is soft blocked
 if rfkill list bluetooth | grep -q "yes"; then

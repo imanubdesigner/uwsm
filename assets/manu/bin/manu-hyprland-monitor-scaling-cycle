@@ -3,7 +3,7 @@
 #    ┳┳┓┏┓┳┓┳┏┳┓┏┓┳┓  ┏┓┏┓┏┓┓ ┳┳┓┏┓
 #    ┃┃┃┃┃┃┃┃ ┃ ┃┃┣┫  ┗┓┃ ┣┫┃ ┃┃┃┃┓
 #    ┛ ┗┗┛┛┗┻ ┻ ┗┛┛┗  ┗┛┗┛┛┗┗┛┻┛┗┗┛
-#                          by Manu
+#                          
 
 # Cycles through display scaling (1, 1.6, 2, 3) on the currently focused Hyprland monitor.
 # Usage: Bind this script to a key to quickly toggle UI size.

@@ -6,7 +6,7 @@
 #            ┏┓┏┓┳┓┳┏┓┏┳┓
 #            ┗┓┃ ┣┫┃┃┃ ┃
 #            ┗┛┗┛┛┗┻┣┛ ┻
-#                       by Manu
+#                       
 
 # Function to count updates with error handling
 count_updates() {

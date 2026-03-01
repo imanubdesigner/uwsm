@@ -3,7 +3,7 @@
 #    ┏┓┓┏┳┓┏┓┳┳┓┳┳┳┳┳┓  ┏┓┏┓┏┓┏┓┳┳┳┓┏┳┓
 #    ┃ ┣┫┣┫┃┃┃┃┃┃┃┃┃┃┃  ┣┫┃ ┃ ┃┃┃┃┃┃ ┃
 #    ┗┛┛┗┛┗┗┛┛ ┗┻┗┛┛ ┗  ┛┗┗┛┗┛┗┛┗┛┛┗ ┻
-#                               by Manu
+#                               
 
 if [[ -f ~/.config/chromium-flags.conf ]]; then
   CONF=~/.config/chromium-flags.conf

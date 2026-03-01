@@ -3,7 +3,7 @@
 #    ┳┳┓┏┓┏┳┓┏┓┓ ┓        ┓ ┏┏┓┳┓┏┓┏┓┏┓
 #    ┃┃┃┗┓ ┃ ┣┫┃ ┃  ━━  ┃┃┃┣ ┣┫┣┫┃┃┃┃
 #    ┻┛┗┗┛ ┻ ┛┗┗┛┗┛      ┗┻┛┗┛┻┛┛┗┣┛┣┛
-#    Thanks to DHH      edited by Manu
+#    Thanks to DHH      edited 
 
 set -e
 

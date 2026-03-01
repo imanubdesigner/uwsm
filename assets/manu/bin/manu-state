@@ -3,7 +3,7 @@
 #    ┏┓┏┳┓┏┓┏┳┓┏┓  ┏┓┏┓┏┓┏┓
 #    ┗┓ ┃ ┣┫ ┃ ┣   ┣┫┃┃┃┃┗┓
 #    ┗┛ ┻ ┛┗ ┻ ┗┛  ┛┗┣┛┣┛┗┛
-#                   by Manu
+#                   
 
 STATE_DIR="$HOME/.local/state/manu"
 mkdir -p "$STATE_DIR"

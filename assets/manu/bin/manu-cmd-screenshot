@@ -3,7 +3,7 @@
 #    ┏┓┏┓┳┓┏┓┏┓┳┓┏┓┓┏┏┓┏┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
 #    ┗┓┃ ┣┫┣ ┣ ┃┃┗┓┣┫┃┃ ┃   ┗┓┃ ┣┫┃┃┃ ┃
 #    ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛ ┻   ┗┛┗┛┛┗┻┣┛ ┻
-#                                by Manu
+#                                
 
 # Take a screenshot of the whole screen, a specific window, or a user-drawn region.
 # Saves to ~/Pictures by default, but that can be changed via MANU_SCREENSHOT_DIR or XDG_PICTURES_DIR ENVs.

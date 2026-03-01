@@ -6,7 +6,7 @@
 #          ┏┓┏┓┳┓┳┏┓┏┳┓
 #          ┗┓┃ ┣┫┃┃┃ ┃
 #          ┗┛┗┛┛┗┻┣┛ ┻
-#                      By manu
+#                      
 
 # Toggle the volume mute state
 pamixer -t

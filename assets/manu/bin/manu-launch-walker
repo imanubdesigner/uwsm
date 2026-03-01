@@ -3,7 +3,7 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏  ┓ ┏┏┓┓ ┓┏┓┏┓┳┓
 #    ┃ ┣┫┃┃┃┃┃ ┣┫  ┃┃┃┣┫┃ ┃┫ ┣ ┣┫
 #    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┻┛┛┗┗┛┛┗┛┗┛┛┗
-#                         by Manu
+#                         
 
 # Ensure elephant is running before launching walker
 if ! pgrep -x elephant >/dev/null; then

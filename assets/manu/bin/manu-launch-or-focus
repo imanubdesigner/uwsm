@@ -3,7 +3,7 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏        ┏┓┏┓┏┓┳┳┏┓
 #    ┃ ┣┫┃┃┃┃┃ ┣┫  ┏┓┏┓  ┣ ┃┃┃ ┃┃┗┓
 #    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┛   ┻ ┗┛┗┛┗┛┗┛
-#                           by Manu
+#                           
 
 if (($# == 0)); then
   echo "Usage: manu-launch-or-focus [window-pattern] [launch-command]"

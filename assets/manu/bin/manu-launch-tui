@@ -3,6 +3,6 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏  ┏┳┓┳┳┳
 #    ┃ ┣┫┃┃┃┃┃ ┣┫   ┃ ┃┃┃
 #    ┗┛┛┗┗┛┛┗┗┛┛┗   ┻ ┗┛┻
-#                 by Manu
+#                 
 
 exec setsid uwsm-app -- xdg-terminal-exec --app-id=org.manu.$(basename $1) -e "$1" "${@:2}"

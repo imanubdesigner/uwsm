@@ -3,7 +3,7 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏      ┓ ┏┏┓┳┓┏┓┏┓┏┓
 #    ┃ ┣┫┃┃┃┃┃ ┣┫  ━━  ┃┃┃┣ ┣┫┣┫┃┃┃┃
 #    ┗┛┛┗┗┛┛┗┗┛┛┗      ┗┻┛┗┛┻┛┛┗┣┛┣┛
-#                            by Manu
+#                            
 
 browser=$(xdg-settings get default-web-browser)
 

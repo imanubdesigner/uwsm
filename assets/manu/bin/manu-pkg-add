@@ -3,7 +3,7 @@
 #    ┏┓┏┓┏┓┳┳┓┏┓┳┓    ┓     ┏┓┳┓┳┓
 #    ┃┃┣┫┃ ┃┃┃┣┫┃┃  ┏┓┃┏┏┓  ┣┫┃┃┃┃
 #    ┣┛┛┗┗┛┛ ┗┛┗┛┗  ┣┛┛┗┗┫  ┛┗┻┛┻┛
-#                   ┛    ┛ by Manu
+#                   ┛    ┛ 
 
 if manu-pkg-missing "$@"; then
   sudo pacman -S --noconfirm --needed "$@" || exit 1

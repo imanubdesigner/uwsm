@@ -3,7 +3,7 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏  ┳┓┳┓┏┓┓ ┏┏┓┏┓┳┓
 #    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣┫┣┫┃┃┃┃┃┗┓┣ ┣┫
 #    ┗┛┛┗┗┛┛┗┗┛┛┗  ┻┛┛┗┗┛┗┻┛┗┛┗┛┛┗
-#                          by Manu
+#                          
 
 # Launch the default browser as determined by xdg-settings.
 # Automatically converts --private into the correct flag for the given browser.

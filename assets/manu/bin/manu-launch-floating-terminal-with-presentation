@@ -3,7 +3,7 @@
 #    ┏┓┓ ┏┓┏┓┏┳┓┳┳┓┏┓  ┏┳┓┏┓┳┓┳┳┓┳┳┓┏┓┓
 #    ┣ ┃ ┃┃┣┫ ┃ ┃┃┃┃┓   ┃ ┣ ┣┫┃┃┃┃┃┃┣┫┃
 #    ┻ ┗┛┗┛┛┗ ┻ ┻┛┗┗┛   ┻ ┗┛┛┗┛ ┗┻┛┗┛┗┗┛
-#                                by Manu
+#                                
 
 cmd="$*"
 exec setsid uwsm-app -- xdg-terminal-exec --app-id=org.manu.terminal --title=Manu -e bash -c "manu-show-logo; $cmd; manu-show-done"

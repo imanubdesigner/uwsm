@@ -3,7 +3,7 @@
 #    ┏┳┓┳┳┳  ┳┓┏┓┳┳┓┏┓┓┏┏┓
 #     ┃ ┃┃┃  ┣┫┣ ┃┃┃┃┃┃┃┣
 #     ┻ ┗┛┻  ┛┗┗┛┛ ┗┗┛┗┛┗┛
-#                  by Manu
+#                  
 
 ICON_DIR="$HOME/.local/share/applications/icons"
 DESKTOP_DIR="$HOME/.local/share/applications/"

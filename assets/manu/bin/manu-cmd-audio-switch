@@ -3,7 +3,7 @@
 #    ┏┓┳┳┳┓┳┏┓  ┏┓┓ ┏┳┏┳┓┏┓┓┏
 #    ┣┫┃┃┃┃┃┃┃  ┗┓┃┃┃┃ ┃ ┃ ┣┫
 #    ┛┗┗┛┻┛┻┗┛  ┗┛┗┻┛┻ ┻ ┗┛┛┗
-#                     by Manu
+#                     
 
 # Switch between audio outputs while preserving the mute status. By default mapped to Super + Mute.
 

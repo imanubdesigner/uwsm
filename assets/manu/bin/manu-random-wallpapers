@@ -3,7 +3,7 @@
 #    ┓ ┏┏┓┓ ┓ ┏┓┏┓┏┓┏┓┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
 #    ┃┃┃┣┫┃ ┃ ┃┃┣┫┃┃┣ ┣┫  ┗┓┃ ┣┫┃┃┃ ┃
 #    ┗┻┛┛┗┗┛┗┛┣┛┛┗┣┛┗┛┛┗  ┗┛┗┛┛┗┻┣┛ ┻
-#                              by Manu
+#                              
 
 # Wallpapers folder
 DIR=$HOME/Pictures/wallpapers/

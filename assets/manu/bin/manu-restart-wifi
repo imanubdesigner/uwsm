@@ -3,7 +3,7 @@
 #    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┓ ┏┳  ┏┓┳
 #    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┃┃┃┃━━┣ ┃
 #    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┗┻┛┻  ┻ ┻
-#                        by Manu
+#                        
 
 echo -e "Unblocking wifi...\n"
 rfkill unblock wifi

@@ -3,7 +3,7 @@
 #    ┓┏┓┏┏┓┳┓┏┓┳┳┳┓┏┓┏┓┏┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
 #    ┣┫┗┫┃┃┣┫┗┓┃┃┃┃┗┓┣  ┃   ┗┓┃ ┣┫┃┃┃ ┃
 #    ┛┗┗┛┣┛┛┗┗┛┗┛┛┗┗┛┗┛ ┻   ┗┛┗┛┛┗┻┣┛ ┻
-#                               by Manu
+#                               
 
 # Temperature value when the nightlight is enabled
 ON_TEMP=3300

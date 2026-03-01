@@ -3,7 +3,7 @@
 #    ┓ ┏┓┳┳┳┓┏┓┓┏  ┓ ┏•┏┓•
 #    ┃ ┣┫┃┃┃┃┃ ┣┫  ┃┃┃┓┣ ┓
 #    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┻┛┗┻ ┗
-#                  by Manu
+#                  
 
 rfkill unblock wifi
 manu-launch-or-focus-tui impala

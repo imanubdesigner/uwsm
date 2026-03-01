@@ -3,7 +3,7 @@
 #    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┓ ┏┏┓┓ ┓┏┓┏┓┳┓
 #    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┃┃┃┣┫┃ ┃┫ ┣ ┣┫
 #    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┗┻┛┛┗┗┛┛┗┛┗┛┛┗
-#                             by Manu
+#                             
 
 # Detect if we're running as root (from pacman hook)
 if [[ $EUID -eq 0 ]]; then

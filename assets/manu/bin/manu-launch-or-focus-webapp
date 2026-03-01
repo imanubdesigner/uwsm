@@ -6,7 +6,7 @@
 #              ┓ ┏  ┓ ┏┓
 #              ┃┃┃┏┓┣┓┣┫┏┓┏┓
 #              ┗┻┛┗ ┗┛┛┗┣┛┣┛
-#                       ┛ ┛ by Manu
+#                       ┛ ┛ 
 
 if (($# == 0)); then
   echo "Usage: manu-launch-or-focus-webapp [window-pattern] [url-and-flags...]"

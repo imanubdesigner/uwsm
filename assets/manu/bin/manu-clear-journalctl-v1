@@ -3,7 +3,7 @@
 #    ┏┓┓        ┏┳┏┓┳┳┳┓┳┓┏┓┓ ┏┓┏┳┓┓   ┓
 #    ┃ ┃┏┓┏┓┏┓   ┃┃┃┃┃┣┫┃┃┣┫┃ ┃  ┃ ┃   ┃ ┏┓┏┓
 #    ┗┛┗┗ ┗┻┛   ┗┛┗┛┗┛┛┗┛┗┛┗┗┛┗┛ ┻ ┗┛  ┗┛┗┛┗┫
-#                                   by Manu ┛
+#                                    ┛
 
 # Fancy header (gum - Catppuccin Mocha, blue border)
 if command -v gum >/dev/null; then

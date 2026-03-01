@@ -3,7 +3,7 @@
 #    ┏┳┓┏┓┏┓┏┓┓ ┏┓  ┳┳┓┓ ┏┓
 #     ┃ ┃┃┃┓┃┓┃ ┣   ┃┃┃┃ ┣
 #     ┻ ┗┛┗┛┗┛┗┛┗┛  ┻┻┛┗┛┗┛
-#                   by Manu
+#                   
 
 if pgrep -x hypridle >/dev/null; then
   pkill -x hypridle

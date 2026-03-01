@@ -3,7 +3,7 @@
 #    ┏┓┳┳┓┏┓┓ ┏┓     •   ┓       ┏┓┏┓┳┳┏┓┳┓┏┓
 #    ┗┓┃┃┃┃┓┃ ┣   ┓┏┏┓┏┓┏┫┏┓┓┏┏  ┗┓┃┃┃┃┣┫┣┫┣
 #    ┗┛┻┛┗┗┛┗┛┗┛  ┗┻┛┗┛┗┗┻┗┛┗┻┛  ┗┛┗┻┗┛┛┗┛┗┗┛
-#                                    by Manu
+#                                    
 
 # Check current single_window_aspect_ratio setting
 CURRENT_VALUE=$(hyprctl getoption "layout:single_window_aspect_ratio" 2>/dev/null | head -1)
