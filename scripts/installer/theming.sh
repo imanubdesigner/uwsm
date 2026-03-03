@@ -170,7 +170,7 @@ if command -v limine &>/dev/null; then
   run_command "systemctl enable limine-snapper-sync.service" \
     "Enable Limine-Snapper-Sync service" "yes" "yes"
 
-  run_command "limine-update" \
+  run_command "limine-update && limine-snapper-sync" \
     "Generate Limine boot entries" "yes" "yes"
 
 else
