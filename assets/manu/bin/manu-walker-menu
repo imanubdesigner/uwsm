@@ -3,9 +3,10 @@
 #    ┓ ┏┏┓┓ ┓┏┓┏┓┳┓  ┳┳┓┏┓┳┓┳┳
 #    ┃┃┃┣┫┃ ┃┫ ┣ ┣┫  ┃┃┃┣ ┃┃┃┃
 #    ┗┻┛┛┗┗┛┛┗┛┗┛┛┗  ┛ ┗┗┛┛┗┗┛
-#                      
+#
 
-export PATH="$HOME/.local/bin:$PATH"
+# Path corretto
+export PATH="$HOME/.local/share/manu/bin:$PATH"
 
 # Set to true when going directly to a submenu, so we can exit directly
 BACK_TO_EXIT=false
@@ -38,7 +39,8 @@ menu() {
     fi
   fi
 
-  echo -e "$options" | manu-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null
+  echo -e "$options" |
+    manu-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null
 }
 
 terminal() {
@@ -54,28 +56,74 @@ open_in_editor() {
   manu-launch-editor "$1"
 }
 
-install() {
-  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm $2"
+get_webcam_list() {
+  v4l2-ctl --list-devices 2>/dev/null | while IFS= read -r line; do
+    if [[ $line != $'\t'* && -n $line ]]; then
+      local name="$line"
+      IFS= read -r device || break
+      device=$(echo "$device" | tr -d '\t' | head -1)
+      [[ -n $device ]] && echo "$device  $name"
+    fi
+  done
 }
 
-install_and_launch() {
-  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm $2 && setsid gtk-launch $3"
+show_webcam_select_menu() {
+  local devices=$(get_webcam_list)
+  local count=$(echo "$devices" | grep -c . 2>/dev/null || echo 0)
+
+  if [[ -z $devices ]] || ((count == 0)); then
+    notify-send "No webcam devices found" -u critical -t 3000
+    return 1
+  fi
+
+  if ((count == 1)); then
+    echo "$devices" | awk '{print $1}'
+  else
+    menu "Select Webcam" "$devices" | awk '{print $1}'
+  fi
 }
 
-install_font() {
-  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm --needed $2 && sleep 2 && manu-font-set '$3'"
+show_capture_menu() {
+  case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color") in
+  *Screenshot*)
+    manu-cmd-screenshot
+    ;;
+  *Screenrecord*)
+    show_screenrecord_menu
+    ;;
+  *Color*)
+    pkill hyprpicker || hyprpicker -a
+    ;;
+  *)
+    back_to show_trigger_menu
+    ;;
+  esac
 }
 
-install_terminal() {
-  present_terminal "manu-install-terminal $1"
-}
+show_screenrecord_menu() {
+  manu-cmd-screenrecord --stop-recording && exit 0
 
-aur_install() {
-  present_terminal "echo 'Installing $1 from AUR...'; yay -S --noconfirm $2"
-}
-
-aur_install_and_launch() {
-  present_terminal "echo 'Installing $1 from AUR...'; yay -S --noconfirm $2 && setsid gtk-launch $3"
+  case $(menu "Screenrecord" "  With no audio\n  With desktop audio\n  With desktop + microphone audio\n  With desktop + microphone audio + webcam") in
+  *"With no audio")
+    manu-cmd-screenrecord
+    ;;
+  *"With desktop audio")
+    manu-cmd-screenrecord --with-desktop-audio
+    ;;
+  *"With desktop + microphone audio")
+    manu-cmd-screenrecord --with-desktop-audio --with-microphone-audio
+    ;;
+  *"With desktop + microphone audio + webcam")
+    local device=$(show_webcam_select_menu) || {
+      back_to show_capture_menu
+      return
+    }
+    manu-cmd-screenrecord --with-desktop-audio --with-microphone-audio --with-webcam --webcam-device="$device"
+    ;;
+  *)
+    back_to show_capture_menu
+    ;;
+  esac
 }
 
 show_learn_menu() {
@@ -99,26 +147,6 @@ show_trigger_menu() {
   esac
 }
 
-show_capture_menu() {
-  case $(menu "Capture" "󰄄  Screenshot\n  Screenrecord\n  Color") in
-  *Screenshot*) manu-cmd-screenshot ;;
-  *Screenrecord*) show_screenrecord_menu ;;
-  *Color*) pkill hyprpicker || hyprpicker -a ;;
-  *) show_trigger_menu ;;
-  esac
-}
-
-show_screenrecord_menu() {
-  case $(menu "Screen Record" \
-    "󰩬  Region\n󰩬  Region + Audio\n  Fullscreen\n  Fullscreen + Audio") in
-  *"Region + Audio"*) manu-cmd-screenrecord region --with-audio ;;
-  *Region*) manu-cmd-screenrecord region ;;
-  *"Fullscreen + Audio"*) manu-cmd-screenrecord output --with-audio ;;
-  *Fullscreen*) manu-cmd-screenrecord output ;;
-  *) show_capture_menu ;;
-  esac
-}
-
 show_share_menu() {
   case $(menu "Share" "  Clipboard\n  File \n  Folder") in
   *Clipboard*) terminal bash -c "manu-cmd-share clipboard" ;;
@@ -134,7 +162,6 @@ show_toggle_menu() {
   *Nightlight*) manu-night-toggle ;;
   *Idle*) manu-idle-toggle ;;
   *Bar*) manu-toggle-waybar ;;
-  *Mute*) manu-mute-toggle ;;
   *) show_trigger_menu ;;
   esac
 }
@@ -196,8 +223,7 @@ show_restart_menu() {
 }
 
 show_restart_apps_menu() {
-  case $(menu "Restart Apps" \
-    "󰡗  Sudo\n󱓞  Walker\n  Waybar\n  Swayosd\n󱫖  Hypridle\n  Hyprsunset\n󰞅  XCompose") in
+  case $(menu "Restart Apps" "󰡗  Sudo\n󱓞  Walker\n  Waybar\n  Swayosd\n󱫖  Hypridle\n  Hyprsunset\n󰞅  XCompose") in
   *Sudo*) present_terminal manu-reset-sudo ;;
   *Walker*) manu-restart-walker ;;
   *Waybar*) manu-restart-waybar ;;
@@ -210,8 +236,7 @@ show_restart_apps_menu() {
 }
 
 show_restart_hardware_menu() {
-  case $(menu "Restart Hardware" \
-    "    Audio\n  󱚾  Wi-Fi\n  󰂯  Bluetooth") in
+  case $(menu "Restart Hardware" "    Audio\n  󱚾  Wi-Fi\n  󰂯  Bluetooth") in
   *Audio*) present_terminal manu-restart-pipewire ;;
   *Wi-Fi*) present_terminal manu-restart-wifi ;;
   *Bluetooth*) present_terminal manu-restart-bluetooth ;;
@@ -242,13 +267,12 @@ show_system_menu() {
   esac
 }
 
-show_main_menu() {
-  go_to_menu "$(menu "󰕰  Go" \
-    "󰵆  App\n  Learn\n  Trigger\n  Style\n  Install\n  Remove\n󰚰  Update\n  Restart\n  Tools\n󰋽  About\n  System")"
-}
-
 show_about() {
   manu-launch-about
+}
+
+show_main_menu() {
+  go_to_menu "$(menu "󰕰  Go" "󰵆  App\n  Learn\n  Trigger\n  Style\n  Install\n  Remove\n󰚰  Update\n  Restart\n  Tools\n󰋽  About\n  System")"
 }
 
 go_to_menu() {
@@ -258,7 +282,7 @@ go_to_menu() {
   *trigger*) show_trigger_menu ;;
   *style*) show_style_menu ;;
   *share*) show_share_menu ;;
-  *screenshot*) show_screenshot_menu ;;
+  *capture*) show_capture_menu ;;
   *screenrecord*) show_screenrecord_menu ;;
   *install*) show_install_menu ;;
   *remove*) show_remove_menu ;;
