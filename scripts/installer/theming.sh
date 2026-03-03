@@ -142,6 +142,41 @@ print_bold_blue "\n=== Customizing Limine Bootloader ==="
 # Using "yes" "yes" because this requires sudo and we want confirmation
 run_command "rm -rf /boot/limine" "Remove redundant /boot/limine directory" "yes" "yes"
 
+if command -v limine &>/dev/null; then
+  # 1. Detect current CMDLINE
+  LIMINE_CONF_PATH="/boot/limine.conf"
+
+  if [[ -f "$LIMINE_CONF_PATH" ]]; then
+    CURRENT_CMDLINE=$(grep "^[[:space:]]*cmdline:" "$LIMINE_CONF_PATH" | head -1 | sed 's/^[[:space:]]*cmdline:[[:space:]]*//')
+    log_message "Detected current CMDLINE: $CURRENT_CMDLINE"
+  else
+    CURRENT_CMDLINE="root=UUID=$(findmnt -no UUID /) rw rootflags=subvol=@"
+    print_warning "Limine config not found, using generic fallback."
+  fi
+
+  # 2. Copy config files (Using "yes" for sudo because these are system files)
+  run_command "mkdir -p /etc/default && cp $BASE_DIR/assets/limine/default.conf /etc/default/limine" \
+    "Copy custom Limine default config" "yes" "yes"
+
+  # 3. Inject CMDLINE (Using "no" for confirmation, "yes" for sudo)
+  run_command "sed -i \"s|@@CMDLINE@@|$CURRENT_CMDLINE|g\" /etc/default/limine" \
+    "Inject detected CMDLINE" "no" "yes"
+
+  # 4. Replace limine.conf
+  run_command "cp $BASE_DIR/assets/limine/limine.conf /boot/limine.conf" \
+    "Copy custom limine.conf to /boot" "yes" "yes"
+
+  # 5. Enable service and Update
+  run_command "systemctl enable limine-snapper-sync.service" \
+    "Enable Limine-Snapper-Sync service" "yes" "yes"
+
+  run_command "limine-update" \
+    "Generate Limine boot entries" "yes" "yes"
+
+else
+  print_warning "Limine not found. Skipping bootloader customization."
+fi
+
 print_success "Limine configuration updated successfully!"
 # -------------------- Post-install instructions --------------------
 print_info "\nPost-installation instructions:"
