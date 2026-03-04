@@ -5,7 +5,6 @@
 #    ┗┻┛┛┗┗┛┛┗┛┗┛┛┗  ┛ ┗┗┛┛┗┗┛
 #
 
-# Path corretto
 export PATH="$HOME/.local/share/manu/bin:$PATH"
 
 # Set to true when going directly to a submenu, so we can exit directly
