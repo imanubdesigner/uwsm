@@ -48,11 +48,6 @@ run_command "systemctl enable ufw" "Enable UFW to start on boot" "yes"
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "yes" "no"
 run_command "sudo -u $SUDO_USER RUNZSH=no CHSH=no sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"" "Install Oh My Zsh for user $SUDO_USER" "yes" "no"
 
-# -------------------- Neovim setup --------------------
-# run_command "git clone https://github.com/LazyVim/starter /home/$SUDO_USER/.config/nvim" "Clone LazyVim starter" "yes" "no"
-# run_command "rm -rf /home/$SUDO_USER/.config/nvim/.git" "Remove Git folder from LazyVim config" "yes" "no"
-# run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim" "Set correct ownership for Neovim config" "yes" "no"
-
 # -------------------- Pacman Configuration --------------------
 run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "yes" "no"
 
