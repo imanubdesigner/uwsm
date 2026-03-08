@@ -10,10 +10,10 @@ log_message "Installation started for prerequisites section"
 print_info "\nStarting prerequisites setup..."
 
 # -------------------- Base setup --------------------
-run_command "pacman -S --noconfirm reflector" "Install Reflector" "yes"
-run_command "sudo reflector --country Italy --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Update Pacman mirrorlist with fresh, fast mirrors" "yes" "yes"
-run_command "pacman -Syyu --noconfirm" "Update package database and upgrade packages (Recommended)" "yes"
-run_command "pacman -Syu --noconfirm --needed git base base-devel" "Install git and base-devel (needed for AUR and configs)" "yes"
+run_command "pacman -S --noconfirm reflector" "Install Reflector" "no"
+run_command "sudo reflector --country Italy --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Update Pacman mirrorlist with fresh, fast mirrors" "no" "yes"
+run_command "pacman -Syyu --noconfirm" "Update package database and upgrade packages (Recommended)" "no"
+run_command "pacman -Syu --noconfirm --needed git base base-devel" "Install git and base-devel (needed for AUR and configs)" "no"
 
 # -------------------- Yay (AUR helper) --------------------
 if command -v yay >/dev/null; then
@@ -26,28 +26,28 @@ fi
 # -------------------- Network Configuration (iwd + systemd-networkd) --------------------
 
 # Install iwd (Wi-Fi daemon) and Impala (TUI frontend)
-run_command "pacman -S --needed --noconfirm iwd impala" "Install iwd and Impala" "yes"
+run_command "pacman -S --needed --noconfirm iwd impala" "Install iwd and Impala" "no"
 
 # Create networkd directory and copy config file
-run_command "sudo mkdir -p /etc/systemd/network && sudo cp $BASE_DIR/assets/20-ethernet.network /etc/systemd/network/" "Create networkd directory and copy config file" "yes"
+run_command "sudo mkdir -p /etc/systemd/network && sudo cp $BASE_DIR/assets/20-ethernet.network /etc/systemd/network/" "Create networkd directory and copy config file" "no"
 
 # Enable all necessary services
-run_command "systemctl enable iwd.service systemd-networkd.service systemd-resolved.service" "Enable network services" "yes"
+run_command "systemctl enable iwd.service systemd-networkd.service systemd-resolved.service" "Enable network services" "no"
 
 # Prevent systemd from waiting for a network connection on boot
-run_command "sudo systemctl disable systemd-networkd-wait-online.service && sudo systemctl mask systemd-networkd-wait-online.service" "Prevent networkd wait-online timeout" "yes"
+run_command "sudo systemctl disable systemd-networkd-wait-online.service && sudo systemctl mask systemd-networkd-wait-online.service" "Prevent networkd wait-online timeout" "no"
 
 # Configure DNS symlink
 run_command "sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf" "Configure DNS symlink" "no"
 
 # -------------------- Bluetooth --------------------
-run_command "pacman -S --needed --noconfirm bluez bluetui && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "yes"
+run_command "pacman -S --needed --noconfirm bluez bluetui && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "no"
 
 # -------------------- Applications Installation --------------------
-run_command "pacman -S --needed --noconfirm alsa-utils bat bat-extras btop cava chromium curl discord evince eza fastfetch fcitx5 fcitx5-gtk fcitx5-qt ffmpeg ffmpegthumbnailer fzf ghostty glib2 glow gnome-themes-extra gobject-introspection gpu-screen-recorder gum gvfs gvfs-mtp gvfs-nfs gvfs-smb gst-plugin-pipewire imagemagick imv inotify-tools jdk-openjdk lazygit libadwaita libgsf librsvg libwebp luarocks mlocate mpv nautilus nautilus-python neovim nodejs npm noto-fonts noto-fonts-emoji noto-fonts-extra obsidian pacman-contrib pamixer p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse poppler-glib python-pyquery ripgrep snap-pac spotify-launcher starship sushi swayosd swww tar tree-sitter tree-sitter-cli ttf-jetbrains-mono-nerd udisks2 ufw unrar unzip wget wiremix wireplumber woff2-font-awesome xdg-user-dirs xsel xmlstarlet yazi yt-dlp zoxide zsh zsh-completions" "Install complete application suite (browsers, media, development, system tools)" "yes"
+run_command "pacman -S --needed --noconfirm alsa-utils bat bat-extras btop cava chromium curl discord evince eza fastfetch fcitx5 fcitx5-gtk fcitx5-qt ffmpeg ffmpegthumbnailer fzf ghostty glib2 glow gnome-themes-extra gobject-introspection gpu-screen-recorder gum gvfs gvfs-mtp gvfs-nfs gvfs-smb gst-plugin-pipewire imagemagick imv inotify-tools jdk-openjdk lazygit libadwaita libgsf librsvg libwebp luarocks mlocate mpv nautilus nautilus-python neovim nodejs npm noto-fonts noto-fonts-emoji noto-fonts-extra obsidian pacman-contrib pamixer p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse poppler-glib python-pyquery ripgrep snap-pac spotify-launcher starship sushi swayosd swww tar tree-sitter tree-sitter-cli ttf-jetbrains-mono-nerd udisks2 ufw unrar unzip wget wiremix wireplumber woff2-font-awesome xdg-user-dirs xsel xmlstarlet yazi yt-dlp zoxide zsh zsh-completions" "Install complete application suite (browsers, media, development, system tools)" "no"
 
 # -------------------- Configuration Files --------------------
-run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "yes" "no"
+run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "no" "no"
 
 # -------------------- Yazi: plugin "bat" --------------------
 run_command "mkdir -p /home/$SUDO_USER/.config/yazi/plugins" \

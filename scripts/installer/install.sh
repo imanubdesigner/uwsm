@@ -17,6 +17,9 @@ echo "---------------"
 # Check if running as root
 check_root
 
+# Ask for sudo password once and keep it alive for the entire session
+sudo_keepalive
+
 # Check if OS is Arch Linux
 check_os
 

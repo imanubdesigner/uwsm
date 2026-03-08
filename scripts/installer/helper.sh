@@ -18,6 +18,10 @@ function trap_message {
     print_error "\n\nScript interrupted. Exiting.....\n"
     # Add any cleanup code here
     log_message "Script interrupted and exited"
+    # Kill sudo keepalive background process if running
+    if [[ -n "$SUDO_KEEPALIVE_PID" ]]; then
+        kill "$SUDO_KEEPALIVE_PID" 2>/dev/null
+    fi
     exit 1
 }
 
@@ -47,29 +51,33 @@ function print_bold_blue {
     echo -e "${BLUE}${BOLD}$1${NC}"
 }
 
-# Function to ask for confirmation
+# Function to ask for sudo password once and keep it alive for the entire session
+function sudo_keepalive {
+    print_info "\nSudo authentication required. Please enter your password once."
+    sudo -v || { print_error "Sudo authentication failed. Exiting."; exit 1; }
+    log_message "Sudo authentication successful."
+
+    # Keep sudo alive in background: refresh every 60s (default timeout is 5min)
+    ( while true; do sudo -n true; sleep 60; done ) &
+    SUDO_KEEPALIVE_PID=$!
+    log_message "Sudo keepalive started (PID: $SUDO_KEEPALIVE_PID)."
+
+    # Kill keepalive when the main script exits
+    trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null; log_message "Sudo keepalive stopped."' EXIT
+}
+
+# Function to ask for confirmation — always auto-confirms (y)
 function ask_confirmation {
-    while true; do
-        read -p "$(print_warning "$1 (y/n): ")" -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            log_message "Operation accepted by user."
-            return 0  # User confirmed
-            elif [[ $REPLY =~ ^[Nn]$ ]]; then
-            log_message "Operation cancelled by user."
-            print_error "Operation cancelled."
-            return 1  # User cancelled
-        else
-            print_error "Invalid input. Please answer y or n."
-        fi
-    done
+    print_warning "$1 (y/n): "
+    log_message "Auto-confirmed: $1"
+    return 0  # Always confirm
 }
 
 # Function to run a command with optional confirmation and retry
 function run_command {
     local cmd="$1"
     local description="$2"
-    local ask_confirm="${3:-yes}"  # Default to asking for confirmation
+    local ask_confirm="${3:-no}"   # Default changed to no: no confirmation needed
     local use_sudo="${4:-yes}"     # Default to using sudo
 
     local full_cmd=""
@@ -78,19 +86,19 @@ function run_command {
     else
         full_cmd="$cmd"
     fi
-    
+
     log_message "Attempting to run: $description"
     print_info "\nCommand: $full_cmd"
+
     if [[ "$ask_confirm" == "yes" ]]; then
         if ! ask_confirmation "$description"; then
-            # print_info "$description was skipped."
             log_message "$description was skipped by user choice."
             return 1
         fi
     else
         print_info "\n$description"  # Echo what it's doing without confirmation
     fi
-    
+
     while ! eval "$full_cmd"; do
         print_error "Command failed."
         log_message "Command failed: $cmd"
@@ -106,27 +114,28 @@ function run_command {
             return 1
         fi
     done
-    
+
     print_success "$description completed successfully."
     log_message "$description completed successfully."
     return 0
 }
 
-# Function to run a script with retry and confirmation
+# Function to run a script with retry (no confirmation needed)
 function run_script {
     local script="$BASE_DIR/scripts/installer/$1"
     local description="$2"
-    if ask_confirmation "\nExecute '$description' script"; then
-        while ! bash "$script"; do
-            print_error "$description script failed."
-            if ! ask_confirmation "Retry $description"; then
-                return 1  # User chose not to retry
-            fi
-        done
-        print_success "\n$description completed successfully."
-    else
-        return 1  # User chose not to run the script
-    fi
+
+    print_info "\nExecuting '$description' script..."
+    log_message "Auto-executing script: $description"
+
+    while ! bash "$script"; do
+        print_error "$description script failed."
+        log_message "$description script failed. Retrying automatically..."
+        print_warning "Retrying $description..."
+    done
+
+    print_success "\n$description completed successfully."
+    log_message "$description completed successfully."
 }
 
 function check_root {
@@ -135,7 +144,7 @@ function check_root {
         log_message "Script not run as root. Exiting."
         exit 1
     fi
-    
+
     # Store the original user for later use
     SUDO_USER=$(logname)
     log_message "Original user is $SUDO_USER"
@@ -146,19 +155,15 @@ function check_os {
         . /etc/os-release
         if [[ "$ID" != "arch" ]]; then
             print_warning "This script is designed for Arch Linux. Your system: $PRETTY_NAME"
-            if ! ask_confirmation "Continue anyway?"; then
-                log_message "Installation cancelled due to unsupported OS"
-                exit 1
-            fi
+            log_message "Non-Arch OS detected ($PRETTY_NAME). Auto-continuing."
+            # Auto-continue on non-Arch (no confirmation needed)
         else
             print_success "Arch Linux detected. Proceeding with installation."
             log_message "Arch Linux detected. Installation proceeding."
         fi
     else
         print_error "Unable to determine OS. /etc/os-release not found."
-        if ! ask_confirmation "Continue anyway?"; then
-            log_message "Installation cancelled due to unknown OS"
-            exit 1
-        fi
+        log_message "Unknown OS. Auto-continuing."
+        # Auto-continue on unknown OS (no confirmation needed)
     fi
 }

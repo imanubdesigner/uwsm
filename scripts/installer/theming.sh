@@ -10,69 +10,69 @@ log_message "Installation started for theming + services setup"
 print_info "\nStarting theming and service setup..."
 
 # -------------------- Theming --------------------
-run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
-
-# Install Catppuccin GTK theme (Fausto version) - Dark Blue variant
-run_command "mkdir -p /home/$SUDO_USER/.themes /home/$SUDO_USER/.config/gtk-4.0; \
-TAR=\$BASE_DIR/assets/themes/Catppuccin-BL-LB-dark.tar.xz; \
-[ -f \"\$TAR\" ] || { echo \"Theme not found: \$TAR\"; exit 1; }; \
-tar -xJvf \"\$TAR\" -C /home/$SUDO_USER/.themes; \
-THEME_DIR=/home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark; \
-if [ ! -d \"\$THEME_DIR\" ]; then THEME_DIR=\$(ls -d /home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark* 2>/dev/null | grep -vE 'hdpi' | head -n1); fi; \
-rm -rf /home/$SUDO_USER/.config/gtk-4.0/assets 2>/dev/null || true; \
-ln -snf \"\$THEME_DIR/gtk-4.0/assets\" /home/$SUDO_USER/.config/gtk-4.0/assets; \
-ln -snf \"\$THEME_DIR/gtk-4.0/gtk.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk.css; \
-ln -snf \"\$THEME_DIR/gtk-4.0/gtk-dark.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk-dark.css" \
-  "Install Catppuccin GTK (tar.xz → ~/.themes + symlink GTK4, verbose)" "yes" "no"
-
-# -------------------- Catppuccin Kvantum Theme--------------------
-run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
-run_command "cp -r $BASE_DIR/assets/themes/catppuccin-mocha-blue /home/$SUDO_USER/Documents/Cat" "Copy Cat folder for Kvantum" "yes" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Documents/Cat" "Set corrent ownership" "yes"
+# run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
+#
+# # Install Catppuccin GTK theme (Fausto version) - Dark Blue variant
+# run_command "mkdir -p /home/$SUDO_USER/.themes /home/$SUDO_USER/.config/gtk-4.0; \
+# TAR=\$BASE_DIR/assets/themes/Catppuccin-BL-LB-dark.tar.xz; \
+# [ -f \"\$TAR\" ] || { echo \"Theme not found: \$TAR\"; exit 1; }; \
+# tar -xJvf \"\$TAR\" -C /home/$SUDO_USER/.themes; \
+# THEME_DIR=/home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark; \
+# if [ ! -d \"\$THEME_DIR\" ]; then THEME_DIR=\$(ls -d /home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark* 2>/dev/null | grep -vE 'hdpi' | head -n1); fi; \
+# rm -rf /home/$SUDO_USER/.config/gtk-4.0/assets 2>/dev/null || true; \
+# ln -snf \"\$THEME_DIR/gtk-4.0/assets\" /home/$SUDO_USER/.config/gtk-4.0/assets; \
+# ln -snf \"\$THEME_DIR/gtk-4.0/gtk.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk.css; \
+# ln -snf \"\$THEME_DIR/gtk-4.0/gtk-dark.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk-dark.css" \
+#   "Install Catppuccin GTK (tar.xz → ~/.themes + symlink GTK4, verbose)" "yes" "no"
+#
+# # -------------------- Catppuccin Kvantum Theme--------------------
+# run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
+# run_command "cp -r $BASE_DIR/assets/themes/catppuccin-mocha-blue /home/$SUDO_USER/Documents/Cat" "Copy Cat folder for Kvantum" "yes" "no"
+# run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Documents/Cat" "Set corrent ownership" "yes"
 
 # -------------------- Fonts --------------------
-run_command "fc-cache -fv" "Refresh font cache" "yes" "no"
+run_command "fc-cache -fv" "Refresh font cache" "no" "no"
 
 # -------------------- Rebuild bat cache for catppuccin mocha theme --------------------
-run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "yes" "no"
+run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "no" "no"
 
 # -------------------- Firewall setup --------------------
-run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "yes"
-run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "yes"
-run_command "ufw allow 53317/udp" "Set udp" "yes"
-run_command "ufw allow 53317/tcp" "Set tcp" "yes"
-run_command "ufw enable" "Enable UFW firewall" "yes"
-run_command "systemctl enable ufw" "Enable UFW to start on boot" "yes"
+run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "no"
+run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "no"
+run_command "ufw allow 53317/udp" "Set udp" "no"
+run_command "ufw allow 53317/tcp" "Set tcp" "no"
+run_command "ufw enable" "Enable UFW firewall" "no"
+run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
 
 # -------------------- Set default shell --------------------
-run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "yes" "no"
-run_command "sudo -u $SUDO_USER RUNZSH=no CHSH=no sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"" "Install Oh My Zsh for user $SUDO_USER" "yes" "no"
+run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "no" "no"
+run_command "sudo -u $SUDO_USER RUNZSH=no CHSH=no sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"" "Install Oh My Zsh for user $SUDO_USER" "no" "no"
 
 # -------------------- Pacman Configuration --------------------
-run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "yes" "no"
+run_command "sudo cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Copy pacman.conf to /etc for manu user" "no" "no"
 
 # -------------------- Override Autologin --------------------
-run_command "sudo mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1 directory" "yes" "no"
-run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.service.d" "Copy override.conf" "yes" "no"
+run_command "sudo mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1 directory" "no" "no"
+run_command "sudo cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.service.d" "Copy override.conf" "no" "no"
 
 # -------------------- .zprofile for uwsm autologin --------------------
-run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "yes" "no"
+run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "no" "no"
 
 # -------------------- Starship Configuration --------------------
-run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "yes" "no"
+run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "no" "no"
 
 # -------------------- Chromium Flags --------------------
-run_command "cp $BASE_DIR/assets/chromium-flags.conf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/chromium-flags.conf" "Copy Chromium flags configuration" "yes" "no"
+run_command "cp $BASE_DIR/assets/chromium-flags.conf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/chromium-flags.conf" "Copy Chromium flags configuration" "no" "no"
 
 # -------------------- Wallpapers --------------------
-run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "yes" "no"
-run_command "cp $BASE_DIR/assets/wallpapers/wallhaven-3qzvr6.png /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "yes" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers" "Set correct ownership for wallpapers directory" "yes" "no"
+run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "no" "no"
+run_command "cp $BASE_DIR/assets/wallpapers/wallhaven-3qzvr6.png /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "no" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers" "Set correct ownership for wallpapers directory" "no" "no"
 
 # -------------------- Swww current Wallpaper --------------------
-run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "yes" "no"
-run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "yes" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "yes" "no"
+run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "no" "no"
+run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "no" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "no" "no"
 
 # -------------------- Fstab Configuration for SSD Auto Mount --------------------
 FSTAB_ENTRY="# SSD Auto Mount\nUUID=0C1A3D631A3D4ACA /mnt/Dati ntfs3 defaults,noatime,nofail,windows_names,prealloc,uid=1000,gid=1000 0 0"
@@ -82,7 +82,7 @@ run_command "echo -e \"$FSTAB_ENTRY\" | sudo tee -a /etc/fstab" \
   "yes"
 
 # -------------------- Reflector Configuration --------------------
-run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "yes" "no"
+run_command "sudo mkdir -p /etc/xdg/reflector && sudo cp $BASE_DIR/assets/reflector/reflector.conf /etc/xdg/reflector/reflector.conf && sudo mkdir -p /etc/systemd/system/reflector.timer.d && sudo cp $BASE_DIR/assets/reflector/override.conf /etc/systemd/system/reflector.timer.d/override.conf && sudo systemctl daemon-reload && sudo systemctl enable reflector.timer" "Setup and enable reflector timer" "no" "no"
 
 # -------------------- Snapper + Snap-pac Configuration --------------------
 print_bold_blue "\n=== Configuring Snapper + Snap-pac ==="
@@ -106,27 +106,27 @@ run_command "sudo systemctl enable --now snapper-cleanup.timer" \
 print_bold_blue "\n=== Preparing NVIDIA Kernel Configuration ==="
 
 # Step 1: Copy nvidia.conf (modprobe options)
-run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "yes" "no"
+run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "no" "no"
 
 # Step 2: Backup and modify mkinitcpio.conf BEFORE installing drivers
-run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup mkinitcpio.conf" "yes" "no"
+run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup mkinitcpio.conf" "no" "no"
 
-run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "yes" "no"
+run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "no" "no"
 
-run_command "sudo sed -i -E '/^HOOKS=\(/ { s/(^|[[:space:]])btrfs-overlayfs($|[[:space:]])/ /g; s/[[:space:]]+/ /g; s/[[:space:]]*\)/)/; s/\)$/ btrfs-overlayfs)/ }' /etc/mkinitcpio.conf" "Put btrfs-overlayfs once at end of HOOKS" "yes" "no"
+run_command "sudo sed -i -E '/^HOOKS=\(/ { s/(^|[[:space:]])btrfs-overlayfs($|[[:space:]])/ /g; s/[[:space:]]+/ /g; s/[[:space:]]*\)/)/; s/\)$/ btrfs-overlayfs)/ }' /etc/mkinitcpio.conf" "Put btrfs-overlayfs once at end of HOOKS" "no" "no"
 
 print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
 
 # -------------------- Limine Wipe limine.conf hook --------------------
-run_command "install -D -m 0644 -o root -g root \"$BASE_DIR/assets/99-limine-wipe-efi-conf.hook\" \"/etc/pacman.d/hooks/99-limine-wipe-efi-conf.hook\"" "Install Limine wipe-efi-conf pacman hook" "yes"
+run_command "install -D -m 0644 -o root -g root \"$BASE_DIR/assets/99-limine-wipe-efi-conf.hook\" \"/etc/pacman.d/hooks/99-limine-wipe-efi-conf.hook\"" "Install Limine wipe-efi-conf pacman hook" "no"
 
 # -------------------- NVIDIA Drivers Installation --------------------
 print_bold_blue "\n=== Installing NVIDIA Drivers ==="
 print_info "The installation will automatically compile DKMS modules and rebuild initramfs..."
 
-run_command "pacman -S --noconfirm --needed linux-headers nvidia-open-dkms nvidia-utils libva libva-utils lib32-nvidia-utils libva-nvidia-driver egl-wayland mesa lib32-mesa" "Install Nvidia Open DKMS (will auto-run mkinitcpio)" "yes"
+run_command "pacman -S --noconfirm --needed linux-headers nvidia-open-dkms nvidia-utils libva libva-utils lib32-nvidia-utils libva-nvidia-driver egl-wayland mesa lib32-mesa" "Install Nvidia Open DKMS (will auto-run mkinitcpio)" "no"
 
-run_command "pacman -S --noconfirm --needed lact && systemctl enable --now lactd" "Install LACT for GPU" "yes"
+run_command "pacman -S --noconfirm --needed lact && systemctl enable --now lactd" "Install LACT for GPU" "no"
 
 print_success "NVIDIA drivers installed and initramfs rebuilt automatically!"
 
@@ -135,7 +135,7 @@ print_bold_blue "\n=== Customizing Limine Bootloader ==="
 
 # 1. Remove the redundant /boot/limine directory to avoid configuration conflicts
 # Using "yes" "yes" because this requires sudo and we want confirmation
-run_command "rm -rf /boot/limine" "Remove redundant /boot/limine directory" "yes" "yes"
+run_command "rm -rf /boot/limine" "Remove redundant /boot/limine directory" "no" "yes"
 
 if command -v limine &>/dev/null; then
   # 1. Detect current CMDLINE
