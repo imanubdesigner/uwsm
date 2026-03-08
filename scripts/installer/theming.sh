@@ -10,8 +10,8 @@ log_message "Installation started for theming + services setup"
 print_info "\nStarting theming and service setup..."
 
 # -------------------- Theming --------------------
-# run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
-#
+run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
+
 # # Install Catppuccin GTK theme (Fausto version) - Dark Blue variant
 # run_command "mkdir -p /home/$SUDO_USER/.themes /home/$SUDO_USER/.config/gtk-4.0; \
 # TAR=\$BASE_DIR/assets/themes/Catppuccin-BL-LB-dark.tar.xz; \
