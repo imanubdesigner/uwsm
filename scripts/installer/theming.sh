@@ -9,27 +9,6 @@ source $BASE_DIR/scripts/installer/helper.sh
 log_message "Installation started for theming + services setup"
 print_info "\nStarting theming and service setup..."
 
-# -------------------- Theming --------------------
-run_command "pacman -S --noconfirm --needed nwg-look qt5ct qt6ct kvantum kvantum-qt5" "Install Qt5/Qt6 and Kvantum theme engines" "yes"
-
-# # Install Catppuccin GTK theme (Fausto version) - Dark Blue variant
-# run_command "mkdir -p /home/$SUDO_USER/.themes /home/$SUDO_USER/.config/gtk-4.0; \
-# TAR=\$BASE_DIR/assets/themes/Catppuccin-BL-LB-dark.tar.xz; \
-# [ -f \"\$TAR\" ] || { echo \"Theme not found: \$TAR\"; exit 1; }; \
-# tar -xJvf \"\$TAR\" -C /home/$SUDO_USER/.themes; \
-# THEME_DIR=/home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark; \
-# if [ ! -d \"\$THEME_DIR\" ]; then THEME_DIR=\$(ls -d /home/$SUDO_USER/.themes/Catppuccin-BL-LB-Dark* 2>/dev/null | grep -vE 'hdpi' | head -n1); fi; \
-# rm -rf /home/$SUDO_USER/.config/gtk-4.0/assets 2>/dev/null || true; \
-# ln -snf \"\$THEME_DIR/gtk-4.0/assets\" /home/$SUDO_USER/.config/gtk-4.0/assets; \
-# ln -snf \"\$THEME_DIR/gtk-4.0/gtk.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk.css; \
-# ln -snf \"\$THEME_DIR/gtk-4.0/gtk-dark.css\" /home/$SUDO_USER/.config/gtk-4.0/gtk-dark.css" \
-#   "Install Catppuccin GTK (tar.xz → ~/.themes + symlink GTK4, verbose)" "yes" "no"
-#
-# # -------------------- Catppuccin Kvantum Theme--------------------
-# run_command "mkdir -p /home/$SUDO_USER/Documents/Cat" "Create Cat directory" "yes" "no"
-# run_command "cp -r $BASE_DIR/assets/themes/catppuccin-mocha-blue /home/$SUDO_USER/Documents/Cat" "Copy Cat folder for Kvantum" "yes" "no"
-# run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Documents/Cat" "Set corrent ownership" "yes"
-
 # -------------------- Fonts --------------------
 run_command "fc-cache -fv" "Refresh font cache" "no" "no"
 
@@ -60,9 +39,6 @@ run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_U
 
 # -------------------- Starship Configuration --------------------
 run_command "cp $BASE_DIR/assets/starship.toml /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/starship.toml" "Copy Starship configuration" "no" "no"
-
-# -------------------- Chromium Flags --------------------
-run_command "cp $BASE_DIR/assets/chromium-flags.conf /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/chromium-flags.conf" "Copy Chromium flags configuration" "no" "no"
 
 # -------------------- Wallpapers --------------------
 run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "no" "no"
