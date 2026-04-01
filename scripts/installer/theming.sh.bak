@@ -15,19 +15,13 @@ run_command "fc-cache -fv" "Refresh font cache" "no" "no"
 # -------------------- Rebuild bat cache for catppuccin mocha theme --------------------
 run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "no" "no"
 
-# -------------------- Firewall setup --------------------
-run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "no"
-run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "no"
-run_command "ufw allow 53317/udp" "Set udp" "no"
-run_command "ufw allow 53317/tcp" "Set tcp" "no"
-run_command "ufw enable" "Enable UFW firewall" "no"
-run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
-
-# -------------------- TLP Power Management --------------------
-run_command "systemctl disable --now power-profiles-daemon 2>/dev/null || true" "Disable power-profiles-daemon (if present)" "no"
-run_command "systemctl mask power-profiles-daemon" "Mask power-profiles-daemon" "no"
-run_command "systemctl enable tlp" "Enable TLP power management" "no"
-run_command "sudo cp $BASE_DIR/assets/tlp.conf /etc/tlp.conf" "Copy TLP configuration" "no" "no"
+# # -------------------- Firewall setup --------------------
+# run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "no"
+# run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "no"
+# run_command "ufw allow 53317/udp" "Set udp" "no"
+# run_command "ufw allow 53317/tcp" "Set tcp" "no"
+# run_command "ufw enable" "Enable UFW firewall" "no"
+# run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
 
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "no" "no"

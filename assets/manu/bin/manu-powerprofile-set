@@ -1,0 +1,19 @@
+#!/bin/bash
+# Power profile setter for acpi-cpufreq driver
+
+PROFILE=$1
+
+case "$PROFILE" in
+    "Performance")
+        sudo /usr/bin/cpupower frequency-set -g performance
+        sudo /usr/bin/tlp performance
+        notify-send "Power Profile" "PERFORMANCE: Max Clock Locked" -i performance ;;
+    "Balanced")
+        sudo /usr/bin/cpupower frequency-set -g schedutil
+        sudo /usr/bin/tlp balanced
+        notify-send "Power Profile" "BALANCED: Optimized (Schedutil)" -i balanced ;;
+    "Power-Save")
+        sudo /usr/bin/cpupower frequency-set -g powersave
+        sudo /usr/bin/tlp power-saver
+        notify-send "Power Profile" "POWER SAVE: Minimum Clock" -i battery ;;
+esac

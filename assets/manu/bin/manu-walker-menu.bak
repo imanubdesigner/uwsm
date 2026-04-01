@@ -156,24 +156,13 @@ show_share_menu() {
 }
 
 show_toggle_menu() {
-  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󰵅  Power Profile") in
+  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar") in
   *Screensaver*) manu-toggle-screensaver ;;
   *Nightlight*) manu-night-toggle ;;
   *Idle*) manu-idle-toggle ;;
   *Bar*) manu-toggle-waybar ;;
-  *"Power Profile"*) show_power_profile_menu ;;
   *) show_trigger_menu ;;
   esac
-}
-
-show_power_profile_menu() {
-  local profile
-  profile=$(menu "Power Profile" "$(manu-powerprofiles-list)")
-  if [[ -z "$profile" ]]; then
-    back_to show_toggle_menu
-  else
-    manu-powerprofile-set "$profile"
-  fi
 }
 
 show_style_menu() {
