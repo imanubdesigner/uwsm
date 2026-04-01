@@ -15,13 +15,13 @@ run_command "fc-cache -fv" "Refresh font cache" "no" "no"
 # -------------------- Rebuild bat cache for catppuccin mocha theme --------------------
 run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "no" "no"
 
-# -------------------- Firewall setup --------------------
-run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "no"
-run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "no"
-run_command "ufw allow 53317/udp" "Set udp" "no"
-run_command "ufw allow 53317/tcp" "Set tcp" "no"
-run_command "ufw enable" "Enable UFW firewall" "no"
-run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
+# # -------------------- Firewall setup --------------------
+# run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "no"
+# run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "no"
+# run_command "ufw allow 53317/udp" "Set udp" "no"
+# run_command "ufw allow 53317/tcp" "Set tcp" "no"
+# run_command "ufw enable" "Enable UFW firewall" "no"
+# run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
 
 # -------------------- TLP Power Management --------------------
 run_command "systemctl disable --now power-profiles-daemon 2>/dev/null || true" "Disable power-profiles-daemon (if present)" "no"
@@ -53,8 +53,8 @@ run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers
 
 # -------------------- Swww current Wallpaper --------------------
 run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "no" "no"
-run_command "cp -r $BASE_DIR/assets/swww /home/$SUDO_USER/.cache/" "Copy swww cache folder for wallpaper" "no" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/swww" "Set correct ownership on swww folder" "no" "no"
+run_command "cp -r $BASE_DIR/assets/awww /home/$SUDO_USER/.cache/" "Copy awww cache folder for wallpaper" "no" "no"
+run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/awww" "Set correct ownership on swww folder" "no" "no"
 
 # -------------------- Fstab Configuration for SSD Auto Mount --------------------
 FSTAB_ENTRY="# SSD Auto Mount\nUUID=0C1A3D631A3D4ACA /mnt/Dati ntfs3 defaults,noatime,nofail,windows_names,prealloc,uid=1000,gid=1000 0 0"
