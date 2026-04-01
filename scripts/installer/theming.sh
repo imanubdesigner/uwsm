@@ -28,6 +28,7 @@ run_command "systemctl disable --now power-profiles-daemon 2>/dev/null || true" 
 run_command "systemctl mask power-profiles-daemon" "Mask power-profiles-daemon" "no"
 run_command "systemctl enable tlp" "Enable TLP power management" "no"
 run_command "sudo cp $BASE_DIR/assets/tlp.conf /etc/tlp.conf" "Copy TLP configuration" "no" "no"
+run_command "echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' | sudo tee /etc/sudoers.d/manu-powerprofile && sudo chmod 0440 /etc/sudoers.d/manu-powerprofile" "Configure passwordless sudo for cpupower and tlp" "no" "no"
 
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "no" "no"
