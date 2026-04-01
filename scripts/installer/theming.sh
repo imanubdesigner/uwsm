@@ -91,12 +91,8 @@ print_bold_blue "\n=== Preparing NVIDIA Kernel Configuration ==="
 # Step 1: Copy nvidia.conf (modprobe options)
 run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "no" "no"
 
-# Step 2: Backup and modify mkinitcpio.conf BEFORE installing drivers
-run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup mkinitcpio.conf" "no" "no"
-
-run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "no" "no"
-
-run_command "sudo sed -i -E '/^HOOKS=\(/ { s/(^|[[:space:]])btrfs-overlayfs($|[[:space:]])/ /g; s/[[:space:]]+/ /g; s/[[:space:]]*\)/)/; s/\)$/ btrfs-overlayfs)/ }' /etc/mkinitcpio.conf" "Put btrfs-overlayfs once at end of HOOKS" "no" "no"
+# Step 2: Copy mkinitcpio drop-in configs
+run_command "sudo mkdir -p /etc/mkinitcpio.conf.d && sudo cp $BASE_DIR/assets/mkinitcpio.conf.d/*.conf /etc/mkinitcpio.conf.d/" "Copy mkinitcpio drop-in configs (nvidia, hooks, thunderbolt)" "no" "no"
 
 print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
 
