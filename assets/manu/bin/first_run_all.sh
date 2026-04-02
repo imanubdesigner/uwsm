@@ -6,7 +6,7 @@
 #  Location: ~/.local/share/manu/bin/first_run_all.sh
 # -------------------------------------------------------
 
-FLAG="$HOME/.config/hypr/.first-run-done"
+FLAG="$HOME/.local/share/manu/.first-run-done"
 BIN_DIR="$HOME/.local/share/manu/bin"
 LOG="$HOME/.local/share/manu/first-run.log"
 
@@ -31,6 +31,14 @@ bash "$BIN_DIR/gnome-theme.sh" >> "$LOG" 2>&1
 # -------------------- XDG user dirs --------------------
 echo "$(date): Updating XDG user dirs..." >> "$LOG"
 xdg-user-dirs-update >> "$LOG" 2>&1
+
+# -------------------- Snapper + Limine --------------------
+echo "$(date): Running limine-snapper.sh..." >> "$LOG"
+bash "$BIN_DIR/limine-snapper.sh" >> "$LOG" 2>&1
+
+# -------------------- Restore visudo (keep only cpupower + tlp) --------------------
+echo "$(date): Restoring sudoers to cpupower + tlp only..." >> "$LOG"
+sudo bash -c "echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' > /etc/sudoers.d/manu-powerprofile && chmod 0440 /etc/sudoers.d/manu-powerprofile" >> "$LOG" 2>&1
 
 # -------------------------------------------------------
 # Mark as done — won't run again

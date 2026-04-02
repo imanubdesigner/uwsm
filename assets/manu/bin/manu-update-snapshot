@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┳┓┏┓┏┓┏┓┓┏┏┓┏┳┓
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┗┓┃┃┣┫┃┃┗┓┣┫┃┃ ┃
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┛┗┛┗┣┛┗┛┛┗┗┛ ┻
+#
+
+BLUE="#89b4fa"
+GREEN="#a6e3a1"
+MAUVE="#cba6f7"
+RED="#f38ba8"
+RESET="\e[0m"
+
+# snapper must be available
+if ! command -v snapper &>/dev/null; then
+  echo -e "\e[33m󰒤 snapper not found, skipping snapshot.${RESET}"
+  exit 0
+fi
+
+echo ""
+echo -e "\e[38;2;203;166;247m󰚰 Create a snapshot before updating?\e[0m"
+
+if ! gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" ""; then
+  echo -e "\e[38;2;137;180;250m󰒤 Skipping snapshot.${RESET}"
+  echo ""
+  exit 0
+fi
+
+echo -e "\e[38;2;166;227;161m󰚰 Creating snapshot...\e[0m"
+
+DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
+
+# Iterate all snapper configs, like omarchy does
+mapfile -t CONFIGS < <(sudo snapper --csvout list-configs | awk -F, 'NR>1 {print $1}')
+
+for config in "${CONFIGS[@]}"; do
+  sudo snapper -c "$config" create -c number -d "$DESC"
+done
+
+echo -e "\e[32m󰄬 Snapshot created: \"${DESC}\"${RESET}"
+notify-send "󰚰 Snapshot" "Snapshot created before update." -a "Update Script"
+echo ""

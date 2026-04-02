@@ -1,0 +1,168 @@
+#!/bin/bash
+
+#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┏┓┳┓┏┓┏┓┳┓┳┳┓
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┃┃┣ ┣┫┣ ┃┃┣┫┃┃┃
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┣┛┗┛┛┗┻ ┗┛┛┗┛ ┗
+#
+
+set -e
+
+PACMAN_LOG="/var/log/pacman.log"
+STATE_DIR="$HOME/.local/state/manu"
+mkdir -p "$STATE_DIR"
+
+BLUE="#89b4fa"
+GREEN="#a6e3a1"
+RED="#f38ba8"
+WHITE="#cdd6f4"
+RESET="\e[0m"
+
+print_info() { printf "\e[38;2;137;180;250m󰣇 %s${RESET}\n" "$1"; }
+print_ok()   { echo -e "\e[32m󰄬 $1${RESET}"; }
+print_err()  { echo -e "\e[31m󰅚 $1${RESET}"; }
+
+# ────────────────────────────────────────────────
+#  Log capture (like omarchy)
+# ────────────────────────────────────────────────
+export CLICOLOR_FORCE=1
+exec > >(tee "/tmp/manu-update.log") 2>&1
+
+# ────────────────────────────────────────────────
+#  Prevent sleep during update
+# ────────────────────────────────────────────────
+hyprctl dispatch tagwindow +noidle &>/dev/null || true
+
+# ────────────────────────────────────────────────
+#  Pacman update
+# ────────────────────────────────────────────────
+print_info "Updating Pacman packages"
+notify-send " System update" "Starting update..." -a "Update Script"
+
+LAST_LOG_LINE=$(wc -l <"$PACMAN_LOG")
+
+if sudo pacman -Syyu; then
+  print_ok "Pacman update completed."
+else
+  print_err "Pacman update failed."
+  notify-send " System update" "󰅚 Pacman update failed!" -a "Update Script" -u critical
+  exit 1
+fi
+
+# ────────────────────────────────────────────────
+#  AUR update
+# ────────────────────────────────────────────────
+echo ""
+print_info "Updating AUR packages"
+
+AUR_HELPER=""
+if command -v paru &>/dev/null; then
+  AUR_HELPER="paru"
+elif command -v yay &>/dev/null; then
+  AUR_HELPER="yay"
+fi
+
+if [[ -n "$AUR_HELPER" ]]; then
+  if $AUR_HELPER -Sua --noconfirm; then
+    print_ok "AUR update completed."
+  else
+    print_err "AUR update failed."
+    notify-send " System update" "󰅚 AUR update failed!" -a "Update Script" -u critical
+    exit 1
+  fi
+else
+  print_err "No AUR helper found (paru/yay). Skipping AUR update."
+fi
+
+# ────────────────────────────────────────────────
+#  Kernel Update Detection
+# ────────────────────────────────────────────────
+KERNEL_UPDATED=false
+if tail -n +$LAST_LOG_LINE "$PACMAN_LOG" | grep -qE "\[ALPM\] (upgraded|installed) linux(-[a-z0-9]+)? "; then
+  KERNEL_UPDATED=true
+  touch "$STATE_DIR/reboot-required"
+fi
+
+# ────────────────────────────────────────────────
+#  Notify done
+# ────────────────────────────────────────────────
+echo ""
+notify-send "󰄳 System update" "All packages are up to date." -a "Update Script"
+print_ok "System update complete."
+
+# ────────────────────────────────────────────────
+#  Waybar Cache Refresh
+# ────────────────────────────────────────────────
+sleep 0.5
+print_info "Clearing Waybar update cache"
+rm -f /tmp/waybar-updates-cache 2>/dev/null
+pkill -SIGRTMIN+8 waybar 2>/dev/null
+print_ok "Waybar cache refreshed."
+
+# ────────────────────────────────────────────────
+#  Re-enable sleep
+# ────────────────────────────────────────────────
+hyprctl dispatch tagwindow -- -noidle &>/dev/null || true
+
+# ────────────────────────────────────────────────
+#  Post-update Reboot Checks
+# ────────────────────────────────────────────────
+if [ "$KERNEL_UPDATED" = true ]; then
+  echo ""
+  notify-send " Kernel update detected" " Reboot recommended." -a "Update Script"
+  gum style \
+    --border double \
+    --border-foreground "$BLUE" \
+    --margin "1 2" \
+    --padding "1 2" \
+    " Linux kernel update detected!" \
+    " A new kernel version was installed." \
+    "󰜉 Reboot required to apply changes."
+  echo ""
+  if gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" "Reboot now?"; then
+    rm -f "$STATE_DIR"/re*-required
+    sudo reboot now
+  else
+    gum style --foreground 245 "󰒤 Remember to reboot later."
+  fi
+
+elif [ -f "$STATE_DIR/reboot-required" ]; then
+  echo ""
+  notify-send " Reboot required" "󰜉 Previous updates need reboot." -a "Update Script"
+  gum style \
+    --border double \
+    --border-foreground "$BLUE" \
+    --margin "1 2" \
+    --padding "1 2" \
+    "󰜉 System reboot required" \
+    " Previous updates need a reboot to take effect."
+  echo ""
+  if gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" "Reboot now?"; then
+    rm -f "$STATE_DIR"/re*-required
+    sudo reboot now
+  else
+    gum style --foreground 245 "󰒤 Reboot later."
+  fi
+fi
+
+# ────────────────────────────────────────────────
+#  Service Restart Checks
+# ────────────────────────────────────────────────
+for file in "$STATE_DIR"/restart-*-required; do
+  if [ -f "$file" ]; then
+    service=$(basename "$file" | sed 's/restart-\(.*\)-required/\1/')
+    echo ""
+    print_info "Service restart required: $service"
+    if gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" "Restart $service now?"; then
+      print_info "Restarting $service"
+      rm -f "$file"
+      if command -v manu-restart-"$service" &>/dev/null; then
+        manu-restart-"$service"
+        print_ok "$service restarted successfully."
+      else
+        print_err "Command manu-restart-$service not found!"
+      fi
+    else
+      gum style --foreground 245 "󰒤 $service restart postponed."
+    fi
+  fi
+done

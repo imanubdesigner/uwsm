@@ -1,46 +1,64 @@
-# =====================================
-# /etc/snapper/configs/root
-# Optimized for snap-pac + Limine setup
-# =====================================
 
-# Subvolume to snapshot
+# subvolume to snapshot
 SUBVOLUME="/"
 
-# Filesystem type
+# filesystem type
 FSTYPE="btrfs"
 
-# Btrfs qgroup for space-aware cleanup algorithms (optional)
+
+# btrfs qgroup for space aware cleanup algorithms
 QGROUP=""
 
-# Fraction or absolute size of the filesystem's space snapshots may use
-SPACE_LIMIT="0.5"
 
-# Fraction or absolute size of free space required on the filesystem
-FREE_LIMIT="0.2"
+# fraction or absolute size of the filesystems space the snapshots may use
+SPACE_LIMIT="0.3"
 
-# Users and groups allowed to manage this configuration
+# fraction or absolute size of the filesystems space that should be free
+FREE_LIMIT="0.3"
+
+
+# users and groups allowed to work with config
 ALLOW_USERS=""
 ALLOW_GROUPS=""
 
-# Synchronize ACLs for allowed users/groups to .snapshots directory
+# sync users and groups from ALLOW_USERS and ALLOW_GROUPS to .snapshots
+# directory
 SYNC_ACL="no"
 
-# Compare pre- and post-snapshots in the background
+
+# start comparing pre- and post-snapshot in background after creating
+# post-snapshot
 BACKGROUND_COMPARISON="yes"
 
-# --- Number cleanup policy ---
-# Keep only a fixed number of snapshots
+
+# run daily number cleanup
 NUMBER_CLEANUP="yes"
-NUMBER_MIN_AGE="3600"                # Minimum age (in seconds) before cleanup
-NUMBER_LIMIT="2"                     # Max normal snapshots to keep
-NUMBER_LIMIT_IMPORTANT="1"           # Max important snapshots to keep
 
-# --- Disable timeline snapshots ---
-# Snap-pac already handles snapshot creation, so disable hourly ones
+# limit for number cleanup
+NUMBER_MIN_AGE="3600"
+NUMBER_LIMIT="5"
+NUMBER_LIMIT_IMPORTANT="5"
+
+
+# create hourly snapshots
 TIMELINE_CREATE="no"
-TIMELINE_CLEANUP="no"
 
-# --- Optional cleanup for empty pre/post pairs ---
+# cleanup hourly snapshots after some time
+TIMELINE_CLEANUP="yes"
+
+# limits for timeline cleanup
+TIMELINE_MIN_AGE="3600"
+TIMELINE_LIMIT_HOURLY="10"
+TIMELINE_LIMIT_DAILY="10"
+TIMELINE_LIMIT_WEEKLY="0"
+TIMELINE_LIMIT_MONTHLY="10"
+TIMELINE_LIMIT_QUARTERLY="0"
+TIMELINE_LIMIT_YEARLY="10"
+
+
+# cleanup empty pre-post-pairs
 EMPTY_PRE_POST_CLEANUP="yes"
+
+# limits for empty pre-post-pair cleanup
 EMPTY_PRE_POST_MIN_AGE="3600"
 

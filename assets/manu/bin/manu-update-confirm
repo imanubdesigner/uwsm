@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┏┓┳┓┏┓┳┳┓┳┓
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┃ ┃┃┃┃┣ ┃┃┃┃┃
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┗┛┛┗┻ ┛ ┗┛┗
+#
+
+BLUE="#89b4fa"
+WHITE="#cdd6f4"
+GREEN="#a6e3a1"
+RED="#f38ba8"
+RESET="\e[0m"
+
+echo ""
+
+gum style \
+  --border double \
+  --border-foreground "$BLUE" \
+  --padding "1 2" \
+  --margin "1 2" \
+  --width 65 \
+  --foreground "$WHITE" \
+  "Ready to update Pacman packages?" \
+  "" \
+  "• You cannot stop the update once you start!" \
+  "• Pacman + AUR packages will be updated."
+
+echo ""
+echo -e "\e[38;2;137;180;250mContinue with update?\e[0m"
+
+if ! gum confirm --selected.background "$GREEN" --selected.foreground "#11111b" ""; then
+  echo -e "${RED}Update aborted by user.${RESET}"
+  exit 1
+fi
