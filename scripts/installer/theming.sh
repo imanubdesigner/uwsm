@@ -15,14 +15,6 @@ run_command "fc-cache -fv" "Refresh font cache" "no" "no"
 # -------------------- Rebuild bat cache for catppuccin mocha theme --------------------
 run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "no" "no"
 
-# # -------------------- Firewall setup --------------------
-# run_command "ufw default deny incoming" "Set UFW default policy: deny incoming" "no"
-# run_command "ufw default allow outgoing" "Set UFW default policy: allow outgoing" "no"
-# run_command "ufw allow 53317/udp" "Set udp" "no"
-# run_command "ufw allow 53317/tcp" "Set tcp" "no"
-# run_command "ufw enable" "Enable UFW firewall" "no"
-# run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
-
 # -------------------- Fast Shutdown Configuration --------------------
 run_command "sudo mkdir -p /etc/systemd/system.conf.d" "Create system.conf.d directory" "no" "no"
 run_command "sudo mkdir -p /etc/systemd/system/user@.service.d" "Create user service override directory" "no" "no"
@@ -82,11 +74,6 @@ run_command "sudo mkdir -p /etc/snapper/configs && sudo cp $BASE_DIR/assets/snap
   "Copy Snapper root configuration" \
   "yes" "no"
 
-# # Step 2: Copy snap-pac.ini
-# run_command "sudo cp $BASE_DIR/assets/snap/snap-pac.ini /etc/snap-pac.ini" \
-#   "Copy snap-pac.ini configuration" \
-#   "yes" "no"
-
 # Step 3: Enable Snapper automatic cleanup timer
 run_command "sudo systemctl enable --now snapper-cleanup.timer" \
   "Enable Snapper automatic cleanup timer" \
@@ -98,12 +85,8 @@ print_bold_blue "\n=== Preparing NVIDIA Kernel Configuration ==="
 # Step 1: Copy nvidia.conf (modprobe options)
 run_command "sudo mkdir -p /etc/modprobe.d && sudo cp $BASE_DIR/assets/nvidia.conf /etc/modprobe.d/nvidia.conf" "Enable NVIDIA Modeset (KMS) for Wayland" "no" "no"
 
-# # Step 2: Backup and modify mkinitcpio.conf BEFORE installing drivers
-# run_command "sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup" "Backup mkinitcpio.conf" "no" "no"
-#
-# run_command "sudo sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs)/' /etc/mkinitcpio.conf" "Add NVIDIA modules to mkinitcpio.conf" "no" "no"
-#
-# run_command "sudo sed -i -E '/^HOOKS=\(/ { s/(^|[[:space:]])btrfs-overlayfs($|[[:space:]])/ /g; s/[[:space:]]+/ /g; s/[[:space:]]*\)/)/; s/\)$/ btrfs-overlayfs)/ }' /etc/mkinitcpio.conf" "Put btrfs-overlayfs once at end of HOOKS" "no" "no"
+# Step 2: Copy mkinitcpio drop-in configs
+run_command "sudo cp -r $BASE_DIR/assets/mkinitcpio.conf.d /etc/" "Copy mkinitcpio drop-in configs (nvidia, hooks, thunderbolt)" "no" "no"
 
 print_success "Kernel configuration prepared. NVIDIA drivers will trigger initramfs rebuild automatically."
 
