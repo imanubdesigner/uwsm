@@ -23,6 +23,13 @@ run_command "bat cache --build" "Rebuild bat syntax highlighting cache" "no" "no
 # run_command "ufw enable" "Enable UFW firewall" "no"
 # run_command "systemctl enable ufw" "Enable UFW to start on boot" "no"
 
+# -------------------- Fast Shutdown Configuration --------------------
+run_command "sudo mkdir -p /etc/systemd/system.conf.d" "Create system.conf.d directory" "no" "no"
+run_command "sudo mkdir -p /etc/systemd/system/user@.service.d" "Create user service override directory" "no" "no"
+run_command "sudo cp $BASE_DIR/assets/systemd/faster-shutdown.conf /etc/systemd/system.conf.d/10-faster-shutdown.conf" "Copy system-wide faster-shutdown configuration" "no" "no"
+run_command "sudo cp $BASE_DIR/assets/systemd/user@.service.d/faster-shutdown.conf /etc/systemd/system/user@.service.d/faster-shutdown.conf" "Copy user-level faster-shutdown configuration" "no" "no"
+run_command "sudo systemctl daemon-reload" "Reload systemd daemon" "no" "no"
+
 # -------------------- TLP Power Management --------------------
 run_command "systemctl disable --now power-profiles-daemon 2>/dev/null || true" "Disable power-profiles-daemon (if present)" "no"
 run_command "systemctl mask power-profiles-daemon" "Mask power-profiles-daemon" "no"
