@@ -38,7 +38,13 @@ bash "$BIN_DIR/limine-snapper.sh" >> "$LOG" 2>&1
 
 # -------------------- Restore visudo (keep only cpupower + tlp) --------------------
 echo "$(date): Restoring sudoers to cpupower + tlp only..." >> "$LOG"
-echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' | sudo tee /etc/sudoers.d/manu-powerprofile > /dev/null && sudo chmod 0440 /etc/sudoers.d/manu-powerprofile >> "$LOG" 2>&1
+echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' | sudo /usr/bin/tee /etc/sudoers.d/manu-powerprofile > /dev/null 2>> "$LOG"
+
+if [ $? -eq 0 ]; then
+    echo "$(date): Sudoers restored successfully." >> "$LOG"
+else
+    echo "$(date): ERROR: Failed to restore sudoers." >> "$LOG"
+fi
 
 # -------------------------------------------------------
 # Mark as done — won't run again
