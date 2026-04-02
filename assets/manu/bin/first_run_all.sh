@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------
 #  first_run_all.sh — runs once on first Hyprland login
-#  Flag: ~/.config/hypr/.first-run-done
+#  Flag: ~/.local/share/manu/.first-run-done
 #  Location: ~/.local/share/manu/bin/first_run_all.sh
 # -------------------------------------------------------
 
@@ -38,7 +38,7 @@ bash "$BIN_DIR/limine-snapper.sh" >> "$LOG" 2>&1
 
 # -------------------- Restore visudo (keep only cpupower + tlp) --------------------
 echo "$(date): Restoring sudoers to cpupower + tlp only..." >> "$LOG"
-sudo bash -c "echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' > /etc/sudoers.d/manu-powerprofile && chmod 0440 /etc/sudoers.d/manu-powerprofile" >> "$LOG" 2>&1
+echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' | sudo tee /etc/sudoers.d/manu-powerprofile > /dev/null && sudo chmod 0440 /etc/sudoers.d/manu-powerprofile >> "$LOG" 2>&1
 
 # -------------------------------------------------------
 # Mark as done — won't run again
