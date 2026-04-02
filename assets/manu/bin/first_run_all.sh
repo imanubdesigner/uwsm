@@ -6,50 +6,45 @@
 #  Location: ~/.local/share/manu/bin/first_run_all.sh
 # -------------------------------------------------------
 
-FLAG="$HOME/.local/share/manu/.first-run-done"
-BIN_DIR="$HOME/.local/share/manu/bin"
-LOG="$HOME/.local/share/manu/first-run.log"
+FLAG="$HOME/.local/share/manu/.first-run-done" 
+BIN_DIR="$HOME/.local/share/manu/bin" 
+LOG="$HOME/.local/share/manu/first-run.log" 
 
 # Already ran — exit immediately
-[[ -f "$FLAG" ]] && exit 0
+[[ -f "$FLAG" ]] && exit 0 
 
-mkdir -p "$(dirname "$LOG")"
-echo "$(date): First run started" >> "$LOG"
+mkdir -p "$(dirname "$LOG")" 
+echo "$(date): First run started" >> "$LOG" 
 
 # -------------------- Firewall --------------------
-echo "$(date): Running firewall.sh..." >> "$LOG"
-bash "$BIN_DIR/firewall.sh" >> "$LOG" 2>&1
+echo "$(date): Running firewall.sh..." >> "$LOG" 
+bash "$BIN_DIR/firewall.sh" >> "$LOG" 2>&1 
 
 # -------------------- Elephant --------------------
-echo "$(date): Running elephant.sh..." >> "$LOG"
-bash "$BIN_DIR/elephant.sh" >> "$LOG" 2>&1
+echo "$(date): Running elephant.sh..." >> "$LOG" 
+bash "$BIN_DIR/elephant.sh" >> "$LOG" 2>&1 
 
 # -------------------- GNOME / GTK Theme --------------------
-echo "$(date): Running gnome-theme.sh..." >> "$LOG"
-bash "$BIN_DIR/gnome-theme.sh" >> "$LOG" 2>&1
+echo "$(date): Running gnome-theme.sh..." >> "$LOG" 
+bash "$BIN_DIR/gnome-theme.sh" >> "$LOG" 2>&1 
 
 # -------------------- XDG user dirs --------------------
-echo "$(date): Updating XDG user dirs..." >> "$LOG"
-xdg-user-dirs-update >> "$LOG" 2>&1
+echo "$(date): Updating XDG user dirs..." >> "$LOG" 
+xdg-user-dirs-update >> "$LOG" 2>&1 
 
 # -------------------- Snapper + Limine --------------------
-echo "$(date): Running limine-snapper.sh..." >> "$LOG"
-bash "$BIN_DIR/limine-snapper.sh" >> "$LOG" 2>&1
+echo "$(date): Running limine-snapper.sh..." >> "$LOG" 
+bash "$BIN_DIR/limine-snapper.sh" >> "$LOG" 2>&1 
 
-# -------------------- Restore visudo (keep only cpupower + tlp) --------------------
-echo "$(date): Restoring sudoers to cpupower + tlp only..." >> "$LOG"
-echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/cpupower, /usr/bin/tlp' | sudo /usr/bin/tee /etc/sudoers.d/manu-powerprofile > /dev/null 2>> "$LOG"
-
-if [ $? -eq 0 ]; then
-    echo "$(date): Sudoers restored successfully." >> "$LOG"
-else
-    echo "$(date): ERROR: Failed to restore sudoers." >> "$LOG"
-fi
+# -------------------- Restore visudo --------------------
+# We run this as the last step to revoke temporary elevated privileges
+echo "$(date): Running restore-visudo.sh..." >> "$LOG"
+bash "$BIN_DIR/restore-visudo.sh" >> "$LOG" 2>&1
 
 # -------------------------------------------------------
 # Mark as done — won't run again
-touch "$FLAG"
-echo "$(date): First run completed successfully." >> "$LOG"
+touch "$FLAG" 
+echo "$(date): First run completed successfully." >> "$LOG" 
 
-# Optional: send a desktop notification via mako
-notify-send "Setup" "First-run configuration completed ✓" 2>/dev/null || true
+# Optional: send a desktop notification
+notify-send "Setup" "First-run configuration completed  ✓" 2>/dev/null || true
