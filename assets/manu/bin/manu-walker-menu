@@ -156,12 +156,16 @@ show_share_menu() {
 }
 
 show_toggle_menu() {
-  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󰵅  Power Profile") in
+  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󰵅  Power Profile\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling") in
   *Screensaver*) manu-toggle-screensaver ;;
   *Nightlight*) manu-night-toggle ;;
   *Idle*) manu-idle-toggle ;;
   *Bar*) manu-toggle-waybar ;;
   *"Power Profile"*) show_power_profile_menu ;;
+  *Layout*) manu-hyprland-workspace-layout-toggle ;;
+  *Ratio*) manu-hyprland-window-single-square-aspect-toggle ;;
+  *Gaps*) manu-hyprland-window-gaps-toggle ;;
+  *Scaling*) manu-hyprland-monitor-scaling-cycle ;;
   *) show_trigger_menu ;;
   esac
 }
