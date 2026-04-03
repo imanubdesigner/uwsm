@@ -23,6 +23,10 @@ manu-elephant-first-run >> "$LOG" 2>&1
 echo "$(date): Running gnome-theme..." >> "$LOG" 
 manu-gnome-theme-first-run >> "$LOG" 2>&1 
 
+# -------------------- ZSH Configuration --------------------
+echo "$(date): Running zsh-config..." >> "$LOG" 
+manu-zsh-first-run >> "$LOG" 2>&1
+
 # -------------------- XDG user dirs --------------------
 echo "$(date): Updating XDG user dirs..." >> "$LOG" 
 xdg-user-dirs-update >> "$LOG" 2>&1 
