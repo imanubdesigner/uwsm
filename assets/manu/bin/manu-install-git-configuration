@@ -1,34 +1,55 @@
 #!/bin/bash
 
-# Check if gum is installed
-if ! command -v gum &> /dev/null; then
-    echo "Gum is not installed. Please install it to use this configuration tool."
-    exit 1
+# Check if gum is installed to provide the TUI
+if ! command -v gum &>/dev/null; then
+  echo "Gum is not installed. Please install it to use this configuration tool."
+  exit 1
 fi
 
+# Display a styled header for the tool
 gum style --foreground 212 --border double --margin "1 2" --padding "1 2" "Git Global Configuration"
 
-# Input User Name
+# 1. Input User Name - Required for the credential string
 USER_NAME=$(gum input --placeholder "Enter your Git User Name (e.g. John Doe)")
-if [ -n "$USER_NAME" ]; then
-    git config --global user.name "$USER_NAME"
-    gum style --foreground 10 "✓ User name set to: $USER_NAME"
+if [ -z "$USER_NAME" ]; then
+  gum style --foreground 160 "Error: User name is required to automate login."
+  exit 1
 fi
+git config --global user.name "$USER_NAME"
+gum style --foreground 10 "✓ User name set to: $USER_NAME"
 
-# Input User Email
+# 2. Input User Email
 USER_EMAIL=$(gum input --placeholder "Enter your Git Email (e.g. john@example.com)")
 if [ -n "$USER_EMAIL" ]; then
-    git config --global user.email "$USER_EMAIL"
-    gum style --foreground 10 "✓ Email set to: $USER_EMAIL"
+  git config --global user.email "$USER_EMAIL"
+  gum style --foreground 10 "✓ Email set to: $USER_EMAIL"
 fi
 
-# Credential Helper Store
-gum confirm "Do you want to enable the credential helper (store)?" && {
-    git config --global credential.helper store
-    gum style --foreground 10 "✓ Credential helper enabled (store)"
-} || {
-    gum style --foreground 160 "○ Credential helper not changed"
-}
+# 3. Credential Helper & Automatic File Creation
+# This section fixes the issue where Git still asks for credentials in the terminal
+if gum confirm "Do you want to enable the credential helper and store your token?"; then
+  # Enable the 'store' helper in ~/.gitconfig
+  git config --global credential.helper store
 
+  # Ask for the Personal Access Token (PAT) since GitHub doesn't accept passwords anymore
+  TOKEN=$(gum input --password --placeholder "Paste your GitHub Personal Access Token")
+
+  if [ -n "$TOKEN" ]; then
+    # Manually create the credentials file to skip the first manual login
+    # Format: https://user:token@github.com
+    echo "https://${USER_NAME}:${TOKEN}@github.com" >~/.git-credentials
+
+    # Set restrictive permissions for security
+    chmod 600 ~/.git-credentials
+
+    gum style --foreground 10 "✓ Credential helper enabled and ~/.git-credentials created!"
+  else
+    gum style --foreground 214 "⚠ Helper enabled but no token provided. You will be prompted on next git action."
+  fi
+else
+  gum style --foreground 160 "○ Credential helper not changed"
+fi
+
+# Final message and exit
 gum style --foreground 212 --margin "1 0" "Configuration complete!"
 sleep 2
