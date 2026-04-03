@@ -194,9 +194,21 @@ show_font_menu() {
   fi
 }
 
+# show_install_menu() {
+#   case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
+#   *Package*) terminal manu-pkg-install ;;
+#   *AUR*) terminal manu-pkg-aur-install ;;
+#   *Web*) present_terminal manu-install-webapp ;;
+#   *TUI*) present_terminal manu-install-tui ;;
+#   *Chromium*) present_terminal manu-install-chromium-google-account ;;
+#   *) show_main_menu ;;
+#   esac
+# }
+
 show_install_menu() {
-  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
+  case $(menu "Install" "󰣇  Package\n󰊢  Git Configuration\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
   *Package*) terminal manu-pkg-install ;;
+  *Git*) present_terminal manu-install-git-configuration ;; # Nuovo comando
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
   *TUI*) present_terminal manu-install-tui ;;
@@ -204,6 +216,7 @@ show_install_menu() {
   *) show_main_menu ;;
   esac
 }
+
 
 show_remove_menu() {
   case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs") in
