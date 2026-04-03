@@ -1,13 +1,8 @@
 #!/bin/bash
 
-# -------------------------------------------------------
-#  first_run_all.sh — runs once on first Hyprland login
-#  Flag: ~/.local/share/manu/.first-run-done
-#  Location: ~/.local/share/manu/bin/first_run_all.sh
-# -------------------------------------------------------
-
+# Finish the installation of Hypruccin with items that can only be done after logging in.
+ 
 FLAG="$HOME/.local/share/manu/.first-run-done" 
-BIN_DIR="$HOME/.local/share/manu/bin" 
 LOG="$HOME/.local/share/manu/first-run.log" 
 
 # Already ran — exit immediately
@@ -17,34 +12,34 @@ mkdir -p "$(dirname "$LOG")"
 echo "$(date): First run started" >> "$LOG" 
 
 # -------------------- Firewall --------------------
-echo "$(date): Running firewall.sh..." >> "$LOG" 
-bash "$BIN_DIR/manu-firewall-first-run" >> "$LOG" 2>&1 
+echo "$(date): Running firewall..." >> "$LOG" 
+manu-firewall-first-run >> "$LOG" 2>&1 
 
 # -------------------- Elephant --------------------
-echo "$(date): Running elephant.sh..." >> "$LOG" 
-bash "$BIN_DIR/manu-elephant-first-run" >> "$LOG" 2>&1 
+echo "$(date): Running elephant..." >> "$LOG" 
+manu-elephant-first-run >> "$LOG" 2>&1 
 
 # -------------------- GNOME / GTK Theme --------------------
-echo "$(date): Running gnome-theme.sh..." >> "$LOG" 
-bash "$BIN_DIR/manu-gnome-theme-first-run" >> "$LOG" 2>&1 
+echo "$(date): Running gnome-theme..." >> "$LOG" 
+manu-gnome-theme-first-run >> "$LOG" 2>&1 
 
 # -------------------- XDG user dirs --------------------
 echo "$(date): Updating XDG user dirs..." >> "$LOG" 
 xdg-user-dirs-update >> "$LOG" 2>&1 
 
 # -------------------- Snapper + Limine --------------------
-echo "$(date): Running limine-snapper.sh..." >> "$LOG" 
-bash "$BIN_DIR/manu-limine-snapper-first-run" >> "$LOG" 2>&1 
+echo "$(date): Running limine-snapper..." >> "$LOG" 
+manu-limine-snapper-first-run >> "$LOG" 2>&1 
 
 # -------------------- Restore visudo --------------------
 # We run this as the last step to revoke temporary elevated privileges
-echo "$(date): Running restore-visudo.sh..." >> "$LOG"
-bash "$BIN_DIR/manu-restore-visudo-first-run" >> "$LOG" 2>&1
+echo "$(date): Running restore-visudo..." >> "$LOG"
+manu-restore-visudo-first-run >> "$LOG" 2>&1
 
 # -------------------------------------------------------
 # Mark as done — won't run again
 touch "$FLAG" 
 echo "$(date): First run completed successfully." >> "$LOG" 
 
-# Optional: send a desktop notification
+# Optional: send a desktop notification [cite: 3]
 notify-send "Setup" "First-run configuration completed  ✓" 2>/dev/null || true
