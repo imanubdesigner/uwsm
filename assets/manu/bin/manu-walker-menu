@@ -218,7 +218,7 @@ show_remove_menu() {
 
 show_update_menu() {
   case $(menu "Update" "󰣇  Pacman\n  Firmware") in
-  *Pacman*) present_terminal manu-update-system ;;
+  *Pacman*) present_terminal manu-update ;;
   *Firmware*) present_terminal manu-update-firmware ;;
   *) show_main_menu ;;
   esac
