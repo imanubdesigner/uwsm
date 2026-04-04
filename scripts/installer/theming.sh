@@ -126,7 +126,7 @@ print_bold_blue "\n=== Customizing Limine Bootloader ==="
 if command -v limine &>/dev/null; then
   # Install required packages
   # No confirm, Yes sudo (default)
-  run_command "pacman -S --noconfirm --needed limine-snapper-sync limine-mkinitcpio-hook" \
+  run_command "yay -S --sudoloop --noconfirm --needed limine-snapper-sync limine-mkinitcpio-hook" \
     "Install Limine Snapper and mkinitcpio tools" "no" "yes"
 
   # Detect boot mode

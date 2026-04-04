@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities --------------------
-run_command "yay -S --sudoloop --noconfirm --needed brave-bin hyprland-preview-share-picker-git python-terminaltexteffects xdg-terminal-exec localsend-bin walker-bin elephant-bin elephant-desktopapplications-bin elephant-files-bin elephant-websearch-bin elephant-clipboard-bin elephant-calc-bin elephant-runner-bin elephant-symbols-bin elephant-unicode-bin elephant-providerlist-bin elephant-menus-bin elephant-todo-bin waypaper gowall limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "no" "no"
+run_command "yay -S --sudoloop --noconfirm --needed brave-bin hyprland-preview-share-picker-git python-terminaltexteffects xdg-terminal-exec localsend-bin walker elephant elephant-desktopapplications elephant-files elephant-websearch elephant-clipboard elephant-calc elephant-runner elephant-symbols elephant-unicode elephant-providerlist elephant-menus elephant-todo waypaper gowall limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "no" "no"
 
 # -------------------- Applications & mimeinfo --------------------
 run_command "\
