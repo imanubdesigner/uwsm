@@ -165,8 +165,8 @@ show_share_menu() {
 show_toggle_menu() {
   case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󰵅  Power Profile\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling") in
   *Screensaver*) manu-toggle-screensaver ;;
-  *Nightlight*) manu-night-toggle ;;
-  *Idle*) manu-idle-toggle ;;
+  *Nightlight*) manu-toggle-night ;;
+  *Idle*) manu-toggle-idle ;;
   *Bar*) manu-toggle-waybar ;;
   *"Power Profile"*) show_power_profile_menu ;;
   *Layout*) manu-hyprland-workspace-layout-toggle ;;
