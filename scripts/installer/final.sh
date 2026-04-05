@@ -1,18 +1,25 @@
 #!/bin/bash
 
-# Get the directory of the current script
+# Define base directory
 BASE_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../../")
 
-# Source helper file
+# Source helper functions
 source $BASE_DIR/scripts/installer/helper.sh
 
-log_message "Final setup script started"
-print_bold_blue "\nCongratulations! Hyprland-uwsm setup is complete! Reboot is recommended"
+log_message "Finalization script started"
+print_bold_blue "\nCongratulations! Hyprland-UWSM setup is complete!"
 
-print_bold_blue "\nRepository Information:"
-echo "   - GitHub Repository: https://github.com/imanubdesigner/uwsm"
-echo "   - This is an experiment. Seems to work well. Changes will be made to make it even better."
+# --- SUDOERS CLEANUP ---
+# Remove the temporary NOPASSWD file to restore system security.
+if [ -f /etc/sudoers.d/hyprland-installer-temp ]; then
+    rm /etc/sudoers.d/hyprland-installer-temp
+    log_message "Temporary sudoers file removed successfully"
+    print_success "Security: Temporary sudo privileges have been revoked."
+fi
 
-print_success "\nEnjoy your new Hyprland environment! Reboot now for the best experience <3"
+print_info "\nRepository Info:"
+echo "   - GitHub: https://github.com/imanubdesigner/uwsm"
+echo "   - Note: This is an experimental setup. Updates are frequent."
 
+print_success "\nSetup successful! Please reboot your system to apply all changes <3"
 echo "------------------------------------------------------------------------"

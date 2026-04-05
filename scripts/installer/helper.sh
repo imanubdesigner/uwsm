@@ -1,94 +1,50 @@
 #!/bin/bash
 
-# Color codes
+# Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-BOLD='\033[1m'
+BLUE='\033[1m\033[0;34m'
 NC='\033[0m' # No Color
 
-# Get the directory of the current script
+# Directory and Log setup
 BASE_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../../")
-
-# Log file
 LOG_FILE="$BASE_DIR/scripts/installer/hyprland-uwsm.log"
+SUDOERS_TEMP="/etc/sudoers.d/hyprland-installer-temp"
 
+# Cleanup function if the script is interrupted
 function trap_message {
     print_error "\n\nScript interrupted. Exiting.....\n"
-    # Add any cleanup code here
-    log_message "Script interrupted and exited"
-    # Kill sudo keepalive background process if running
-    if [[ -n "$SUDO_KEEPALIVE_PID" ]]; then
-        kill "$SUDO_KEEPALIVE_PID" 2>/dev/null
-    fi
+    # Remove temporary sudo privileges on exit/interrupt
+    [[ -f "$SUDOERS_TEMP" ]] && rm -f "$SUDOERS_TEMP"
+    log_message "Script interrupted and temporary privileges revoked"
     exit 1
 }
 
-# Function to log messages
+# Logger function
 function log_message {
     echo "$(date): $1" >> "$LOG_FILE"
 }
 
-# Functions for colored/bold output
-function print_error {
-    echo -e "${RED}$1${NC}"
-}
+# Formatted output functions
+function print_error { echo -e "${RED}$1${NC}"; }
+function print_success { echo -e "${GREEN}$1${NC}"; }
+function print_warning { echo -e "${YELLOW}$1${NC}"; }
+function print_info { echo -e "${BLUE}$1${NC}"; }
+function print_bold_blue { echo -e "${BLUE}$1${NC}"; }
 
-function print_success {
-    echo -e "${GREEN}$1${NC}"
-}
-
-function print_warning {
-    echo -e "${YELLOW}$1${NC}"
-}
-
-function print_info {
-    echo -e "${BLUE}$1${NC}"
-}
-
-function print_bold_blue {
-    echo -e "${BLUE}${BOLD}$1${NC}"
-}
-
-# Function to ask for sudo password once and keep it alive for the entire session
-function sudo_keepalive {
-    print_info "\nSudo authentication required. Please enter your password once."
-    sudo -v || { print_error "Sudo authentication failed. Exiting."; exit 1; }
-    log_message "Sudo authentication successful."
-
-    # Also cache sudo credentials for the original user (needed for yay/makepkg)
-    # This prevents password prompts when commands run as $SUDO_USER call sudo internally
-    sudo -u "$SUDO_USER" sudo -v 2>/dev/null || true
-    log_message "Sudo credentials cached for $SUDO_USER."
-
-    # Keep sudo alive in background: refresh every 60s (default timeout is 5min)
-    # Refreshes both root and original user credentials
-    ( while true; do
-        sudo -n true 2>/dev/null
-        sudo -u "$SUDO_USER" sudo -n true 2>/dev/null || true
-        sleep 60
-    done ) &
-    SUDO_KEEPALIVE_PID=$!
-    log_message "Sudo keepalive started (PID: $SUDO_KEEPALIVE_PID)."
-
-    # Kill keepalive when the main script exits
-    trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null; log_message "Sudo keepalive stopped."' EXIT
-}
-
-# Function to ask for confirmation — always auto-confirms (y)
+# Placeholder for confirmation (auto-confirms in this setup)
 function ask_confirmation {
     print_warning "$1 (y/n): "
     log_message "Auto-confirmed: $1"
-    return 0  # Always confirm
+    return 0 
 }
 
-# Function to run a command with optional confirmation and retry
+# Main command runner
 function run_command {
     local cmd="$1"
     local description="$2"
-    local ask_confirm="${3:-no}"   # Default changed to no: no confirmation needed
-    local use_sudo="${4:-yes}"     # Default to using sudo
+    local use_sudo="${4:-yes}"
 
     local full_cmd=""
     if [[ "$use_sudo" == "no" ]]; then
@@ -97,83 +53,44 @@ function run_command {
         full_cmd="$cmd"
     fi
 
-    log_message "Attempting to run: $description"
-    print_info "\nCommand: $full_cmd"
-
-    if [[ "$ask_confirm" == "yes" ]]; then
-        if ! ask_confirmation "$description"; then
-            log_message "$description was skipped by user choice."
-            return 1
-        fi
-    else
-        print_info "\n$description"  # Echo what it's doing without confirmation
-    fi
-
+    log_message "Attempting: $description"
+    print_info "\n$description"
+    
     while ! eval "$full_cmd"; do
-        print_error "Command failed."
-        log_message "Command failed: $cmd"
-        if [[ "$ask_confirm" == "yes" ]]; then
-            if ! ask_confirmation "Retry $description?"; then
-                print_warning "$description was not completed."
-                log_message "$description was not completed due to failure and user chose not to retry."
-                return 1
-            fi
-        else
-            print_warning "$description failed and will not be retried."
-            log_message "$description failed and was not retried (auto mode)."
-            return 1
-        fi
+        print_error "Command failed: $cmd"
+        log_message "Error running: $cmd"
+        return 1
     done
-
-    print_success "$description completed successfully."
-    log_message "$description completed successfully."
     return 0
 }
 
-# Function to run a script with retry (no confirmation needed)
+# Script execution wrapper
 function run_script {
     local script="$BASE_DIR/scripts/installer/$1"
-    local description="$2"
-
-    print_info "\nExecuting '$description' script..."
-    log_message "Auto-executing script: $description"
-
+    print_info "\nExecuting '$2' script..."
     while ! bash "$script"; do
-        print_error "$description script failed."
-        log_message "$description script failed. Retrying automatically..."
-        print_warning "Retrying $description..."
+        print_error "$2 failed. Retrying..."
+        log_message "$2 failed, retrying."
     done
-
-    print_success "\n$description completed successfully."
-    log_message "$description completed successfully."
+    log_message "$2 completed successfully."
 }
 
+# Root check and user identification
 function check_root {
     if [ "$EUID" -ne 0 ]; then
-        print_error "Please run as root"
-        log_message "Script not run as root. Exiting."
+        print_error "Please run as root (sudo ./install.sh)"
         exit 1
     fi
-
-    # Store the original user for later use
     SUDO_USER=$(logname)
-    log_message "Original user is $SUDO_USER"
+    log_message "Running as root for user: $SUDO_USER"
 }
 
+# OS verification
 function check_os {
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         if [[ "$ID" != "arch" ]]; then
-            print_warning "This script is designed for Arch Linux. Your system: $PRETTY_NAME"
-            log_message "Non-Arch OS detected ($PRETTY_NAME). Auto-continuing."
-            # Auto-continue on non-Arch (no confirmation needed)
-        else
-            print_success "Arch Linux detected. Proceeding with installation."
-            log_message "Arch Linux detected. Installation proceeding."
+            print_warning "Non-Arch OS detected ($PRETTY_NAME). Proceeding anyway."
         fi
-    else
-        print_error "Unable to determine OS. /etc/os-release not found."
-        log_message "Unknown OS. Auto-continuing."
-        # Auto-continue on unknown OS (no confirmation needed)
     fi
 }
