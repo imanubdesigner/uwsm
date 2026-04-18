@@ -1,0 +1,125 @@
+/*------------ Colors ------------*/
+@import "colors.css";
+
+/*------------ Global Properties ------------*/
+* {
+    border: none;
+    border-radius: 0;
+    font-family: 'JetBrainsMono Nerd Font';
+    font-size: 12px; /* Omarchy size */
+    min-height: 0;
+    background-color: @surface;
+    color: @primary;
+}
+
+window#waybar {
+    background: @surface;
+}
+
+/*------------ Module Layout Containers ------------*/
+.modules-left {
+    margin-left: 8px;
+}
+
+.modules-right {
+    margin-right: 8px;
+}
+
+/*------------ Tooltip ------------*/
+tooltip {
+    background: @surface;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+tooltip label {
+    color: @on_surface;
+    padding: 4px;
+}
+
+/*------------ Workspaces ------------*/
+#workspaces button {
+    all: initial;
+    padding: 0 6px;
+    margin: 0 1.5px;
+    min-width: 9px;
+}
+
+#workspaces button.empty {
+    opacity: 0.5;
+}
+
+/*------------ Common Module Spacing (Omarchy Style) ------------*/
+#cpu,
+#pulseaudio,
+#network,
+#bluetooth,
+#custom-pacman,
+#custom-launcher,
+#custom-weather {
+    min-width: 12px;
+    margin: 0 7.5px;
+}
+
+/*------------ Individual Module Adjustments ------------*/
+#clock {
+    margin-left: 8.75px;
+}
+
+#tray {
+    margin-right: 10px;
+}
+
+#custom-expand-icon {
+    margin-right: 10px;
+    padding: 0 6px ;
+}
+
+#network {
+    margin-right: 10px;
+}
+
+#custom-launcher {
+    /* color: @primary  ;  */
+    font-size: 22px;     
+    margin-right: 15px;   
+    padding: 0 5px;
+}
+
+#custom-playerctl.backward {
+    margin-left: 15px;
+    font-size: 18px;
+    padding: 0 2px;
+}
+
+#custom-playerctl.play, 
+#custom-playerctl.foward {
+    font-size: 18px;
+    padding: 0 2px;
+    margin: 0 2px;
+}
+
+#custom-playerlabel {
+    margin: 0 7.5px;
+}
+
+#custom-playerlabel {
+    margin: 0 7.5px;
+}
+
+/*------------ Indicators ------------*/
+#custom-screenrecording-indicator,
+#custom-idle-indicator,
+#custom-notification-silencing-indicator {
+    min-width: 12px;
+    margin-left: 10px;
+    margin-right: 0;
+    font-size: 10px;
+    padding-bottom: 1px;
+}
+
+#custom-screenrecording-indicator.active,
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active {
+    color: @error;
+}

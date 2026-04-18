@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┳┓┓ ┳┳┏┓┏┳┓┏┓┏┓┏┳┓┓┏
+#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣┫┃ ┃┃┣  ┃ ┃┃┃┃ ┃ ┣┫
+#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┻┛┗┛┗┛┗┛ ┻ ┗┛┗┛ ┻ ┛┗
+#                               
+
+rfkill unblock bluetooth
+exec manu-launch-or-focus-tui bluetui

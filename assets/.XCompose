@@ -1,0 +1,5 @@
+include "%H/.local/share/manu/xcompose"
+
+# Identification
+<Multi_key> <space> <n> : "Manu"
+<Multi_key> <space> <e> : "imanubdesigner@gmail.com"

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Copy modular zsh folder .zshrc file into $HOME and oh-my-zsh custom plugins folder
+
+LOG="$HOME/.local/share/manu/first-run.log"
+SOURCE_DIR="/mnt/Dati/Dati/MSI-Z790/LinuxWorld/MY-HYPRLAND/OH-MY-ZSH"
+
+echo "$(date): Starting ZSH configuration..." >>"$LOG"
+
+# 1. Copy modular ZSH files (.zsh and .zshrc) to Home
+if [ -d "$SOURCE_DIR/Modular" ]; then
+  echo "$(date): Copying .zsh and .zshrc files..." >>"$LOG"
+  # Added -r to ensure the .zsh directory is copied entirely
+  cp -rf "$SOURCE_DIR/Modular/.zsh" "$HOME/" 2>>"$LOG"
+  cp -f "$SOURCE_DIR/Modular/.zshrc" "$HOME/" 2>>"$LOG"
+else
+  echo "$(date): ERROR: Modular directory not found in $SOURCE_DIR" >>"$LOG"
+fi
+
+# 2. Copy the custom folder into ~/.oh-my-zsh
+if [ -d "$SOURCE_DIR/custom" ]; then
+  echo "$(date): Copying custom folder to .oh-my-zsh..." >>"$LOG"
+  # Ensure the destination directory exists
+  mkdir -p "$HOME/.oh-my-zsh"
+  # Recursive copy of the custom directory
+  cp -rf "$SOURCE_DIR/custom" "$HOME/.oh-my-zsh/" 2>>"$LOG"
+else
+  echo "$(date): ERROR: Custom folder not found in $SOURCE_DIR" >>"$LOG"
+fi
+
+echo "$(date): ZSH configuration completed." >>"$LOG"

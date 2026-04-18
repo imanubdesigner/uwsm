@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Finish the installation of Hypruccin with items that can only be done after logging in.
+
+FLAG="$HOME/.local/share/manu/.first-run-done"
+LOG="$HOME/.local/share/manu/first-run.log"
+
+# Already ran — exit immediately
+[[ -f "$FLAG" ]] && exit 0
+
+mkdir -p "$(dirname "$LOG")"
+echo "$(date): First run started" >>"$LOG"
+
+# -------------------- Firewall --------------------
+echo "$(date): Running firewall..." >>"$LOG"
+manu-first-run-firewall >>"$LOG" 2>&1
+
+# -------------------- Elephant --------------------
+echo "$(date): Running elephant..." >>"$LOG"
+manu-first-run-elephant >>"$LOG" 2>&1
+
+# -------------------- GNOME / GTK Theme --------------------
+echo "$(date): Running gnome-theme..." >>"$LOG"
+manu-first-run-gnome-theme >>"$LOG" 2>&1
+
+# -------------------- ZSH Configuration --------------------
+echo "$(date): Running zsh-config..." >>"$LOG"
+manu-first-run-zsh >>"$LOG" 2>&1
+
+# -------------------- XDG user dirs --------------------
+echo "$(date): Updating XDG user dirs..." >>"$LOG"
+xdg-user-dirs-update >>"$LOG" 2>&1
+
+# -------------------- Snapper + Limine --------------------
+echo "$(date): Running limine-snapper..." >>"$LOG"
+manu-first-run-limine-snapper >>"$LOG" 2>&1
+
+# -------------------- Restore visudo --------------------
+# We run this as the last step to revoke temporary elevated privileges
+echo "$(date): Running restore-visudo..." >>"$LOG"
+manu-first-run-restore-visudo >>"$LOG" 2>&1
+
+# -------------------------------------------------------
+# Mark as done — won't run again
+touch "$FLAG"
+echo "$(date): First run completed successfully." >>"$LOG"
+
+# Optional: send a desktop notification [cite: 3]
+notify-send "Setup" "First-run configuration completed  ✓" 2>/dev/null || true

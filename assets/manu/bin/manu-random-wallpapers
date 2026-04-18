@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#    ┓ ┏┏┓┓ ┓ ┏┓┏┓┏┓┏┓┳┓  ┏┓┏┓┳┓┳┏┓┏┳┓
+#    ┃┃┃┣┫┃ ┃ ┃┃┣┫┃┃┣ ┣┫  ┗┓┃ ┣┫┃┃┃ ┃
+#    ┗┻┛┛┗┗┛┗┛┣┛┛┗┣┛┗┛┛┗  ┗┛┗┛┛┗┻┣┛ ┻
+#                              
+
+# Wallpapers folder
+DIR=$HOME/Pictures/wallpapers/
+PICS=($(ls ${DIR}))
+
+# Select random wallpaper
+RANDOMPICS=${PICS[$RANDOM % ${#PICS[@]}]}
+
+# Name without the path
+BASENAME=$(basename "$RANDOMPICS" .${RANDOMPICS##*.})
+
+# Image path
+IMAGE_PATH="${DIR}/${RANDOMPICS}"
+
+# .current_wallpaper path
+CURRENT_WALLPAPER_PATH="$HOME/.cache/swww/.current_wallpaper"
+
+# Copy selected image into cache folder as .current_wallpaper
+cp "$IMAGE_PATH" "$CURRENT_WALLPAPER_PATH"
+
+# Check if swaybg is on
+if [[ $(pidof swaybg) ]]; then
+  pkill swaybg
+fi
+
+# Check and start swww-daemon
+swww query || swww-daemon
+
+# Set the wallpaper with custom transition
+swww img "$IMAGE_PATH" --transition-fps 60 --transition-type any --transition-duration 3

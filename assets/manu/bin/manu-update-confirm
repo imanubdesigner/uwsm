@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┏┓┳┓┏┓┳┳┓┳┓
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┃ ┃┃┃┃┣ ┃┃┃┃┃
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┗┛┛┗┻ ┛ ┗┛┗
+#
+
+gum style --border normal --border-foreground 6 --padding "1 2" \
+  "Ready to update Pacman packages?" \
+  "" \
+  "• You cannot stop the update once you start!" \
+  "• Pacman + AUR packages will be updated."
+
+echo
+
+if ! gum confirm "Continue with update?"; then
+  echo "Update cancelled"
+  exit 1
+fi

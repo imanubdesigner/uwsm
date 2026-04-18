@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┳┓┏┓┏┓┏┓┓┏┏┓┏┳┓
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┗┓┃┃┣┫┃┃┗┓┣┫┃┃ ┃ 
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┛┗┛┗┣┛┗┛┛┗┗┛ ┻ 
+
+# snapper must be available
+if ! command -v snapper &>/dev/null; then
+  echo "󰒤 snapper not found, skipping snapshot."
+  exit 0
+fi
+
+echo ""
+echo "󰚰 Create a snapshot before updating?"
+
+if ! gum confirm ""; then
+  echo "󰒤 Skipping snapshot."
+  echo ""
+  exit 0
+fi
+
+echo "󰚰 Creating snapshot..."
+
+DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
+
+# Iterate all snapper configs, like omarchy does
+mapfile -t CONFIGS < <(sudo snapper --csvout list-configs | awk -F, 'NR>1 {print $1}')
+
+for config in "${CONFIGS[@]}"; do
+  sudo snapper -c "$config" create -c number -d "$DESC"
+done
+
+echo "󰄬 Snapshot created: \"${DESC}\""
+notify-send "󰚰  Snapshot" "Snapshot created before update." -a "Update Script"
+echo ""

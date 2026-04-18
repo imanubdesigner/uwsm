@@ -1,0 +1,16 @@
+#!/bin/bash
+# Matugen Dashboard reload
+
+MATUGEN_LUA="$HOME/.config/nvim/generated.lua"
+
+# Check active Neovim sockets
+for socket in /run/user/$(id -u)/nvim.*.0 /tmp/nvim*/0 ~/.cache/nvim/server.pipe; do
+  [ -S "$socket" ] || continue
+
+  # Send RPC command
+  nvim --server "$socket" --remote-send \
+    "<cmd>lua dofile('$MATUGEN_LUA'); require('lualine').setup({}); require('snacks').dashboard.update(); vim.cmd('redraw!')<CR>" \
+    2>/dev/null || true
+done
+
+touch "$MATUGEN_LUA"

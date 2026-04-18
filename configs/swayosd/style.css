@@ -1,0 +1,29 @@
+
+@import 'colors.css';
+
+window {
+  border-radius: 10;
+  opacity: 0.97;
+  border: 2px solid @primary;
+
+  background-color: @surface;
+}
+
+label {
+  font-weight: bold;
+  font-size: 12pt;
+
+  color: @on_surface;
+}
+
+image {
+  color: @image;
+}
+
+progressbar {
+  border-radius: 0;
+}
+
+progress {
+  background-color: @primary;
+}

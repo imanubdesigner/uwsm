@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Define the log path
+LOG="$HOME/.local/share/manu/first-run.log"
+
+echo "$(date): Starting GNOME theme and Matugen configuration..." >>"$LOG"
+
+# Set GNOME interface themes
+gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' >>"$LOG" 2>&1
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' >>"$LOG" 2>&1
+
+WALL="$HOME/Pictures/wallpapers/forest.jpg"
+
+# Small pause
+sleep 0.5
+
+# Run Matugen and log output
+matugen image "$WALL" \
+  --mode dark \
+  --source-color-index 0 \
+  --lightness-dark -0.04 \
+  --resize-filter lanczos3 \
+  --contrast 0.4 >>"$LOG" 2>&1
+
+sleep 0.5
+
+AUTOSTART_FILE="$HOME/.config/hypr/modules/autostart.conf"
+
+# Comment waypaper in the autostart file if it exists
+if [ -f "$AUTOSTART_FILE" ]; then
+  if sed -i 's|^exec-once = uwsm-app -- waypaper --restore|# exec-once = uwsm-app -- waypaper --restore|' "$AUTOSTART_FILE" >>"$LOG" 2>&1; then
+    echo "$(date): Autostart file updated successfully." >>"$LOG"
+  else
+    echo "$(date): ERROR: Failed to update autostart file." >>"$LOG"
+  fi
+fi
+
+echo "$(date): GNOME theme configuration finished." >>"$LOG"
+
+# -------------------- Disable WiFi and Bluetooth at first boot --------------------
+echo "$(date): Disabling WiFi and Bluetooth..." >>"$LOG"
+
+rfkill block wifi >>"$LOG" 2>&1
+rfkill block bluetooth >>"$LOG" 2>&1
+
+echo "$(date): WiFi and Bluetooth disabled." >>"$LOG"
+
+

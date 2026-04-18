@@ -1,0 +1,275 @@
+#!/bin/bash
+
+#    ┏┓┏┓┏┓┓┏┓┏┓┏┓┏┓┏┓  ┏┓┓ ┏┓┏┓┳┓┏┓┳┓
+#    ┃┃┣┫┃ ┃┫ ┣┫┃┓┣ ┗┓  ┃ ┃ ┣ ┣┫┃┃┣ ┣┫
+#    ┣┛┛┗┗┛┛┗┛┛┗┗┛┗┛┗┛  ┗┛┗┛┗┛┛┗┛┗┗┛┛┗
+#                              
+
+# ============================================================================
+#  󰣇 Pacman & Yay Cache Cleaner
+#  Interactive cache cleaner
+# ============================================================================
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 󰣜  Check for gum
+# ──────────────────────────────────────────────────────────────────────────────
+if ! command -v gum &>/dev/null; then
+  echo "󰅖  Error: gum is required. Please install it (e.g., yay -S gum)."
+  exit 1
+fi
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 🔑 Keep sudo active
+# ──────────────────────────────────────────────────────────────────────────────
+check_sudo() {
+  gum style \
+    --margin="1 0" \
+    "󰍛  Checking sudo privileges..."
+
+  # Check if sudo token exists or prompt for password
+  if ! sudo -v &>/dev/null; then
+    gum style \
+      --bold \
+      "󰅖  Failed to obtain sudo privileges. Exiting..."
+    exit 1
+  fi
+
+  # Keep sudo token active in the background
+  while true; do
+    sudo -n true
+    sleep 50
+    kill -0 "$$" || exit
+  done 2>/dev/null &
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 󰣖 Display Header
+# ──────────────────────────────────────────────────────────────────────────────
+show_header() {
+  gum style \
+    --border="rounded" \
+    --padding="1 2" \
+    --margin="1" \
+    "󰣇  Pacman & Yay Cache Cleaner" \
+    "" \
+    "   Clean package manager caches and free disk space"
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 󰏔 Cache Size Utilities
+# ──────────────────────────────────────────────────────────────────────────────
+get_cache_size_bytes() {
+  local path=$1
+  [ -d "$path" ] && du -sb "$path" 2>/dev/null | cut -f1 || echo "0"
+}
+
+bytes_to_human() {
+  local bytes=$1
+  if [ "$bytes" -eq 0 ]; then
+    echo "0 B"
+  else
+    numfmt --to=iec-i --suffix=B "$bytes" 2>/dev/null || echo "${bytes} B"
+  fi
+}
+
+check_cache_size() {
+  local pacman_cache=$(du -sh /var/cache/pacman/pkg 2>/dev/null | cut -f1)
+  local yay_cache=""
+  [ -d "$HOME/.cache/yay" ] && yay_cache=$(du -sh "$HOME/.cache/yay" 2>/dev/null | cut -f1)
+
+  gum style \
+    --margin="1 0" \
+    "󰏔  Current cache sizes:" \
+    "   󰮯  Pacman:  $pacman_cache" \
+    "   󰚰  Yay:     ${yay_cache:-Not found}"
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 󰄬  Pacman Cleaner
+# ──────────────────────────────────────────────────────────────────────────────
+clean_pacman() {
+  local option=$1
+  local size_before=$(get_cache_size_bytes "/var/cache/pacman/pkg")
+  local success=0
+
+  # Check and remove Pacman lock file
+  if [ -f /var/lib/pacman/db.lck ]; then
+    gum style "󰎺  Found Pacman lock file (db.lck). Removing..."
+    sudo rm /var/lib/pacman/db.lck
+    gum style "󰎺  Lock file removed. Continuing cleanup."
+  fi
+
+  case $option in
+  "Keep last 3 versions")
+    gum spin --title "󰮯  Cleaning pacman cache (keep last 3 versions)..." -- sudo paccache -r
+    success=$?
+    ;;
+  "Keep last version only")
+    gum spin --title "󰮯  Cleaning pacman cache (keep last version)..." -- sudo paccache -rk1
+    success=$?
+    ;;
+  "Remove all cached packages")
+    if gum confirm --default=false "󰗡  Remove ALL cached pacman packages?"; then
+      local pkg_count=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
+
+      if [ "$pkg_count" -eq 0 ]; then
+        gum style "   ↳  Cache already empty, nothing to remove"
+        return
+      fi
+
+      gum style "󰮯  Removing all cached packages..."
+      yes y | sudo pacman -Scc >/tmp/pacman_clean.log 2>&1
+      success=${PIPESTATUS[1]}
+
+      sudo find /var/cache/pacman/pkg -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
+
+      local pkg_count_after=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
+      if [ "$pkg_count_after" -eq 0 ]; then
+        success=0
+        gum style "󰮯  All cached packages removed successfully"
+      else
+        gum style "󰅙  Failed to clean cache completely. Check /tmp/pacman_clean.log"
+      fi
+    else
+      gum style "   ↳  Skipped"
+      return
+    fi
+    ;;
+  esac
+
+  if [ "$success" -eq 0 ]; then
+    local size_after=$(get_cache_size_bytes "/var/cache/pacman/pkg")
+    local freed=$((size_before - size_after))
+    local freed_human=$(bytes_to_human $freed)
+    gum style "󰄬  Pacman cache cleaned successfully!"
+    gum style --bold "   󰌪  Space freed: $freed_human"
+  else
+    gum style "󰅙  Error (Code $success) during Pacman cleanup."
+  fi
+  echo ""
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 󰚰  Yay Cleaner
+# ──────────────────────────────────────────────────────────────────────────────
+clean_yay() {
+  if ! command -v yay &>/dev/null; then
+    gum style "󰚌  Yay not installed. Skipping..."
+    return
+  fi
+
+  local option=$1
+  local size_before=$(get_cache_size_bytes "$HOME/.cache/yay")
+  local success=0
+
+  case $option in
+  "Remove uninstalled packages")
+    if gum confirm --default=false "󰗡  Remove uninstalled AUR packages cache?"; then
+      gum style "󰚰  Removing uninstalled packages cache..."
+      yes | yay -Sc 2>&1 | tee /tmp/yay_clean.log
+      success=${PIPESTATUS[1]}
+    else
+      gum style "   ↳  Skipped"
+      return
+    fi
+    ;;
+  "Remove all cached packages")
+    if gum confirm --default=false "󰗡  Remove ALL AUR package cache?"; then
+      gum style "󰚰  Removing all packages cache..."
+      yes | yay -Scc >/tmp/yay_clean.log 2>&1
+      success=${PIPESTATUS[1]}
+
+      if [ -d "$HOME/.cache/yay" ]; then
+        find "$HOME/.cache/yay" -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
+      fi
+
+      local remaining_pkgs=0
+      if [ -d "$HOME/.cache/yay" ]; then
+        remaining_pkgs=$(find "$HOME/.cache/yay" -name "*.pkg.tar*" 2>/dev/null | wc -l)
+      fi
+
+      if [ "$remaining_pkgs" -eq 0 ]; then
+        success=0
+        gum style "󰚰  All cached packages removed successfully"
+      else
+        gum style "󰅙  Failed to clean cache completely. Check /tmp/yay_clean.log"
+      fi
+    else
+      gum style "   ↳  Skipped"
+      return
+    fi
+    ;;
+  esac
+
+  if [ "$success" -eq 0 ]; then
+    local size_after=$(get_cache_size_bytes "$HOME/.cache/yay")
+    local freed=$((size_before - size_after))
+    local freed_human=$(bytes_to_human $freed)
+    gum style "󰄬  Yay cache cleaned successfully!"
+    gum style --bold "   󰌪  Space freed: $freed_human"
+  else
+    gum style "󰅙  Error (Code $success) during Yay cleanup."
+  fi
+  echo ""
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 󰣇  Main Menu
+# ──────────────────────────────────────────────────────────────────────────────
+main() {
+  check_sudo
+  show_header
+  check_cache_size
+
+  while true; do
+    CLEAN_CHOICE=$(gum choose --header="󰣇  What would you like to clean?" \
+      "Pacman cache" \
+      "Yay cache" \
+      "Both" \
+      "Exit")
+
+    case $CLEAN_CHOICE in
+    "Pacman cache")
+      PACMAN_OPTION=$(gum choose --header="󰮯  Select cleaning method:" \
+        "Keep last 3 versions" \
+        "Keep last version only" \
+        "Remove all cached packages")
+      clean_pacman "$PACMAN_OPTION"
+      ;;
+    "Yay cache")
+      YAY_OPTION=$(gum choose --header="󰚰  Select cleaning method:" \
+        "Remove uninstalled packages" \
+        "Remove all cached packages")
+      clean_yay "$YAY_OPTION"
+      ;;
+    "Both")
+      PACMAN_OPTION=$(gum choose --header="󰮯  Pacman cleaning method:" \
+        "Keep last 3 versions" \
+        "Keep last version only" \
+        "Remove all cached packages")
+      clean_pacman "$PACMAN_OPTION"
+
+      echo ""
+      YAY_OPTION=$(gum choose --header="󰚰  Yay cleaning method:" \
+        "Remove uninstalled packages" \
+        "Remove all cached packages")
+      clean_yay "$YAY_OPTION"
+      ;;
+    "Exit")
+      gum style "󰅖  Goodbye!"
+      kill $(jobs -p) 2>/dev/null
+      exit 0
+      ;;
+    esac
+
+    check_cache_size
+    echo ""
+
+    gum confirm "󰄬  Clean something else?" || break
+  done
+
+  gum style --bold "󰄛  All done! Stay frosty ❄️"
+  kill $(jobs -p) 2>/dev/null
+}
+
+main

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+echo
+
+# Check if the running kernel's modules directory no longer exists,
+# which reliably indicates the kernel was updated during this session
+if [[ ! -d /usr/lib/modules/$(uname -r) ]]; then
+  gum confirm "Linux kernel has been updated. Reboot?" && manu-system-reboot
+
+# Check for a pending reboot flag left by a previous update session
+elif [[ -f $HOME/.local/state/manu/reboot-required ]]; then
+  gum confirm "Updates require reboot. Ready?" && manu-system-reboot
+fi
+
+# Check if the running Hyprland binary has been replaced during this session.
+# pgrep is guarded with || true since we always run Hyprland via hyprland-uwsm on Arch
+hyprland_pid=$(pgrep -x Hyprland 2>/dev/null || true)
+if [[ -n "$hyprland_pid" ]]; then
+  running_hyprland=$(readlink /proc/"$hyprland_pid"/exe 2>/dev/null || true)
+  if [[ $running_hyprland == *"(deleted)"* ]]; then
+    gum confirm "Hyprland has been updated. Reboot?" && manu-system-reboot
+  fi
+fi
+
+# Restart any services that were flagged as requiring a restart
+for file in "$HOME"/.local/state/manu/restart-*-required; do
+  if [[ -f $file ]]; then
+    filename=$(basename "$file")
+    service=$(echo "$filename" | sed 's/restart-\(.*\)-required/\1/')
+    echo "Restarting $service"
+    manu-state clear "$filename"
+    manu-restart-"$service"
+  fi
+done

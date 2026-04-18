@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#    ┏┓┓ ┏┓┏┓┏┳┓┳┳┓┏┓  ┏┳┓┏┓┳┓┳┳┓┳┳┓┏┓┓
+#    ┣ ┃ ┃┃┣┫ ┃ ┃┃┃┃┓   ┃ ┣ ┣┫┃┃┃┃┃┃┣┫┃
+#    ┻ ┗┛┗┛┛┗ ┻ ┻┛┗┗┛   ┻ ┗┛┛┗┛ ┗┻┛┗┛┗┗┛
+#                                
+
+# Launch a floating terminal with the Hypruccin logo presentation, then execute the command passed in, and finally end with the manu-show-done presentation.
+# Used by actions such as Update System.
+
+cmd="$*"
+exec setsid uwsm-app -- xdg-terminal-exec --app-id=org.manu.terminal --title=Manu -e bash -c "manu-show-logo; $cmd; if (( \$? != 130 )); then manu-show-done; fi"

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# --- Connectivity Check ---
+# We use a loop to wait for an active internet connection.
+# This prevents the weather module from failing or showing errors
+# if the network interface takes a few seconds to initialize at startup.
+# Ping Cloudflare's DNS (1.1.1.1) as a lightweight connectivity test.
+# -c 1: send only 1 packet
+# -W 1: wait 1 second for a response
+until ping -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; do
+  # Pause for 1 second before the next attempt to save CPU cycles
+  sleep 1
+done
+
+# --- Execute Weather Script ---
+# Once the network is reachable, trigger the actual python weather script.
+python3 $(which manu-weather.py)

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Update AUR packages if any are installed
+if pacman -Qem >/dev/null; then
+  if manu-pkg-aur-accessible; then
+    echo -e "\e[32m\nUpdate AUR packages\e[0m"
+
+    # Prefer paru over yay if both are available
+    if command -v paru &>/dev/null; then
+      paru -Sua --noconfirm --cleanafter --ignore gcc14,gcc14-libs
+    elif command -v yay &>/dev/null; then
+      yay -Sua --noconfirm --cleanafter --ignore gcc14,gcc14-libs
+    else
+      echo -e "\e[31mNo AUR helper found (paru/yay). Skipping AUR update.\e[0m"
+    fi
+
+    echo
+  else
+    echo -e "\e[31m\nAUR is unavailable (so skipping updates)\e[0m"
+    echo
+  fi
+fi

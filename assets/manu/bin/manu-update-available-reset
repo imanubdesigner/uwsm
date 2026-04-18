@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Remove the Waybar icon indicating available updates
+pkill -RTMIN+7 waybar
+
+# Refresh the Waybar update cache
+pkill -SIGRTMIN+8 waybar
+
+exit 0

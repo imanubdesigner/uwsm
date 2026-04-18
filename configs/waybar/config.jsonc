@@ -1,0 +1,299 @@
+/**
+ *    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┓┏┓┳┓┏┓
+ *    ┃┃┃┣┫┗┫┣┫┣┫┣┫  ┃ ┃┃┃┃┣ 
+ *    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┛┗┻ 
+ *                    by Manu
+ */
+
+ 
+ {
+
+	/*----------Global Properties-------------*/
+	"layer": "top",
+	"position": "top",
+	"spacing": 0,
+	"height": 30,
+	"margin-top": 0,
+	"margin-right": 0,
+	"margin-bottom": 0,
+	"margin-left": 0,
+	/*----------Modules Left----------------*/
+	"modules-left": [
+		"custom/launcher",
+		"hyprland/workspaces",
+		"custom/playerctl#backward",
+		"custom/playerctl#play",
+		"custom/playerctl#foward",
+		"custom/playerlabel",
+  ],
+	/*----------Modules Center--------------*/
+	"modules-center": [
+		"custom/weather",
+    "clock",	
+    "custom/pacman",
+    "custom/screenrecording-indicator",
+    "custom/idle-indicator",
+    "custom/notification-silencing-indicator"
+  ],
+	/*----------Modules Right--------------*/
+	"modules-right": [
+		"group/tray-expander",
+    "bluetooth",
+    "network",
+    "pulseaudio",
+    "cpu"	],
+
+	/*----------Hyprland Workspace----------*/
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "format": "{icon}",
+    "format-icons": {
+      "default": "",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "0",
+      "active": "󱓻"
+    },
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": []
+    }
+  },
+
+	/*-----------Weather---------------*/
+	"custom/weather": {
+		"format": "{}",
+		"format-alt": "{alt}: {}",
+		"format-alt-click": "click",
+		"interval": 3600,
+		"return-type": "json",
+		"exec": "manu-waybar-weather",
+	    	//"exec": "manu-weather",
+	  // "exec-if": "ping wttr.in -c1",
+	    	"tooltip": true
+	},	
+
+	/*---------------Launcher-------------*/
+	"custom/launcher": {
+		"format": "󰣇",
+		"tooltip": false,
+		"on-click": "manu-walker-menu",
+    "on-click-right": "xdg-terminal-exec" 
+	},
+
+	
+/*--------------Pacman--------------------*/
+	"custom/pacman": {
+		"format": " 󰏖  {}",
+		"interval": 3600,
+    "exec": "manu-waybar-pkgs",
+    "on-click": "manu-launch-floating-terminal-with-presentation manu-update",
+    "on-click-right":  "manu-check-updates",	
+		"signal": 8,
+		"tooltip": false
+	},
+
+  /*--------------Custom-Expand-Tray--------------------*/
+
+"group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item"
+    },
+    "modules": ["custom/expand-icon", "tray"]
+  },
+  "custom/expand-icon": {
+    "format": "",
+    "tooltip": false,
+    "on-scroll-up": "",
+    "on-scroll-down": "",
+    "on-scroll-left": "",
+    "on-scroll-right": ""
+  },
+
+	/*---------------Playerctl---------------*/
+	"custom/playerctl#backward": {
+		"exec": "playerctl metadata --format '{\"alt\": \"{{status}}\"}' -F",
+		"return-type": "json",
+		"format": "󰙣 ",
+		"on-click": "playerctl previous",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"tooltip": false
+	},
+	"custom/playerctl#foward": {
+		"exec": "playerctl metadata --format '{\"alt\": \"{{status}}\"}' -F",
+		"return-type": "json",
+		"format": "󰙡 ",
+		"on-click": "playerctl next",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"tooltip": false
+	},
+
+	"custom/playerctl#play": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "{icon}",
+		/*---------------Playerctl---------------*/
+	"custom/playerctl#backward": {
+		"format": "󰙣 ",
+		"on-click": "playerctl previous",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"tooltip": false
+	},
+	"custom/playerctl#foward": {
+		"format": "󰙡 ",
+		"on-click": "playerctl next",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"tooltip": false
+	},
+	"custom/playerctl#play": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "{icon}",
+		"format-icons": {
+			"Paused": "<span> </span>",
+			"Playing": "<span>󰏥 </span>",
+			"Stopped": "<span> </span>"
+		},
+		"on-click": "playerctl play-pause",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"return-type": "json"
+	},
+	"custom/playerlabel": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "<span>󰎈 {} 󰎈</span>",
+		"max-length": 40,
+		"on-click": "",
+		"return-type": "json"
+	},	"format-icons": {
+			"Paused": "<span> </span>",
+			"Playing": "<span>󰏥 </span>",
+			"Stopped": "<span> </span>"
+		},
+		"on-click": "playerctl play-pause",
+		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+		"return-type": "json"
+	},
+	"custom/playerlabel": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "<span>󰎈 {} 󰎈</span>",
+		"max-length": 40,
+		"on-click": "",
+		"return-type": "json"
+	},
+	
+/*---------------Bluetooth------------*/
+"bluetooth": {
+    "format": "",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "format-no-controller": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "manu-launch-bluetooth"
+  },
+
+	/*---------------Pulseaudio------------*/
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-icons": {
+			"default": [
+				"󰋋"
+			]
+		},
+		"format-muted": "󰟎 Muted",
+		"on-click": "manu-launch-audio",
+    "on-click-right": "pamixer -t",
+		"scroll-step": 1,
+    "tooltip": false
+	},
+
+	/*--------------Network-----------------*/
+	"network": {
+		"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰀂",
+    "format-disconnected": "󰤮",
+		"tooltip-format-wifi": "{essid} ({frequency} GHz)",
+    "tooltip-format-ethernet": "Connected",
+    "tooltip-format-disconnected": "Disconnected",
+ 		"interval": 3,
+    "spacing": 1,
+    "on-click": "manu-launch-wifi"
+	},
+
+	/*------------Tray--------------------*/
+	"tray": {
+		"icon-size": 20,
+		"spacing": 8
+	},
+
+/*------------Screen Indicator--------------------*/
+
+"custom/screenrecording-indicator": {
+    "on-click": "manu-cmd-screenrecord",
+    "exec": "manu-screen-recording",
+    "signal": 8,
+    "return-type": "json"
+  },
+
+"custom/idle-indicator": {
+    "on-click": "manu-toggle-idle",
+    "exec": "manu-waybar-idle",
+    "signal": 9,
+    "return-type": "json"
+  },
+  "custom/notification-silencing-indicator": {
+    "on-click": "manu-toggle-notification-silencing",
+    "exec": "manu-waybar-notification-silencing",
+    "signal": 10,
+    "return-type": "json"
+  },
+
+  "tray": {
+    "icon-size": 12,
+    "spacing": 17
+  },
+
+"cpu": {
+    "interval": 5,
+    "format": "󰍛",
+    "on-click": "manu-launch-or-focus-tui btop",
+    "on-click-right": "alacritty"
+  },
+
+
+	/*------------Clock------------------*/
+
+	"clock": {
+    "format": "{:L%A %H:%M}",
+    "format-alt": "{:%A, %d %B, %Y (%R)}",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "on-click-right": "manu-launch-floating-terminal-with-presentation manu-tz-select",
+    "calendar": {
+        "format": {
+            "today": "<span color='#d699b6'><b>{}</b></span>"
+        }
+    },
+    "actions": {
+        "on-scroll-down": "shift_up",
+        "on-scroll-up": "shift_down",
+    }
+}
+ }
