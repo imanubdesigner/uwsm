@@ -9,7 +9,18 @@
 
 **Hypruccin (Matugen Edition)** is a high-performance Arch Linux configuration that takes the core of **Hyprland** and **UWSM** to the next level through dynamic automation. 
 
-A differenza della versione base incentrata sui colori statici di Catppuccin, questo branch utilizza **[Matugen](https://github.com/InioX/matugen)** come motore estetico principale. Il sistema non è più vincolato a una palette fissa, ma genera i colori dell'intera interfaccia (Waybar, Ghostty, Mako, etc.) in tempo reale basandosi sul wallpaper scelto.
+## 🎨 Material Sophistication: The Matugen Integration
+
+Departing from the static, predefined color palettes of the standard **Catppuccin** release, this branch introduces a sophisticated architectural pivot by employing **[Matugen](https://github.com/InioX/matugen)** as its primary aesthetic engine. 
+
+The environment is no longer tethered to a fixed chromatic range; instead, it embraces a **reactive design philosophy**. By leveraging material design algorithms, the system performs a real-time analysis of your desktop wallpaper to orchestrate a harmonious color spectrum across the entire ecosystem—from **Waybar** and **Ghostty** to **Mako** and beyond.
+
+### 💎 Key Features & Enhancements
+
+* **Algorithmic Fluidity:** Rather than selecting from a list of hard-coded themes, the ambiance is dictated by your imagery. The system dynamically generates an optimized palette, ensuring that contrast ratios and visual hierarchy remain impeccable and accessible.
+* **System-Wide Synchronicity:** Matugen acts as the centralized "source of truth." A single wallpaper change triggers a recursive update across all configuration files, instantly re-skinning your terminal, bars, and notification daemons to achieve a unified visual identity.
+* **Transcending the Static:** While the layout retains the elegant DNA of the original project, this implementation liberates the user from the constraints of fixed hex values. It transforms your Hyprland setup into a living canvas that evolves alongside your aesthetic choices.
+* **Performance-Oriented Automation:** The transition logic is engineered for minimal latency, ensuring that the computational process of generating and injecting new themes is virtually imperceptible and seamless.
 
 A huge thanks to **[DHH](https://github.com/dhh)** and his collaborators for their inspiring work on **[Omarchy](https://github.com/basecamp/omarchy)** — their dedication inspired the automation layer of this project.
 
