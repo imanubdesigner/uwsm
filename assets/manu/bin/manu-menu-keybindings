@@ -150,7 +150,7 @@ prioritize_entries() {
     if (match(line, /Move window to workspace/))    prio = 28
     if (match(line, /Move window silently/))        prio = 29
     if (match(line, /Swap window/))                 prio = 30
-    if (match(line, /Move focus/))                  prio = 31
+    if (match(line, /Focus/))                       prio = 31
     if (match(line, /Resize/))                      prio = 33
     if (match(line, /scratchpad/))                  prio = 36
     if (match(line, /[Nn]otification/))             prio = 37
