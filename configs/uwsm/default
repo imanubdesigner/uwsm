@@ -1,4 +1,5 @@
 # Changes require a restart to take effect.
+
 # Change terminal with xdg-terminal.list into ~/.config
 export TERMINAL=xdg-terminal-exec
 

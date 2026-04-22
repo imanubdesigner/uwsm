@@ -3,10 +3,12 @@
 #    ┗┛┛┗┗┛┗┛ ┻  ┻ ┗┛  ┗┛┗┛┛┗┛┗┗┫┗┻┛ ┗┻┗┗┗┛┛┗
 #                               ┛     by Manu
 
+# Dynamic theme colors
+config-file = ?"~/.config/manu/current/theme/ghostty.conf"
+
 # Fonts
 font-size = 12
 font-style = regular
-theme = "Matugen"
 font-family = "JetBrainsMono Nerd Font"
 
 # Cursor Style

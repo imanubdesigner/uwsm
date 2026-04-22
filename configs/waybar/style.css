@@ -1,5 +1,4 @@
-/*------------ Colors ------------*/
-@import "colors.css";
+@import "../manu/current/theme/waybar.css";
 
 /*------------ Global Properties ------------*/
 * {
@@ -8,12 +7,12 @@
     font-family: 'JetBrainsMono Nerd Font';
     font-size: 12px; /* Omarchy size */
     min-height: 0;
-    background-color: @surface;
-    color: @primary;
+    background-color: @background;
+    color: @foreground;
 }
 
 window#waybar {
-    background: @surface;
+    background: @background;
 }
 
 /*------------ Module Layout Containers ------------*/
@@ -27,13 +26,13 @@ window#waybar {
 
 /*------------ Tooltip ------------*/
 tooltip {
-    background: @surface;
+    /* background: @surface; */
     border-radius: 6px;
     padding: 2px;
 }
 
 tooltip label {
-    color: @on_surface;
+    /* color: @on_surface; */
     padding: 4px;
 }
 
@@ -121,5 +120,5 @@ tooltip label {
 #custom-screenrecording-indicator.active,
 #custom-idle-indicator.active,
 #custom-notification-silencing-indicator.active {
-    color: @error;
+    color: #a55555;
 }
