@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Define the log path
+LOG="$HOME/.local/share/manu/first-run.log"
+
+# Global logging: everything goes to the log file and terminal
+exec > >(tee -a "$LOG") 2>&1
+set -x
+
+echo "$(date): Starting firewall configuration..."
+
 # Allow nothing in, everything out
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -13,3 +22,7 @@ sudo ufw --force enable
 
 # Enable UFW systemd service to start on boot
 sudo systemctl enable ufw
+
+echo "$(date): Firewall configuration finished."
+
+set +x

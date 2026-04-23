@@ -2,30 +2,38 @@
 
 # Copy modular zsh folder .zshrc file into $HOME and oh-my-zsh custom plugins folder
 
+# Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
+
+# Global logging: everything goes to the log file and terminal
+exec > >(tee -a "$LOG") 2>&1
+set -x
+
 SOURCE_DIR="/mnt/Dati/Dati/MSI-Z790/LinuxWorld/MY-HYPRLAND/OH-MY-ZSH"
 
-echo "$(date): Starting ZSH configuration..." >>"$LOG"
+echo "$(date): Starting ZSH configuration..."
 
 # 1. Copy modular ZSH files (.zsh and .zshrc) to Home
 if [ -d "$SOURCE_DIR/Modular" ]; then
-  echo "$(date): Copying .zsh and .zshrc files..." >>"$LOG"
+  echo "$(date): Copying .zsh and .zshrc files..."
   # Added -r to ensure the .zsh directory is copied entirely
-  cp -rf "$SOURCE_DIR/Modular/.zsh" "$HOME/" 2>>"$LOG"
-  cp -f "$SOURCE_DIR/Modular/.zshrc" "$HOME/" 2>>"$LOG"
+  cp -rf "$SOURCE_DIR/Modular/.zsh" "$HOME/"
+  cp -f "$SOURCE_DIR/Modular/.zshrc" "$HOME/"
 else
-  echo "$(date): ERROR: Modular directory not found in $SOURCE_DIR" >>"$LOG"
+  echo "$(date): ERROR: Modular directory not found in $SOURCE_DIR"
 fi
 
 # 2. Copy the custom folder into ~/.oh-my-zsh
 if [ -d "$SOURCE_DIR/custom" ]; then
-  echo "$(date): Copying custom folder to .oh-my-zsh..." >>"$LOG"
+  echo "$(date): Copying custom folder to .oh-my-zsh..."
   # Ensure the destination directory exists
   mkdir -p "$HOME/.oh-my-zsh"
   # Recursive copy of the custom directory
-  cp -rf "$SOURCE_DIR/custom" "$HOME/.oh-my-zsh/" 2>>"$LOG"
+  cp -rf "$SOURCE_DIR/custom" "$HOME/.oh-my-zsh/"
 else
-  echo "$(date): ERROR: Custom folder not found in $SOURCE_DIR" >>"$LOG"
+  echo "$(date): ERROR: Custom folder not found in $SOURCE_DIR"
 fi
 
-echo "$(date): ZSH configuration completed." >>"$LOG"
+echo "$(date): ZSH configuration completed."
+
+set +x

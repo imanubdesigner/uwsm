@@ -32,6 +32,9 @@ manu-theme-set-templates
 rm -rf "$CURRENT_THEME_PATH"
 mv "$NEXT_THEME_PATH" "$CURRENT_THEME_PATH"
 
+# Link neovim theme as lazy plugin so lazy detects config change and hot-reloads
+ln -sf "$HOME/.config/manu/current/theme/neovim.lua" "$HOME/.config/nvim/lua/plugins/theme.lua"
+
 # Store theme name for reference
 echo "$THEME_NAME" >"$HOME/.config/manu/current/theme.name"
 
@@ -46,7 +49,6 @@ manu-restart-swayosd
 manu-restart-terminal
 manu-restart-hyprctl
 manu-restart-btop
-manu-restart-opencode
 manu-restart-mako
 
 # Change app-specific themes
@@ -54,7 +56,6 @@ manu-theme-set-gnome
 manu-theme-set-browser
 manu-theme-set-vscode
 manu-theme-set-obsidian
-manu-theme-set-keyboard
 
 # Call hook on theme set
 manu-hook theme-set "$THEME_NAME"

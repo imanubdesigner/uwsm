@@ -64,7 +64,7 @@ run_command "systemctl daemon-reload" "Reload systemd daemon" "no"
 # -------------------- Power Management --------------------
 run_command "systemctl enable thermald.service" "Enable thermald" "no"
 run_command "systemctl enable power-profiles-daemon.service" "Enable power-profiles-daemon" "no"
-run_command "echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/ufw, /usr/bin/systemctl, /usr/bin/snapper, /usr/bin/btrfs, /usr/bin/sed, /usr/bin/limine-update, /usr/bin/tee, /usr/bin/powerprofilesctl' | tee /etc/sudoers.d/manu-powerprofile && chmod 0440 /etc/sudoers.d/manu-powerprofile" "Configure passwordless sudo for power management" "no"
+run_command "echo 'manu ALL=(ALL) NOPASSWD: ALL' | tee /etc/sudoers.d/manu-first-run && chmod 0440 /etc/sudoers.d/manu-first-run" "Configure global passwordless sudo for setup" "no"
 
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "no" "no"
@@ -79,22 +79,6 @@ run_command "cp $BASE_DIR/assets/override.conf /etc/systemd/system/getty@tty1.se
 
 # -------------------- .zprofile for uwsm autologin --------------------
 run_command "cp $BASE_DIR/assets/.zprofile /home/$SUDO_USER/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.zprofile" "Copy zprofile configuration" "no" "no"
-
-# -------------------- GTK Themes --------------------
-run_command "mkdir -p /home/$SUDO_USER/.themes" "Create .themes directory" "no" "no"
-run_command "cp -r $BASE_DIR/assets/themes/adw-gtk3 /home/$SUDO_USER/.themes/" "Copy adw-gtk3 theme" "no" "no"
-run_command "cp -r $BASE_DIR/assets/themes/adw-gtk3-dark /home/$SUDO_USER/.themes/" "Copy adw-gtk3-dark theme" "no" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.themes" "Set correct ownership for .themes directory" "no" "no"
-
-# -------------------- Wallpapers --------------------
-run_command "mkdir -p /home/$SUDO_USER/Pictures/wallpapers" "Create wallpapers directory" "no" "no"
-run_command "cp $BASE_DIR/assets/wallpapers/forest.jpg /home/$SUDO_USER/Pictures/wallpapers" "Copy the wallpaper to wallpapers directory" "no" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/Pictures/wallpapers" "Set correct ownership for wallpapers directory" "no" "no"
-
-# -------------------- Swww current Wallpaper --------------------
-run_command "mkdir -p /home/$SUDO_USER/.cache" "Create a .cache" "no" "no"
-run_command "cp -r $BASE_DIR/assets/awww /home/$SUDO_USER/.cache/" "Copy awww cache folder for wallpaper" "no" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.cache/awww" "Set correct ownership on swww folder" "no" "no"
 
 # -------------------- Fstab Configuration for SSD Auto Mount --------------------
 FSTAB_ENTRY="# SSD Auto Mount\nUUID=0C1A3D631A3D4ACA /mnt/Dati ntfs3 defaults,noatime,nofail,windows_names,prealloc,uid=1000,gid=1000 0 0"

@@ -1,0 +1,1 @@
+/home/manu/.config/manu/current/theme/neovim.lua

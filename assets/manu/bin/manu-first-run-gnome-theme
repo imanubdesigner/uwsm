@@ -1,65 +1,73 @@
 #!/bin/bash
 
 # Define the log path
-LOG="$HOME/.local/share/manu/first-run.log"
+LOG_DIR="$HOME/.local/share/manu"
+LOG="$LOG_DIR/first-run.log"
 
-echo "$(date): Starting GNOME theme and Matugen configuration..." >>"$LOG"
+# Ensure the log directory exists
+mkdir -p "$LOG_DIR"
+
+# --- GLOBAL LOGGING ---
+# Redirect stdout and stderr to the log file and also show it in the terminal
+exec > >(tee -a "$LOG") 2>&1
+
+# Enable command tracing to log every single command executed (prefixed with +)
+set -x
+
+echo "$(date): Starting GNOME theme and Matugen configuration..."
 
 # Set GNOME interface themes
-gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' >>"$LOG" 2>&1
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' >>"$LOG" 2>&1
+gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
+
+# Update icon cache to apply changes
+sudo gtk-update-icon-cache /usr/share/icons/Yaru
 
 sleep 0.5
 
-AUTOSTART_FILE="$HOME/.config/hypr/modules/autostart.conf"
-
-# Comment waypaper in the autostart file if it exists
-if [ -f "$AUTOSTART_FILE" ]; then
-  if sed -i 's|^exec-once = uwsm-app -- waypaper --restore|# exec-once = uwsm-app -- waypaper --restore|' "$AUTOSTART_FILE" >>"$LOG" 2>&1; then
-    echo "$(date): Autostart file updated successfully." >>"$LOG"
-  else
-    echo "$(date): ERROR: Failed to update autostart file." >>"$LOG"
-  fi
-fi
-
-echo "$(date): GNOME theme configuration finished." >>"$LOG"
+echo "$(date): GNOME theme configuration finished."
 
 # -------------------- Enable Themes --------------------
 
-# Set links for Nautilus action icons
+# Set symbolic links for Nautilus action icons
 sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-previous-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-previous-symbolic.svg
 sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-next-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-next-symbolic.svg
 
-# Setup user theme folder
+# Setup user theme directory
 mkdir -p ~/.config/manu/themes
 
-# Set initial theme
-manu-theme-set "Tokyo Night"
-rm -rf ~/.config/chromium/SingletonLock # otherwise archiso will own the chromium singleton
+# Apply the initial theme using the custom tool
+manu-theme-set "Miasma"
 
-# Set specific app links for current theme
+# Remove Chromium singleton lock (prevents issues if the session crashed or was owned by archiso)
+rm -f ~/.config/chromium/SingletonLock
+
+# Link theme-specific configurations for terminal and notification apps
 mkdir -p ~/.config/btop/themes
 ln -snf ~/.config/manu/current/theme/btop.theme ~/.config/btop/themes/current.theme
 
 mkdir -p ~/.config/mako
 ln -snf ~/.config/manu/current/theme/mako.ini ~/.config/mako/config
 
-# Add managed policy directories for Chromium and Brave for theme changes
+# Setup managed policy directories for Chromium and Brave to allow automated theme changes
 sudo mkdir -p /etc/chromium/policies/managed
 sudo chmod a+rw /etc/chromium/policies/managed
 
 sudo mkdir -p /etc/brave/policies/managed
 sudo chmod a+rw /etc/brave/policies/managed
 
-# Default Chromium to follow system appearance ("device") instead of dark
+# Set Chromium initial preferences to follow system appearance
 echo '{"browser":{"theme":{"color_scheme":0}}}' | sudo tee /usr/lib/chromium/initial_preferences >/dev/null
 
 # -------------------- Disable WiFi and Bluetooth at first boot --------------------
-echo "$(date): Disabling WiFi and Bluetooth..." >>"$LOG"
+echo "$(date): Disabling WiFi and Bluetooth..."
 
-rfkill block wifi >>"$LOG" 2>&1
-rfkill block bluetooth >>"$LOG" 2>&1
+# Turn off wireless hardware components
+rfkill block wifi
+rfkill block bluetooth
 
-echo "$(date): WiFi and Bluetooth disabled." >>"$LOG"
+echo "$(date): WiFi and Bluetooth disabled."
 
-
+# Disable command tracing (optional, script ends here anyway)
+set +x

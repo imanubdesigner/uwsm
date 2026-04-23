@@ -1,16 +1,31 @@
 #!/bin/bash
 
+# Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
 
-echo "$(date): Restoring sudoers to power-profiles-daemon..." >>"$LOG"
+# Global logging: everything goes to the log file and terminal
+exec > >(tee -a "$LOG") 2>&1
+set -x
 
-# Overwrite the sudoers file to leave only permanent permissions.
-# We use /usr/bin/tee because it was authorized in theming.sh.
-echo 'manu ALL=(ALL) NOPASSWD: /usr/bin/powerprofilesctl, /usr/bin/tee' | sudo /usr/bin/tee /etc/sudoers.d/manu-powerprofile >/dev/null 2>>"$LOG"
+echo "$(date): Restoring sudoers to restricted permissions..."
 
-# Check if the previous command succeeded
+# We use 'manu-first-run' to overwrite the temporary global permissions
+SUDOERS_FILE="/etc/sudoers.d/manu-first-run"
+
+# Permissions kept for daily theme changes and power management
+# Added: gtk-update-icon-cache, ln, mkdir, chmod for theming support
+NEW_SUDOERS="manu ALL=(ALL) NOPASSWD: /usr/bin/powerprofilesctl, /usr/bin/tee, /usr/bin/gtk-update-icon-cache, /usr/bin/ln, /usr/bin/mkdir, /usr/bin/chmod"
+
+# Overwrite the temporary file with restricted permissions
+echo "$NEW_SUDOERS" | sudo /usr/bin/tee "$SUDOERS_FILE" >/dev/null
+
+# Final check and security fix
 if [ $? -eq 0 ]; then
-  echo "$(date): Sudoers restored successfully." >>"$LOG"
+  sudo chmod 0440 "$SUDOERS_FILE"
+  echo "$(date): Sudoers restricted successfully in $SUDOERS_FILE."
 else
-  echo "$(date): ERROR: Failed to restore sudoers." >>"$LOG"
+  echo "$(date): ERROR: Failed to restore sudoers."
+  exit 1
 fi
+
+set +x

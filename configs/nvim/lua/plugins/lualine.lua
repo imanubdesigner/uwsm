@@ -1,6 +1,17 @@
 return {
   {
     "nvim-lualine/lualine.nvim",
+    config = function(_, opts)
+      vim.o.laststatus = 0
+      require("lualine").setup(opts)
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+          vim.schedule(function()
+            require("lualine").setup(opts)
+          end)
+        end,
+      })
+    end,
     opts = {
       options = {
         component_separators = "",
