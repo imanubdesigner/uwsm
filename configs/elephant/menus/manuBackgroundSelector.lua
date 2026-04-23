@@ -1,7 +1,7 @@
 Name = "manuBackgroundSelector"
-NamePretty = "Wallpapers"
+NamePretty = "Manu Background Selector"
 Cache = false
-HideFromProviderlist = false
+HideFromProviderlist = true
 SearchName = true
 
 local function ShellEscape(s)
@@ -9,7 +9,13 @@ local function ShellEscape(s)
 end
 
 function FormatName(filename)
-	local name = filename:gsub("%.[^%.]+$", ""):gsub("[-_]", " ")
+	-- Remove leading number and dash
+	local name = filename:gsub("^%d+", ""):gsub("^%-", "")
+	-- Remove extension
+	name = name:gsub("%.[^%.]+$", "")
+	-- Replace dashes with spaces
+	name = name:gsub("-", " ")
+	-- Capitalize each word
 	name = name:gsub("%S+", function(word)
 		return word:sub(1, 1):upper() .. word:sub(2):lower()
 	end)
@@ -19,30 +25,49 @@ end
 function GetEntries()
 	local entries = {}
 	local home = os.getenv("HOME")
-	local wallpaper_dir = home .. "/Pictures/wallpapers"
 
-	local handle = io.popen(
-		"find "
-			.. ShellEscape(wallpaper_dir)
-			.. " -maxdepth 1 -type f \\( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' -o -name '*.webp' \\) 2>/dev/null | sort"
-	)
+	-- Read current theme name
+	local theme_name_file = io.open(home .. "/.config/manu/current/theme.name", "r")
+	local theme_name = theme_name_file and theme_name_file:read("*l") or nil
+	if theme_name_file then
+		theme_name_file:close()
+	end
 
-	if handle then
-		for background in handle:lines() do
-			local filename = background:match("([^/]+)$")
-			if filename then
-				table.insert(entries, {
-					Text = FormatName(filename),
-					Value = background,
-					Actions = {
-						activate = "manu-walker-background " .. ShellEscape(background),
-					},
-					Preview = background,
-					PreviewType = "file",
-				})
+	-- Directories to search
+	local dirs = {
+		home .. "/.config/manu/current/theme/backgrounds",
+	}
+	if theme_name then
+		table.insert(dirs, home .. "/.config/manu/backgrounds/" .. theme_name)
+	end
+
+	-- Track added files to avoid duplicates
+	local seen = {}
+
+	for _, wallpaper_dir in ipairs(dirs) do
+		local handle = io.popen(
+			"find "
+				.. ShellEscape(wallpaper_dir)
+				.. " -maxdepth 1 -type f \\( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' -o -name '*.gif' -o -name '*.bmp' -o -name '*.webp' \\) 2>/dev/null | sort"
+		)
+		if handle then
+			for background in handle:lines() do
+				local filename = background:match("([^/]+)$")
+				if filename and not seen[filename] then
+					seen[filename] = true
+					table.insert(entries, {
+						Text = FormatName(filename),
+						Value = background,
+						Actions = {
+							activate = "manu-theme-bg-set " .. ShellEscape(background),
+						},
+						Preview = background,
+						PreviewType = "file",
+					})
+				end
 			end
+			handle:close()
 		end
-		handle:close()
 	end
 
 	return entries

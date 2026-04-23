@@ -9,19 +9,6 @@ echo "$(date): Starting GNOME theme and Matugen configuration..." >>"$LOG"
 gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' >>"$LOG" 2>&1
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' >>"$LOG" 2>&1
 
-WALL="$HOME/Pictures/wallpapers/forest.jpg"
-
-# Small pause
-sleep 0.5
-
-# Run Matugen and log output
-matugen image "$WALL" \
-  --mode dark \
-  --source-color-index 0 \
-  --lightness-dark -0.04 \
-  --resize-filter lanczos3 \
-  --contrast 0.4 >>"$LOG" 2>&1
-
 sleep 0.5
 
 AUTOSTART_FILE="$HOME/.config/hypr/modules/autostart.conf"
@@ -36,6 +23,36 @@ if [ -f "$AUTOSTART_FILE" ]; then
 fi
 
 echo "$(date): GNOME theme configuration finished." >>"$LOG"
+
+# -------------------- Enable Themes --------------------
+
+# Set links for Nautilus action icons
+sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-previous-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-previous-symbolic.svg
+sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-next-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-next-symbolic.svg
+
+# Setup user theme folder
+mkdir -p ~/.config/manu/themes
+
+# Set initial theme
+manu-theme-set "Tokyo Night"
+rm -rf ~/.config/chromium/SingletonLock # otherwise archiso will own the chromium singleton
+
+# Set specific app links for current theme
+mkdir -p ~/.config/btop/themes
+ln -snf ~/.config/manu/current/theme/btop.theme ~/.config/btop/themes/current.theme
+
+mkdir -p ~/.config/mako
+ln -snf ~/.config/manu/current/theme/mako.ini ~/.config/mako/config
+
+# Add managed policy directories for Chromium and Brave for theme changes
+sudo mkdir -p /etc/chromium/policies/managed
+sudo chmod a+rw /etc/chromium/policies/managed
+
+sudo mkdir -p /etc/brave/policies/managed
+sudo chmod a+rw /etc/brave/policies/managed
+
+# Default Chromium to follow system appearance ("device") instead of dark
+echo '{"browser":{"theme":{"color_scheme":0}}}' | sudo tee /usr/lib/chromium/initial_preferences >/dev/null
 
 # -------------------- Disable WiFi and Bluetooth at first boot --------------------
 echo "$(date): Disabling WiFi and Bluetooth..." >>"$LOG"
