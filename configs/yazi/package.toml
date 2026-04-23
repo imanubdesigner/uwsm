@@ -27,8 +27,3 @@ hash = "99aa06d3014798d86001c324468d497f"
 use = "yazi-rs/plugins:archive"
 rev = "230b9c6"
 hash = "99aa06d3014798d86001c324468d497f"
-
-[[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-mocha"
-rev = "f6b425a"
-hash = "76b921b2d734331854d4a55b59a21388"
