@@ -315,6 +315,7 @@ go_to_menu() {
   *trigger*) show_trigger_menu ;;
   *keybindings*) manu-menu-keybindings ;;
   *style*) show_style_menu ;;
+  *theme*) show_theme_menu ;;
   *share*) show_share_menu ;;
   *background*) show_background_menu ;;
   *capture*) show_capture_menu ;;
