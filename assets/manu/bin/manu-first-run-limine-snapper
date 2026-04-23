@@ -4,7 +4,7 @@
 LOG="$HOME/.local/share/manu/first-run.log"
 
 # Global logging: everything goes to the log file and terminal
-exec > >(tee -a "$LOG") 2>&1
+exec 2>&1
 set -x
 
 echo "$(date): Starting Limine/Snapper configuration..."

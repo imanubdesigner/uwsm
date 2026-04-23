@@ -9,7 +9,7 @@ mkdir -p "$LOG_DIR"
 
 # --- GLOBAL LOGGING ---
 # Redirect stdout and stderr to the log file and also show it in the terminal
-exec > >(tee -a "$LOG") 2>&1
+exec 2>&1
 
 # Enable command tracing to log every single command executed (prefixed with +)
 set -x
