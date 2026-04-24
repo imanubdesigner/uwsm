@@ -23,7 +23,9 @@ run_command "pacman -S --needed --noconfirm \
   localsend-bin \
   yaru-icon-theme \
   xdg-terminal-exec \
-  gpu-screen-recorder" \
+  gpu-screen-recorder \
+  limine-mkinitcpio-hook \
+  limine-snapper-sync" \
   "Install packages from omarchy repo" "no"
 
 # AUR
@@ -32,6 +34,7 @@ run_command "yay -S --sudoloop --noconfirm --needed \
   gowall \
   fastmod" \
   "Install remaining AUR packages" "no" "no"
+
 
 # -------------------- Applications & mimeinfo --------------------
 run_command "\

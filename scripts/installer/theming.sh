@@ -134,7 +134,7 @@ if command -v limine &>/dev/null; then
   # Install required packages
   # No confirm, Yes sudo (default)
   run_command "yay -S --sudoloop --noconfirm --needed limine-snapper-sync limine-mkinitcpio-hook" \
-    "Install Limine Snapper and mkinitcpio tools" "no" "yes"
+    "Install Limine Snapper and mkinitcpio tools" "no" "no"
 
   # Detect boot mode
   [[ -d /sys/firmware/efi ]] && EFI=true

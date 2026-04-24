@@ -10,17 +10,15 @@ log_message "Installation started for prerequisites section"
 print_info "\nStarting prerequisites setup..."
 
 # -------------------- Base setup --------------------
-run_command "pacman -S --noconfirm reflector" "Install Reflector" "no"
-run_command "sudo reflector --country Italy --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Update Pacman mirrorlist with fresh, fast mirrors" "no" "yes"
-run_command "pacman -Syyu --noconfirm" "Update package database and upgrade packages (Recommended)" "no"
-run_command "pacman -Syu --noconfirm --needed git base base-devel" "Install git and base-devel (needed for AUR and configs)" "no"
+run_command "pacman -S --needed --noconfirm reflector" "Install Reflector" "no"
+run_command "reflector --country Italy --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Update Pacman mirrorlist with fresh, fast mirrors" "no"
+run_command "pacman -S --noconfirm --needed git base-devel" "Install git and base-devel (needed for AUR)" "no"
 
 # -------------------- Yay (AUR helper) --------------------
 if command -v yay >/dev/null; then
   print_info "Skipping yay installation (already installed)."
 else
-  run_command "git clone https://aur.archlinux.org/yay.git && cd yay" "Clone YAY (Must)/Breaks the script" "no" "no"
-  run_command "makepkg --noconfirm -si && cd .." "Build YAY (Must)/Breaks the script" "no" "no"
+run_command "rm -rf /tmp/yay && git clone https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg --noconfirm -si" "Clone and build YAY" "no" "no"
 fi
 
 # -------------------- Network Configuration (iwd + systemd-networkd) --------------------
