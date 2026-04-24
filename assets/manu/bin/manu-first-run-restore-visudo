@@ -3,10 +3,6 @@
 # Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
 
-# Global logging: everything goes to the log file and terminal
-exec 2>&1
-set -x
-
 echo "$(date): Restoring sudoers to restricted permissions..."
 
 # We use 'manu-first-run' to overwrite the temporary global permissions
@@ -27,5 +23,3 @@ else
   echo "$(date): ERROR: Failed to restore sudoers."
   exit 1
 fi
-
-set +x

@@ -3,15 +3,9 @@
 # Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
 
-# Global logging: everything goes to the log file and terminal
-exec 2>&1
-set -x
-
 echo "$(date): Starting Elephant configuration..."
 
 elephant service enable
 systemctl --user start elephant.service
 
 echo "$(date): Elephant configuration finished."
-
-set +x

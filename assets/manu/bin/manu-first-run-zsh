@@ -5,10 +5,6 @@
 # Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
 
-# Global logging: everything goes to the log file and terminal
-exec 2>&1
-set -x
-
 SOURCE_DIR="/mnt/Dati/Dati/MSI-Z790/LinuxWorld/MY-HYPRLAND/OH-MY-ZSH"
 
 echo "$(date): Starting ZSH configuration..."
@@ -35,5 +31,3 @@ else
 fi
 
 echo "$(date): ZSH configuration completed."
-
-set +x

@@ -3,10 +3,6 @@
 # Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
 
-# Global logging: everything goes to the log file and terminal
-exec 2>&1
-set -x
-
 echo "$(date): Starting firewall configuration..."
 
 # Allow nothing in, everything out
@@ -24,5 +20,3 @@ sudo ufw --force enable
 sudo systemctl enable ufw
 
 echo "$(date): Firewall configuration finished."
-
-set +x

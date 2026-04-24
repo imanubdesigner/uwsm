@@ -7,13 +7,6 @@ LOG="$LOG_DIR/first-run.log"
 # Ensure the log directory exists
 mkdir -p "$LOG_DIR"
 
-# --- GLOBAL LOGGING ---
-# Redirect stdout and stderr to the log file and also show it in the terminal
-exec 2>&1
-
-# Enable command tracing to log every single command executed (prefixed with +)
-set -x
-
 echo "$(date): Starting GNOME theme and Matugen configuration..."
 
 # Set GNOME interface themes
@@ -69,5 +62,4 @@ rfkill block bluetooth
 
 echo "$(date): WiFi and Bluetooth disabled."
 
-# Disable command tracing (optional, script ends here anyway)
-set +x
+

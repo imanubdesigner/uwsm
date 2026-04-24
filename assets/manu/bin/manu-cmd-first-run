@@ -9,41 +9,36 @@ LOG="$HOME/.local/share/manu/first-run.log"
 [[ -f "$FLAG" ]] && exit 0
 
 mkdir -p "$(dirname "$LOG")"
-echo "$(date): First run started" >>"$LOG"
 
-# -------------------- Firewall --------------------
-echo "$(date): Running firewall..." >>"$LOG"
-manu-first-run-firewall >>"$LOG" 2>&1
+# Silent execution, all output to log file
+{
+  echo "$(date): First run started"
 
-# -------------------- Elephant --------------------
-echo "$(date): Running elephant..." >>"$LOG"
-manu-first-run-elephant >>"$LOG" 2>&1
+  # -------------------- Firewall --------------------
+  manu-first-run-firewall
 
-# -------------------- GNOME / GTK Theme --------------------
-echo "$(date): Running gnome-theme..." >>"$LOG"
-manu-first-run-gnome-theme >>"$LOG" 2>&1
+  # -------------------- Elephant --------------------
+  manu-first-run-elephant
 
-# -------------------- ZSH Configuration --------------------
-echo "$(date): Running zsh-config..." >>"$LOG"
-manu-first-run-zsh >>"$LOG" 2>&1
+  # -------------------- GNOME / GTK Theme --------------------
+  manu-first-run-gnome-theme
 
-# -------------------- XDG user dirs --------------------
-echo "$(date): Updating XDG user dirs..." >>"$LOG"
-xdg-user-dirs-update >>"$LOG" 2>&1
+  # -------------------- ZSH Configuration --------------------
+  manu-first-run-zsh
 
-# -------------------- Snapper + Limine --------------------
-echo "$(date): Running limine-snapper..." >>"$LOG"
-manu-first-run-limine-snapper >>"$LOG" 2>&1
+  # -------------------- XDG user dirs --------------------
+  xdg-user-dirs-update
 
-# -------------------- Restore visudo --------------------
-# We run this as the last step to revoke temporary elevated privileges
-echo "$(date): Running restore-visudo..." >>"$LOG"
-manu-first-run-restore-visudo >>"$LOG" 2>&1
+  # -------------------- Snapper + Limine --------------------
+  manu-first-run-limine-snapper
 
-# -------------------------------------------------------
-# Mark as done — won't run again
-touch "$FLAG"
-echo "$(date): First run completed successfully." >>"$LOG"
+  # -------------------- Restore visudo --------------------
+  manu-first-run-restore-visudo
 
-# Optional: send a desktop notification [cite: 3]
-notify-send "Setup" "First-run configuration completed  ✓" 2>/dev/null || true
+  # Mark as done — won't run again
+  touch "$FLAG"
+  echo "$(date): First run completed successfully."
+} >>"$LOG" 2>&1
+
+# Desktop notification with nerd font checkmark
+notify-send -t 5000 "First Run Script" " Configuration Complete"

@@ -3,10 +3,6 @@
 # Define the log path
 LOG="$HOME/.local/share/manu/first-run.log"
 
-# Global logging: everything goes to the log file and terminal
-exec 2>&1
-set -x
-
 echo "$(date): Starting Limine/Snapper configuration..."
 
 # -------------------- Snapper /home config --------------------
@@ -39,12 +35,9 @@ if command -v limine &>/dev/null; then
 
     if ! grep -q "^/+" /boot/limine.conf; then
         echo "$(date): ERROR: limine-update failed to add boot entries!"
-        set +x
         notify-send "First-run ERROR" "limine-update failed to add boot entries!" -u critical 2>/dev/null || true
         exit 1
     fi
 fi
 
 echo "$(date): Limine/Snapper configuration finished."
-
-set +x
