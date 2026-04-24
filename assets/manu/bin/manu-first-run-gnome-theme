@@ -51,7 +51,8 @@ sudo mkdir -p /etc/brave/policies/managed
 sudo chmod a+rw /etc/brave/policies/managed
 
 # Set Chromium initial preferences to follow system appearance
-echo '{"browser":{"theme":{"color_scheme":0}}}' | sudo tee /usr/lib/chromium/initial_preferences >/dev/null
+# echo '{"browser":{"theme":{"color_scheme":0}}}' | sudo tee /usr/lib/chromium/initial_preferences >/dev/null
+echo '{"browser":{"theme":{"color_scheme":0,"color_scheme2":0}}}' | sudo tee /usr/lib/chromium/initial_preferences >/dev/null
 
 # -------------------- Disable WiFi and Bluetooth at first boot --------------------
 echo "$(date): Disabling WiFi and Bluetooth..."
