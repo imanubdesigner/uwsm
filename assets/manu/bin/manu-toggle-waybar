@@ -1,9 +1,6 @@
 #!/bin/bash
 
-manu-toggle \
-  --enabled-notification "   Bar hidden" \
-  --disabled-notification "   Bar visible" \
-  waybar-off
+manu-toggle waybar-off
 
 if pgrep -x waybar >/dev/null; then
   pkill -x waybar
