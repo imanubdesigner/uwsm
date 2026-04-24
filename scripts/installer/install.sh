@@ -24,6 +24,10 @@ echo "$SUDO_USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/hyprland-installer-te
 chmod 0440 /etc/sudoers.d/hyprland-installer-temp
 log_message "Temporary NOPASSWD access granted to $SUDO_USER"
 
+# Initialize sudo timestamp for the user to prevent yay/sudo issues
+sudo -u $SUDO_USER sudo -v
+log_message "Sudo timestamp initialized for $SUDO_USER"
+
 # Run installation modules
 run_script "prerequisites.sh" "Prerequisites Setup"
 run_script "hypr.sh" "Hyprland Core & Addons"
