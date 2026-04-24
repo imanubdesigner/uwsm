@@ -49,6 +49,7 @@ manu-restart-swayosd
 manu-restart-terminal
 manu-restart-hyprctl
 manu-restart-btop
+manu-restart-opencode
 manu-restart-mako
 
 # Change app-specific themes

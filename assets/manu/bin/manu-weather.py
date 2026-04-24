@@ -3,33 +3,31 @@
 #    ┓ ┏┏┓┏┓┏┳┓┓┏┏┓┳┓ ┏┓┓┏
 #    ┃┃┃┣ ┣┫ ┃ ┣┫┣ ┣┫ ┃┃┗┫
 #    ┗┻┛┗┛┛┗ ┻ ┛┗┗┛┛┗•┣┛┗┛
-#                  
+#
 
 import time
 import requests
 import json
-import os
-import re
-from pyquery import PyQuery  # install using `pip install pyquery`
+from datetime import datetime
 
-# === WAIT before starting ===
-# time.sleep(5)  # Wait 5 seconds before running the script to prevent startup issues
-
-# === WEATHER ICONS ===
-weather_icons = {
-    "sunnyDay": "󰖙",
-    "clearNight": "󰖔",
-    "cloudyFoggyDay": "",
-    "cloudyFoggyNight": "",
-    "rainyDay": "",
-    "rainyNight": "",
-    "snowyIcyDay": "",
-    "snowyIcyNight": "",
-    "severe": "",
+# === WEATHER ICONS (Nerd Font) ===
+icon_map = {
+    "Sunny": "󰖙",
+    "Clear": "󰖙",
+    "Partly cloudy": "󰖔",
+    "Cloudy": "",
+    "Overcast": "",
+    "Mist": "",
+    "Fog": "",
+    "Light rain": "",
+    "Moderate rain": "",
+    "Heavy rain": "",
+    "Light snow": "",
+    "Moderate snow": "",
+    "Heavy snow": "",
+    "Thunderstorm": "",
     "default": "",
 }
-
-AQI_ICON = ""
 
 # === GET LOCATION WITH RETRIES ===
 def get_location(retries=3, delay=2):
@@ -45,147 +43,157 @@ def get_location(retries=3, delay=2):
 
 # === MAIN EXECUTION ===
 try:
-    # Get latitude and longitude
-    latitude, longitude = get_location()
+    lat, lon = get_location()
 
-    # Build weather.com URL
-    url = f"https://weather.com/en-PH/weather/today/l/{latitude},{longitude}"
+    # Get weather data from wttr.in (JSON format)
+    url = f"https://wttr.in/{lat},{lon}?format=j1&lang=en"
+    resp = requests.get(url, timeout=10, headers={"User-Agent": "curl"})
+    data = resp.json()
+    alerts = data.get("alerts", [])
 
-    # Load HTML
-    html_data = PyQuery(url=url)
+    current = data["current_condition"][0]
+    weather = data["weather"]  # 3-day forecast
 
-    # Current temperature
-    temp = html_data("span[data-testid='TemperatureValue']").eq(0).text()
+    # Current conditions
+    temp = f"{current['temp_C']}°"
+    feels_like = f"{current['FeelsLikeC']}°"
+    humidity = current["humidity"]
+    wind_speed = current["windspeedKmph"]
+    wind_dir = current["winddir16Point"]
+    visibility = current["visibility"]
+    uv_index = current.get("uvIndex", "")
+    desc = current["weatherDesc"][0]["value"]
 
-    # Current weather status
-    status = html_data("div[data-testid='wxPhrase']").text()
-    status = f"{status[:16]}.." if len(status) > 17 else status
+    # Icon
+    icon = icon_map.get(desc, icon_map["default"])
 
-    # Status code for icon
-    status_code = html_data("#regionHeader").attr("class").split(" ")[1].split("-")[0]
-    icon = weather_icons.get(status_code, weather_icons["default"])
+    # Today's forecast
+    today = weather[0]
+    max_c = today["maxtempC"]
+    min_c = today["mintempC"]
+    sunrise = today["astronomy"][0]["sunrise"]
+    sunset = today["astronomy"][0]["sunset"]
 
-    # Feels like
-    temp_feel = html_data(
-        "div[data-testid='FeelsLikeSection'] > span > span[data-testid='TemperatureValue']"
-    ).text()
-    temp_feel_text = f"Feels like {temp_feel}c"
+    # Hourly rain forecast (next 24h)
+    rain_hours = []
+    for hour_data in today["hourly"]:
+        time_str = hour_data["time"].zfill(4)
+        hour_12 = datetime.strptime(time_str, "%H%M").strftime("%-I%p")
+        chance = int(hour_data["chanceofrain"])
+        rain_hours.append((hour_12, chance))
 
-    # Min/max temperature
-    temp_min = (
-        html_data("div[data-testid='wxData'] > span[data-testid='TemperatureValue']")
-        .eq(1)
-        .text()
-    )
-    temp_max = (
-        html_data("div[data-testid='wxData'] > span[data-testid='TemperatureValue']")
-        .eq(0)
-        .text()
-    )
+    # Filter significant rain
+    significant_rain = [(h, p) for h, p in rain_hours if p >= 20]
 
-    # Wind, humidity, visibility, AQI
-    wind_speed = html_data("span[data-testid='Wind'] > span").text()
-    wind_text = f"  {wind_speed}"
+    if rain_hours:
+        max_chance = max(p for _, p in rain_hours)
+        avg_chance = sum(p for _, p in rain_hours) / len(rain_hours)
 
-    humidity = html_data("span[data-testid='PercentageValue']").text()
-    humidity_text = f"  {humidity}"
-
-    visibility = html_data("span[data-testid='VisibilityValue']").text()
-    visibility_text = f"  {visibility}"
-
-    air_quality_index = html_data("text[data-testid='DonutChartValue']").text()
-
-    # Hourly rain prediction – summarized (multiline, compatta)
-    try:
-        rain_elements = html_data("div[data-testid='SegmentPrecipPercentage'] > span")
-        percentages = []
-
-        for el in rain_elements.items():
-            text = el.text().strip()
-            if not text:
-                continue
-
-            match = re.search(r"(\d+)\s*%", text)
-            if match:
-                percentages.append(int(match.group(1)))
-
-        if percentages:
-            max_chance = max(percentages)
-            avg_chance = sum(percentages) / len(percentages)
-
-            if max_chance <= 10:
-                trend = "mostly dry"
-            elif max_chance <= 30:
-                trend = "few showers"
-            elif max_chance <= 60:
-                trend = "scattered showers"
-            else:
-                trend = "frequent showers"
-
-            predictions = (
-                "\n<big> </big> Rain today:\n"
-                f"Max {max_chance}%\n"
-                f"Avg {int(avg_chance)}% – mostly dry"
-                if trend == "mostly dry"
-                else "\n<big> </big> Rain today:\n"
-                     f"Max {max_chance}%\n"
-                     f"Avg {int(avg_chance)}% – " + trend
-            )
+        if max_chance <= 10:
+            trend = "mostly dry"
+        elif max_chance <= 30:
+            trend = "few showers"
+        elif max_chance <= 60:
+            trend = "scattered showers"
         else:
-            predictions = ""
+            trend = "frequent showers"
+    else:
+        max_chance = 0
+        avg_chance = 0
+        trend = "dry"
 
-    except Exception:
-        predictions = ""
+    # Show rain section only if there's actual rain
+    show_rain = max_chance > 20
 
-    # Tooltip (multi-line info for hover, con Details in monospace)
-    tooltip_text = f"""
-<span size="xx-large" weight="bold">{temp}</span>
+    # Tomorrow forecast
+    tomorrow = weather[1]
+    tomorrow_desc = tomorrow["hourly"][4]["weatherDesc"][0]["value"]  # ~noon
+    tomorrow_max = tomorrow["maxtempC"]
+    tomorrow_min = tomorrow["mintempC"]
+    tomorrow_icon = icon_map.get(tomorrow_desc, icon_map["default"])
 
-<small>{temp_feel_text}</small>
-<big>{icon}</big>  <b>{status}</b>
+    # Moon phase (Unicode emojis - better rendering)
+    moon_phase = today["astronomy"][0]["moon_phase"]
+    moon_icons = {
+        "New Moon": "🌑", "Waxing Crescent": "🌒", "First Quarter": "🌓",
+        "Waxing Gibbous": "🌔", "Full Moon": "🌕", "Waning Gibbous": "🌖",
+        "Last Quarter": "🌗", "Waning Crescent": "🌘",
+    }
+    moon_icon = moon_icons.get(moon_phase, "🌙")
 
-<b>Temps</b>
-  Now: {temp}
-  Min: {temp_min}
-  Max: {temp_max}
+    # Pressure and dew point
+    pressure = current.get("pressure", "")
+    dew_point = current.get("DewPointC", "")
 
-<b>Details</b>
-<tt>  Wind {wind_speed}</tt>
-<tt>  Hum  {humidity}</tt>
-<tt>  Vis  {visibility}</tt>
-<tt>{AQI_ICON}  AQI  {air_quality_index}</tt>
-{predictions}
-"""
+    # Build tooltip
+    lines = [
+        f"<span size='xx-large' weight='bold'>{temp}</span>",
+        "",
+        f"<small>Feels like {feels_like}c</small>",
+        f"<big>{icon}</big>  <b>{desc}</b>",
+        "",
+        "<b>Today</b>",
+        f"  Now: {temp}",
+        f"  Min: {min_c}°    Max: {max_c}°",
+        "",
+        "<b>Details</b>",
+        f"<tt>  Wind {wind_speed} km/h {wind_dir}</tt>",
+        f"<tt>  Hum  {humidity}%</tt>",
+        f"<tt>  Vis  {visibility} km</tt>",
+    ]
+
+    if pressure:
+        lines.append(f"<tt>  Press {pressure} hPa</tt>")
+    if dew_point:
+        lines.append(f"<tt>  Dew {dew_point}°C</tt>")
+    if uv_index:
+        lines.append(f"<tt>  UV  {uv_index}</tt>")
+
+    lines.append(f"<tt>  {sunrise}    {sunset}</tt>")
+    lines.append(f"<tt>{moon_icon}  {moon_phase}</tt>")
+
+    # Tomorrow preview
+    lines.append("")
+    lines.append("<b>Tomorrow</b>")
+    lines.append(f"<big>{tomorrow_icon}</big>  {tomorrow_desc}")
+    lines.append(f"  {tomorrow_min}°    {tomorrow_max}°")
+
+    # Weather alerts
+    if alerts:
+        lines.append("")
+        lines.append("<b> Alerts</b>")
+        for alert in alerts[:3]:
+            alert_type = alert.get("type", "Alert")
+            alert_desc = alert.get("description", "").strip()
+            alert_expires = alert.get("expires", "")
+            short_desc = alert_desc[:50] + "..." if len(alert_desc) > 50 else alert_desc
+            lines.append(f"<tt>  {alert_type}: {short_desc}</tt>")
+            if alert_expires:
+                lines.append(f"<tt>   Expires: {alert_expires}</tt>")
+
+    # Rain forecast - only if significant rain expected
+    if show_rain:
+        lines.append("")
+        lines.append(f"<big> </big> Rain: {trend}")
+        lines.append(f"Max {max_chance}% | Avg {int(avg_chance)}%")
+        lines.append("<b>Hourly:</b>")
+        for hour, pct in significant_rain[:8]:
+            bar = "▇" * (pct // 10) + "░" * (10 - pct // 10)
+            lines.append(f"  {hour:>5}  {bar} {pct}%")
+
+    tooltip = "\n".join(lines)
 
     # Output for Waybar
-    out_data = {
+    out = {
         "text": f"{icon}  {temp}",
-        "alt": status,
-        "tooltip": tooltip_text,
-        "class": status_code,
+        "alt": desc,
+        "tooltip": tooltip,
+        "class": desc.lower().replace(" ", "-"),
     }
-    print(json.dumps(out_data))
+    print(json.dumps(out))
 
-    # Write to simple cache
-    simple_weather = (
-        f"{icon}  {status}\n"
-        + f"  {temp} ({temp_feel_text})\n"
-        + f"{wind_text} \n"
-        + f"{humidity_text} \n"
-        + f"{visibility_text} AQI{air_quality_index}\n"
-    )
-
-    try:
-        with open(os.path.expanduser("~/.cache/.weather_cache"), "w") as file:
-            file.write(simple_weather)
-    except Exception:
-        # Cache write failure is non-critical
-        pass
-
-# Error fallback
 except RuntimeError:
     print('{"text": "", "tooltip": "Network unavailable"}')
 
-except Exception:
-    print('{"text": "", "tooltip": "Weather error"}')
-
+except Exception as e:
+    print(f'{{"text": "", "tooltip": "Weather error: {str(e)}"}}')
