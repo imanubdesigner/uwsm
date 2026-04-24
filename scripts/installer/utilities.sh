@@ -9,32 +9,8 @@ source $BASE_DIR/scripts/installer/helper.sh
 log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
-# -------------------- Utilities --------------------
-# run_command "yay -S --sudoloop --noconfirm --needed helium-browser-bin hyprland-preview-share-picker-git python-terminaltexteffects xdg-terminal-exec localsend-bin walker elephant elephant-desktopapplications elephant-files elephant-websearch elephant-clipboard elephant-calc elephant-runner elephant-symbols elephant-unicode elephant-providerlist elephant-menus elephant-todo fastmod yaru-icon-theme gowall limine-mkinitcpio-hook limine-snapper-sync" "Install Utilities" "no" "no"
-
-# Pacman
-run_command "pacman -S --needed --noconfirm \
-  walker \
-  elephant elephant-desktopapplications elephant-files elephant-websearch \
-  elephant-clipboard elephant-calc elephant-runner elephant-symbols \
-  elephant-unicode elephant-providerlist elephant-menus elephant-todo \
-  hyprland-preview-share-picker-git \
-  python-terminaltexteffects \
-  localsend-bin \
-  yaru-icon-theme \
-  xdg-terminal-exec \
-  gpu-screen-recorder \
-  limine-mkinitcpio-hook \
-  limine-snapper-sync" \
-  "Install packages from omarchy repo" "no"
-
-# AUR
-run_command "yay -S --sudoloop --noconfirm --needed \
-  helium-browser-bin \
-  gowall \
-  fastmod" \
-  "Install remaining AUR packages" "no" "no"
-
+# -------------------- Utilities (AUR) --------------------
+run_command "yay -S --sudoloop --noconfirm --needed helium-browser-bin fastmod gowall" "Install Utilities" "no" "no"
 
 # -------------------- Applications & mimeinfo --------------------
 run_command "\

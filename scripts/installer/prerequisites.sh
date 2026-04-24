@@ -9,6 +9,13 @@ source $BASE_DIR/scripts/installer/helper.sh
 log_message "Installation started for prerequisites section"
 print_info "\nStarting prerequisites setup..."
 
+# -------------------- Pacman Configuration --------------------
+run_command "cp $BASE_DIR/assets/pacman.conf /etc/pacman.conf" "Setup pacman.conf with omarchy repo" "no"
+run_command "pacman-key --recv-keys 40DFB630FF42BCFFB047046CF0134EE680CAC571 --keyserver keys.openpgp.org" "Receive omarchy GPG key" "no"
+run_command "pacman-key --lsign-key 40DFB630FF42BCFFB047046CF0134EE680CAC571" "Sign omarchy GPG key locally" "no"
+run_command "pacman -Syy --noconfirm" "Force sync pacman database" "no"
+run_command "pacman -S --needed --noconfirm omarchy-keyring" "Install omarchy keyring" "no"
+
 # -------------------- Base setup --------------------
 run_command "pacman -S --needed --noconfirm reflector" "Install Reflector" "no"
 run_command "reflector --country Italy --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" "Update Pacman mirrorlist with fresh, fast mirrors" "no"
@@ -18,7 +25,8 @@ run_command "pacman -S --noconfirm --needed git base-devel" "Install git and bas
 if command -v yay >/dev/null; then
   print_info "Skipping yay installation (already installed)."
 else
-run_command "rm -rf /tmp/yay && git clone https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg --noconfirm -si" "Clone and build YAY" "no" "no"
+  run_command "git clone https://aur.archlinux.org/yay.git && cd yay" "Clone YAY (Must)/Breaks the script" "no" "no"
+  run_command "makepkg --noconfirm -si && cd .." "Build YAY (Must)/Breaks the script" "no" "no"
 fi
 
 # -------------------- Network Configuration (iwd + systemd-networkd) --------------------
@@ -42,7 +50,7 @@ run_command "sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf"
 run_command "pacman -S --needed --noconfirm bluez bluetui && systemctl enable bluetooth.service" "Install and enable Bluetooth (Recommended)" "no"
 
 # -------------------- Applications Installation --------------------
-run_command "pacman -S --needed --noconfirm alsa-utils bat btop cava chromium curl discord evince eza fastfetch fcitx5 fcitx5-gtk fcitx5-qt ffmpeg ffmpegthumbnailer fzf ghostty glib2 glow gnome-themes-extra gobject-introspection gpu-screen-recorder gum gvfs gvfs-mtp gvfs-nfs gvfs-smb gst-plugin-pipewire imagemagick imv inotify-tools jdk-openjdk lazygit libadwaita libgsf librsvg libwebp luarocks kvantum-qt5 matugen meld mpv nautilus nautilus-python neovim nodejs npm noto-fonts noto-fonts-emoji noto-fonts-cjk obsidian pacman-contrib pamixer p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse plocate power-profiles-daemon poppler-glib python-pyquery ripgrep spotify-launcher sd starship sushi swaybg swayosd tar thermald tree-sitter tree-sitter-cli ttf-jetbrains-mono-nerd udisks2 ufw unrar unzip wget wiremix wireplumber woff2-font-awesome xdg-user-dirs xsel xmlstarlet yazi yt-dlp zoxide zsh zsh-completions zram-generator" "Install complete application suite (browsers, media, development, system tools)" "no"
+run_command "pacman -S --needed --noconfirm alsa-utils bat btop cava chromium curl discord elephant elephant-calc elephant-clipboard elephant-desktopapplications elephant-files elephant-menus elephant-providerlist elephant-runner elephant-symbols elephant-todo elephant-unicode elephant-websearch evince eza fastfetch fcitx5 fcitx5-gtk fcitx5-qt ffmpeg ffmpegthumbnailer fzf ghostty glib2 glow gnome-themes-extra gobject-introspection gpu-screen-recorder gum gvfs gvfs-mtp gvfs-nfs gvfs-smb gst-plugin-pipewire hyprland-preview-share-picker-git imagemagick imv inotify-tools jdk-openjdk lazygit libadwaita libgsf librsvg libwebp limine-mkinitcpio-hook limine-snapper-sync localsend-bin luarocks kvantum-qt5 matugen meld mpv nautilus nautilus-python neovim nodejs npm noto-fonts noto-fonts-emoji noto-fonts-cjk obsidian pacman-contrib pamixer p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse plocate power-profiles-daemon poppler-glib python-pyquery python-terminaltexteffects ripgrep spotify-launcher sd starship sushi swaybg swayosd tar thermald tree-sitter tree-sitter-cli ttf-jetbrains-mono-nerd udisks2 ufw unrar unzip walker wget wiremix wireplumber woff2-font-awesome xdg-terminal-exec xdg-user-dirs xsel xmlstarlet yaru-icon-theme yazi yt-dlp zoxide zsh zsh-completions zram-generator" "Install complete application suite (browsers, media, development, system tools)" "no"
 
 # -------------------- Configuration Files --------------------
 run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "no" "no"
@@ -55,8 +63,8 @@ run_command "bash -lc 'if [ -d /home/$SUDO_USER/.config/yazi/plugins/bat.yazi/.g
   "Install/Update Yazi plugin: bat" "yes" "no"
 
 # -------------------- Yazi Plugin Restore --------------------
-run_command "sudo -u $SUDO_USER ya pkg install" \
-  "Restore Yazi plugins from package.toml" "yes" "no"
+run_command "ya pkg install" \
+  "Restore Yazi plugins from package.toml" "no" "no"
 
 echo "------------------------------------------------------------------------"
 print_info "Prerequisites setup completed successfully!"

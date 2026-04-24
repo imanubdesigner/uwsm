@@ -44,6 +44,7 @@ function ask_confirmation {
 function run_command {
     local cmd="$1"
     local description="$2"
+    local _unused="$3"
     local use_sudo="${4:-yes}"
 
     local full_cmd=""
@@ -56,11 +57,11 @@ function run_command {
     log_message "Attempting: $description"
     print_info "\n$description"
     
-    while ! eval "$full_cmd"; do
+    if ! eval "$full_cmd"; then
         print_error "Command failed: $cmd"
         log_message "Error running: $cmd"
         return 1
-    done
+    fi
     return 0
 }
 
@@ -68,7 +69,7 @@ function run_command {
 function run_script {
     local script="$BASE_DIR/scripts/installer/$1"
     print_info "\nExecuting '$2' script..."
-    while ! bash "$script"; do
+    while ! SUDO_USER="$SUDO_USER" bash "$script"; do
         print_error "$2 failed. Retrying..."
         log_message "$2 failed, retrying."
     done
