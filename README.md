@@ -1,5 +1,15 @@
 # ❄️ Hypruccin — A Personal Tribute to Omarchy's Philosophy
 
+<p align="center">
+  <a href="https://archlinux.org"><img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=flat&logo=archlinux&logoColor=white" alt="Arch Linux"/></a>
+  <a href="https://github.com/hyprwm/Hyprland"><img src="https://img.shields.io/badge/Hyprland-1E1E2E?style=flat&logoColor=white" alt="Hyprland"/></a>
+  <a href="https://www.zsh.org"><img src="https://img.shields.io/badge/Zsh-F15A24?style=flat&logoColor=white" alt="Zsh"/></a>
+  <a href="https://systemd.io"><img src="https://img.shields.io/badge/systemd-2E2E2E?style=flat&logoColor=white" alt="systemd"/></a>
+  <a href="https://mitchellh.com/ghostty"><img src="https://img.shields.io/badge/Ghostty-F0F0F0?style=flat&logoColor=black" alt="Ghostty"/></a>
+  <a href="https://github.com/catppuccin/catppuccin"><img src="https://img.shields.io/badge/Catppuccin-DEA5A4?style=flat&logoColor=white" alt="Catppuccin"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat&logoColor=black" alt="License: MIT"/></a>
+</p>
+
 > "The love for Omarchy led me to create this personal project — a Hyprland setup that embraces simplicity, purpose, and intentional design."  
 > — *by Manu*
 
