@@ -13,8 +13,8 @@ echo "$(date): Starting ZSH configuration..."
 if [ -d "$SOURCE_DIR/Modular" ]; then
   echo "$(date): Copying .zsh and .zshrc files..."
   # Added -r to ensure the .zsh directory is copied entirely
-  cp -rf "$SOURCE_DIR/Modular/.zsh" "$HOME/"
-  cp -f "$SOURCE_DIR/Modular/.zshrc" "$HOME/"
+  cp -rf "$SOURCE_DIR/Modular/theme-edition/.zsh" "$HOME/"
+  cp -f "$SOURCE_DIR/Modular/theme-edition/.zshrc" "$HOME/"
 else
   echo "$(date): ERROR: Modular directory not found in $SOURCE_DIR"
 fi

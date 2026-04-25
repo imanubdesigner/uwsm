@@ -1,1 +1,1 @@
-# Hypruccin theme edition
+# Hypruccin
