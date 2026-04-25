@@ -41,4 +41,4 @@ mkdir -p "$(dirname "$LOG")"
 } >>"$LOG" 2>&1
 
 # Desktop notification with nerd font checkmark
-notify-send -t 5000 "First Run Script" " Configuration Complete"
+notify-send -t 5000 "First Run Script" "Configuration Complete  "

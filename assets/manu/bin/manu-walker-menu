@@ -317,6 +317,7 @@ go_to_menu() {
   *style*) show_style_menu ;;
   *theme*) show_theme_menu ;;
   *share*) show_share_menu ;;
+  *Power*) show_power_profile_menu ;;
   *background*) show_background_menu ;;
   *capture*) show_capture_menu ;;
   *screenrecord*) show_screenrecord_menu ;;
