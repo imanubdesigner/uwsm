@@ -17,7 +17,7 @@ orientation = bottom
 alacritty_sync = 1
 
 [color]
-theme = "matugen"
+theme = 'manu'
 
 [smoothing]
 noise_reduction = 65
