@@ -6,3 +6,6 @@ export PATH=$MANU_PATH/bin:$PATH:$HOME/.local/bin
 
 # Set default terminal and editor
 source ~/.config/uwsm/default
+
+# Activate mise if present on the system
+manu-cmd-present mise && eval "$(mise activate bash --shims)"

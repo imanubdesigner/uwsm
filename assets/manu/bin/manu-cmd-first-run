@@ -23,6 +23,9 @@ mkdir -p "$(dirname "$LOG")"
   # -------------------- GNOME / GTK Theme --------------------
   manu-first-run-gnome-theme
 
+  # -------------------- Mise Configuration --------------------
+  manu-first-run-mise
+
   # -------------------- ZSH Configuration --------------------
   manu-first-run-zsh
 
