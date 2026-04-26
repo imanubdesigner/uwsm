@@ -217,7 +217,7 @@ show_background_menu() {
 }
 
 show_install_menu() {
-  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
+  case $(menu "Install" "󰸌  Theme\n󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Git*) present_terminal manu-install-git-configuration ;; # Nuovo comando
@@ -225,17 +225,19 @@ show_install_menu() {
   *Web*) present_terminal manu-install-webapp ;;
   *TUI*) present_terminal manu-install-tui ;;
   *Chromium*) present_terminal manu-install-chromium-google-account ;;
+  *Theme*) present_terminal manu-theme-install ;;
   *) show_main_menu ;;
   esac
 }
 
 show_remove_menu() {
-  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs") in
+  case $(menu "Remove" "󰸌  Theme\n󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs") in
   *Cache*) present_terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
   *TUI*) present_terminal manu-tui-remove ;;
   *"Clear Logs"*) present_terminal manu-clear-journalctl ;;
+  *Theme*) present_terminal manu-theme-remove ;;
   *) show_main_menu ;;
   esac
 }
