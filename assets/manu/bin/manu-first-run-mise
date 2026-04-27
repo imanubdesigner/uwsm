@@ -4,6 +4,11 @@
 # Setup Work directory and Mise local bin automation
 # ------------------------------------------------------------
 
+# Define the log path
+LOG="$HOME/.local/share/manu/first-run.log"
+
+echo "$(date): Starting MISE configuration..."
+
 # Create the main work directory and a subfolder for experiments
 echo "   Creating Work directories..."
 mkdir -p "$HOME/Work/tries"
@@ -23,3 +28,5 @@ mise trust "$HOME/Work/.mise.toml"
 
 echo "   Mise setup completed!"
 echo "Note: Node.js will be auto-installed by mise when you run your wrappers."
+
+echo "$(date): MISE configuration finished."

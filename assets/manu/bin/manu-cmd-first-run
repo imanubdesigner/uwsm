@@ -14,6 +14,9 @@ mkdir -p "$(dirname "$LOG")"
 {
   echo "$(date): First run started"
 
+  # -------------------- User-Dirs --------------------
+  manu-first-run-user-dirs
+
   # -------------------- Firewall --------------------
   manu-first-run-firewall
 
