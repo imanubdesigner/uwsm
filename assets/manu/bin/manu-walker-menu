@@ -57,9 +57,29 @@ present_terminal() {
   manu-launch-floating-terminal-with-presentation $1
 }
 
+install() {
+  present_terminal "echo 'Installing $1...'; manu-pkg-add $2"
+}
+
+install_and_launch() {
+  present_terminal "echo 'Installing $1...'; manu-pkg-add $2 && setsid gtk-launch $3"
+}
+
+install_font() {
+  present_terminal "echo 'Installing $1...'; manu-pkg-add $2 && sleep 2 && manu-font-set '$3'"
+}
+
+aur_install() {
+  present_terminal "echo 'Installing $1 from AUR...'; manu-pkg-aur-add $2"
+}
+
 open_in_editor() {
   notify-send "Editing config file" "$1"
   manu-launch-editor "$1"
+}
+
+aur_install_and_launch() {
+  present_terminal "echo 'Installing $1 from AUR...'; manu-pkg-aur-add $2 && setsid gtk-launch $3"
 }
 
 get_webcam_list() {
@@ -217,21 +237,42 @@ show_background_menu() {
 }
 
 show_install_menu() {
-  case $(menu "Install" "󰸌  Theme\n󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n  Chromium") in
+  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n  Style\n  Chromium") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Git*) present_terminal manu-install-git-configuration ;; # Nuovo comando
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
   *TUI*) present_terminal manu-install-tui ;;
+  *Style*) show_install_style_menu ;;
   *Chromium*) present_terminal manu-install-chromium-google-account ;;
-  *Theme*) present_terminal manu-theme-install ;;
   *) show_main_menu ;;
   esac
 }
 
+show_install_style_menu() {
+  case $(menu "Install" "󰸌  Theme\n  Background\n  Font") in
+  *Theme*) present_terminal manu-theme-install ;;
+  *Background*) manu-theme-bg-install ;;
+  *Font*) show_install_font_menu ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_font_menu() {
+  case $(menu "Install" "  Cascadia Mono\n  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono\n  Iosevka" "--width 350") in
+  *Cascadia*) install_font "Cascadia Mono" "ttf-cascadia-mono-nerd" "CaskaydiaMono Nerd Font" ;;
+  *Meslo*) install_font "Meslo LG Mono" "ttf-meslo-nerd" "MesloLGL Nerd Font" ;;
+  *Fira*) install_font "Fira Code" "ttf-firacode-nerd" "FiraCode Nerd Font" ;;
+  *Victor*) install_font "Victor Code" "ttf-victor-mono-nerd" "VictorMono Nerd Font" ;;
+  *Bistream*) install_font "Bistream Vera Code" "ttf-bitstream-vera-mono-nerd" "BitstromWera Nerd Font" ;;
+  *Iosevka*) install_font "Iosevka" "ttf-iosevka-nerd" "Iosevka Nerd Font Mono" ;;
+  *) show_install_menu ;;
+  esac
+}
+
 show_remove_menu() {
-  case $(menu "Remove" "󰸌  Theme\n󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs") in
+  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
   *Cache*) present_terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
@@ -243,9 +284,12 @@ show_remove_menu() {
 }
 
 show_update_menu() {
-  case $(menu "Update" "󰣇  Pacman\n  Firmware") in
+  case $(menu "Update" "󰣇  Pacman\n  Firmware\n󰸌  Extra Themes\n  Timezone\n  Time") in
   *Pacman*) present_terminal manu-update ;;
   *Firmware*) present_terminal manu-update-firmware ;;
+  *Themes*) present_terminal manu-theme-update ;;
+  *Timezone*) present_terminal manu-tz-select ;;
+  *Time*) present_terminal manu-update-time ;;
   *) show_main_menu ;;
   esac
 }
@@ -315,6 +359,7 @@ go_to_menu() {
   *app*) walker -p "Launch…" ;;
   *learn*) show_learn_menu ;;
   *trigger*) show_trigger_menu ;;
+  *toggle*) show_toggle_menu ;;
   *keybindings*) manu-menu-keybindings ;;
   *style*) show_style_menu ;;
   *theme*) show_theme_menu ;;
