@@ -237,16 +237,63 @@ show_background_menu() {
 }
 
 show_install_menu() {
-  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n  Style\n  Chromium") in
+  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style\n  Chromium") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Git*) present_terminal manu-install-git-configuration ;; # Nuovo comando
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
   *TUI*) present_terminal manu-install-tui ;;
+  *Development*) show_install_development_menu ;;
   *Style*) show_install_style_menu ;;
   *Chromium*) present_terminal manu-install-chromium-google-account ;;
   *) show_main_menu ;;
+  esac
+}
+
+show_install_development_menu() {
+  case $(menu "Install" "󰫏  Ruby on Rails\n  Docker DB\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
+  *Rails*) present_terminal "manu-install-dev-env ruby" ;;
+  *Docker*) present_terminal manu-install-docker-dbs ;;
+  *JavaScript*) show_install_javascript_menu ;;
+  *Go*) present_terminal "manu-install-dev-env go" ;;
+  *PHP*) show_install_php_menu ;;
+  *Python*) present_terminal "manu-install-dev-env python" ;;
+  *Elixir*) show_install_elixir_menu ;;
+  *Zig*) present_terminal "manu-install-dev-env zig" ;;
+  *Rust*) present_terminal "manu-install-dev-env rust" ;;
+  *Java*) present_terminal "manu-install-dev-env java" ;;
+  *NET*) present_terminal "manu-install-dev-env dotnet" ;;
+  *OCaml*) present_terminal "manu-install-dev-env ocaml" ;;
+  *Clojure*) present_terminal "manu-install-dev-env clojure" ;;
+  *Scala*) present_terminal "manu-install-dev-env scala" ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_javascript_menu() {
+  case $(menu "Install" "  Node.js\n  Bun\n  Deno") in
+  *Node*) present_terminal "manu-install-dev-env node" ;;
+  *Bun*) present_terminal "manu-install-dev-env bun" ;;
+  *Deno*) present_terminal "manu-install-dev-env deno" ;;
+  *) show_install_development_menu ;;
+  esac
+}
+
+show_install_php_menu() {
+  case $(menu "Install" "  PHP\n  Laravel\n  Symfony") in
+  *PHP*) present_terminal "manu-install-dev-env php" ;;
+  *Laravel*) present_terminal "manu-install-dev-env laravel" ;;
+  *Symfony*) present_terminal "manu-install-dev-env symfony" ;;
+  *) show_install_development_menu ;;
+  esac
+}
+
+show_install_elixir_menu() {
+  case $(menu "Install" "  Elixir\n  Phoenix") in
+  *Elixir*) present_terminal "manu-install-dev-env elixir" ;;
+  *Phoenix*) present_terminal "manu-install-dev-env phoenix" ;;
+  *) show_install_development_menu ;;
   esac
 }
 
@@ -272,16 +319,63 @@ show_install_font_menu() {
 }
 
 show_remove_menu() {
-  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
+  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰵮  Development\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
   *Cache*) present_terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
   *TUI*) present_terminal manu-tui-remove ;;
+  *Development*) show_remove_development_menu ;;
   *"Clear Logs"*) present_terminal manu-clear-journalctl ;;
   *Theme*) present_terminal manu-theme-remove ;;
   *) show_main_menu ;;
   esac
 }
+
+show_remove_development_menu() {
+  case $(menu "Remove" "󰫏  Ruby on Rails\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
+  *Rails*) present_terminal "manu-remove-dev-env ruby" ;;
+  *JavaScript*) show_remove_javascript_menu ;;
+  *Go*) present_terminal "manu-remove-dev-env go" ;;
+  *PHP*) show_remove_php_menu ;;
+  *Python*) present_terminal "manu-remove-dev-env python" ;;
+  *Elixir*) show_remove_elixir_menu ;;
+  *Zig*) present_terminal "manu-remove-dev-env zig" ;;
+  *Rust*) present_terminal "manu-remove-dev-env rust" ;;
+  *Java*) present_terminal "manu-remove-dev-env java" ;;
+  *NET*) present_terminal "manu-remove-dev-env dotnet" ;;
+  *OCaml*) present_terminal "manu-remove-dev-env ocaml" ;;
+  *Clojure*) present_terminal "manu-remove-dev-env clojure" ;;
+  *Scala*) present_terminal "manu-remove-dev-env scala" ;;
+  *) show_remove_menu ;;
+  esac
+}
+
+show_remove_javascript_menu() {
+  case $(menu "Remove" "  Node.js\n  Bun\n  Deno") in
+  *Node*) present_terminal "manu-remove-dev-env node" ;;
+  *Bun*) present_terminal "manu-remove-dev-env bun" ;;
+  *Deno*) present_terminal "manu-remove-dev-env deno" ;;
+  *) show_remove_development_menu ;;
+  esac
+}
+
+show_remove_php_menu() {
+  case $(menu "Remove" "  PHP\n  Laravel\n  Symfony") in
+  *PHP*) present_terminal "manu-remove-dev-env php" ;;
+  *Laravel*) present_terminal "manu-remove-dev-env laravel" ;;
+  *Symfony*) present_terminal "manu-remove-dev-env symfony" ;;
+  *) show_remove_development_menu ;;
+  esac
+}
+
+show_remove_elixir_menu() {
+  case $(menu "Remove" "  Elixir\n  Phoenix") in
+  *Elixir*) present_terminal "manu-remove-dev-env elixir" ;;
+  *Phoenix*) present_terminal "manu-remove-dev-env phoenix" ;;
+  *) show_remove_development_menu ;;
+  esac
+}
+
 
 show_update_menu() {
   case $(menu "Update" "󰣇  Pacman\n  Firmware\n󰸌  Extra Themes\n  Timezone\n  Time") in
