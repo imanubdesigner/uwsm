@@ -10,7 +10,7 @@ log_message "Installation started for utilities section"
 print_info "\nStarting utilities setup..."
 
 # -------------------- Utilities (AUR) --------------------
-run_command "yay -S --sudoloop --noconfirm --needed helium-browser-bin fastmod gowall" "Install Utilities" "no" "no"
+run_command "yay -S --sudoloop --noconfirm --needed helium-browser-bin fastmod" "Install Utilities" "no" "no"
 
 # -------------------- Applications & mimeinfo --------------------
 run_command "\
