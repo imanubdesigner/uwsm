@@ -68,7 +68,6 @@ run_command "echo 'manu ALL=(ALL) NOPASSWD: ALL' | tee /etc/sudoers.d/manu-first
 
 # -------------------- Set default shell --------------------
 run_command "chsh -s /usr/bin/zsh $SUDO_USER" "Set default shell to zsh for user $SUDO_USER" "no" "no"
-run_command "RUNZSH=no CHSH=no sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"" "Install Oh My Zsh for user $SUDO_USER" "no" "no"
 
 # -------------------- Override Autologin --------------------
 run_command "mkdir -p /etc/systemd/system/getty@tty1.service.d" "Create TT1 directory" "no"
