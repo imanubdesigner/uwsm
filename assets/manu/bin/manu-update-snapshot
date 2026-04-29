@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┳┓┏┓┏┓┏┓┓┏┏┓┏┳┓
-#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┗┓┃┃┣┫┃┃┗┓┣┫┃┃ ┃ 
-#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┛┗┛┗┣┛┗┛┛┗┗┛ ┻ 
+#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┗┓┃┃┣┫┃┃┗┓┣┫┃┃ ┃
+#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┛┗┛┗┣┛┗┛┛┗┗┛ ┻
 
 # snapper must be available
 if ! command -v snapper &>/dev/null; then
@@ -20,8 +20,19 @@ if ! gum confirm ""; then
 fi
 
 echo "󰚰 Creating snapshot..."
-
-DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
+# Ask for optional custom name to differentiate snapshots
+if gum confirm "Add a custom name to the snapshot?"; then
+  CUSTOM_NAME=$(gum input --placeholder "Enter snapshot name (e.g. before-kernel-update)")
+  if [ -n "$CUSTOM_NAME" ]; then
+    DESC="pre-update: ${CUSTOM_NAME}"
+  else
+    # Empty custom name, fall back to date-based
+    DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
+  fi
+else
+  # No custom name, use date-based description for clarity
+  DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
+fi
 
 # Iterate all snapper configs, like omarchy does
 mapfile -t CONFIGS < <(sudo snapper --csvout list-configs | awk -F, 'NR>1 {print $1}')
@@ -31,5 +42,5 @@ for config in "${CONFIGS[@]}"; do
 done
 
 echo "󰄬 Snapshot created: \"${DESC}\""
-notify-send "󰚰  Snapshot" "Snapshot created before update." -a "Update Script"
+notify-send "󰚰  Snapshot" "Snapshot '${DESC}' created before update." -a "Update Script"
 echo ""
