@@ -41,6 +41,10 @@ for config in "${CONFIGS[@]}"; do
   sudo snapper -c "$config" create -c number -d "$DESC"
 done
 
+# Sync snapshots to Limine bootloader
+echo "󰚰 Syncing snapshots to Limine..."
+sudo limine-snapper-sync
+
 echo "󰄬 Snapshot created: \"${DESC}\""
 notify-send "󰚰  Snapshot" "Snapshot '${DESC}' created before update." -a "Update Script"
 echo ""
