@@ -1,15 +1,21 @@
 #!/bin/bash
 
-# 1. Verifica se gum è installato
+# Check if gum is installed
 if ! command -v gum &>/dev/null; then
   echo "Gum is not installed. Please install it to use this configuration tool."
   exit 1
 fi
 
-# 2. Intestazione Neutra
-gum style --border double --margin "1 2" --padding "1 2" "Git Global Configuration"
+# Header with description
+gum style --border normal --border-foreground 6 --padding "1 2" \
+  "Git Global Configuration" \
+  "" \
+  "• Sets your Git username and email globally" \
+  "• Optionally configures credential helper with GitHub token"
 
-# 3. Input Nome Utente (Obbligatorio per la stringa delle credenziali)
+echo
+
+# Prompt for username (required for credential string)
 USER_NAME=$(gum input --placeholder "Enter your Git User Name (e.g. John Doe)")
 if [ -z "$USER_NAME" ]; then
   echo "Error: User name is required to automate login."
@@ -18,26 +24,26 @@ fi
 git config --global user.name "$USER_NAME"
 echo "✓ User name set to: $USER_NAME"
 
-# 4. Input Email
+# Prompt for email
 USER_EMAIL=$(gum input --placeholder "Enter your Git Email (e.g. john@example.com)")
 if [ -n "$USER_EMAIL" ]; then
   git config --global user.email "$USER_EMAIL"
   echo "✓ Email set to: $USER_EMAIL"
 fi
 
-# 5. Configurazione Credential Helper e Token
+# Configure credential helper and token
 if gum confirm "Do you want to enable the credential helper and store your token?"; then
-  # Abilita il 'credential store' nel file ~/.gitconfig
+  # Enable credential store in ~/.gitconfig
   git config --global credential.helper store
 
-  # Richiesta del Token (PAT)
+  # Prompt for GitHub PAT
   TOKEN=$(gum input --password --placeholder "Paste your GitHub Personal Access Token")
 
   if [ -n "$TOKEN" ]; then
-    # Crea o sovrascrive il file .git-credentials con il formato corretto
+    # Create or overwrite .git-credentials with correct format
     echo "https://${USER_NAME}:${TOKEN}@github.com" >~/.git-credentials
 
-    # Imposta i permessi di lettura/scrittura solo per l'utente (sicurezza)
+    # Set permissions to read/write only for user (security)
     chmod 600 ~/.git-credentials
 
     echo "✓ Credential helper enabled and ~/.git-credentials created!"
@@ -48,6 +54,6 @@ else
   echo "○ Credential helper not changed"
 fi
 
-# 6. Messaggio finale
+# Final message
 gum style --margin "1 0" "Configuration complete!"
 sleep 2
