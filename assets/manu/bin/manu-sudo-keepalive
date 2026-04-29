@@ -4,7 +4,23 @@
 # Source this script so the trap applies to the calling shell:
 #   source manu-sudo-keepalive
 
-sudo -v
-while true; do sudo -n true; sleep 60; done 2>/dev/null &
-SUDO_KEEPALIVE_PID=$!
-trap "kill $SUDO_KEEPALIVE_PID 2>/dev/null" EXIT
+echo ""
+echo "⚠️ WARNING: This will keep your sudo credentials alive in the background."
+echo ""
+echo "This is useful for AI agents that need to run multiple sudo commands,"
+echo "but it keeps your sudo session active until you close the shell."
+echo ""
+echo "Anyone or anything with access to your user account can run sudo"
+echo "without re-entering your password until the session ends."
+echo ""
+
+if gum confirm "Keep sudo credentials alive until you close this shell? This is a security risk!"; then
+  sudo -v
+  while true; do sudo -n true; sleep 60; done 2>/dev/null &
+  SUDO_KEEPALIVE_PID=$!
+  trap "kill $SUDO_KEEPALIVE_PID 2>/dev/null" EXIT
+  echo ""
+  echo "Sudo credentials are now being kept alive. They will expire when you close this shell."
+else
+  echo "Aborted. No changes made."
+fi

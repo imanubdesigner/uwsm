@@ -34,21 +34,21 @@ for m in $(hyprctl monitors -j | jq -r '.[] | .name'); do
     hyprctl dispatch exec -- \
       alacritty --class=org.manu.screensaver \
       --config-file ~/.local/share/manu/default/alacritty/screensaver.toml \
-      -e manu-cmd-screensaver
+      -e manu-screensaver
     ;;
   *ghostty*)
     hyprctl dispatch exec -- \
       ghostty --class=org.manu.screensaver \
       --config-file=~/.local/share/manu/default/ghostty/screensaver \
       --font-size=18 \
-      -e manu-cmd-screensaver
+      -e manu-screensaver
     ;;
   *kitty*)
     hyprctl dispatch exec -- \
       kitty --class=org.manu.screensaver \
       --override font_size=18 \
       --override window_padding_width=0 \
-      -e manu-cmd-screensaver
+      -e manu-screensaver
     ;;
   *)
     notify-send -u low "✋  Screensaver only runs in Alacritty, Ghostty, or Kitty"

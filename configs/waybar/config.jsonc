@@ -87,7 +87,7 @@
 	"custom/launcher": {
 		"format": "󰣇",
 		"tooltip": false,
-		"on-click": "manu-walker-menu",
+		"on-click": "manu-menu",
     "on-click-right": "xdg-terminal-exec" 
 	},
 
@@ -247,7 +247,7 @@
 /*------------Screen Indicator--------------------*/
 
 "custom/screenrecording-indicator": {
-    "on-click": "manu-cmd-screenrecord",
+    "on-click": "manu-capture-screenrecord",
     "exec": "manu-screen-recording",
     "signal": 8,
     "return-type": "json"

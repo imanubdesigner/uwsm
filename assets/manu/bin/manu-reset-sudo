@@ -5,5 +5,14 @@
 #    ┛┗┗┛┗┛┗┛ ┻   ┗┛┗┛┻┛┗┛
 #                  
 
-# Resetting sudo lockout for user
-su -c "faillock --reset --user $USER"
+echo ""
+echo "This will reset the sudo lockout (faillock) for user $USER."
+echo "Use this if you've been locked out after too many failed password attempts."
+echo ""
+
+if gum confirm "Reset sudo lockout for $USER?"; then
+  su -c "faillock --reset --user $USER"
+  echo "Sudo lockout has been reset."
+else
+  echo "Aborted. No changes made."
+fi
