@@ -39,6 +39,7 @@ mapfile -t CONFIGS < <(sudo snapper --csvout list-configs | awk -F, 'NR>1 {print
 
 for config in "${CONFIGS[@]}"; do
   sudo snapper -c "$config" create -c number -d "$DESC"
+  sudo snapper -c "$config" cleanup number
 done
 
 # Sync snapshots to Limine bootloader
