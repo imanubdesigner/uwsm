@@ -1,9 +1,6 @@
 #!/bin/bash
 
-#    ┳┳┓┏┓┳┓┳┳  •      ┓┓  ┏┳┓┳┳┳
-#    ┃┃┃┣┫┃┃┃┃  ┓┏┓┏╋┏┓┃┃   ┃ ┃┃┃
-#    ┛ ┗┛┗┛┗┗┛  ┗┛┗┛┗┗┻┗┗   ┻ ┗┛┻
-#                         
+set -e
 
 if (( $# != 4 )); then
   echo -e "\e[32mLet's create a TUI shortcut you can start with the app launcher.\n\e[0m"

@@ -244,7 +244,7 @@ show_install_menu() {
   *Git*) present_terminal manu-install-git-configuration ;; # Nuovo comando
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
-  *TUI*) present_terminal manu-install-tui ;;
+   *TUI*) present_terminal manu-tui-install ;;
   *Development*) show_install_development_menu ;;
   *Style*) show_install_style_menu ;;
   *Chromium*) present_terminal manu-install-chromium-google-account ;;

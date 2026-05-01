@@ -26,6 +26,9 @@ mkdir -p "$(dirname "$LOG")"
   # -------------------- GNOME / GTK Theme --------------------
   manu-first-run-gnome-theme
 
+  # -------------------- TUI Applications --------------------
+  manu-first-run-tui
+
   # -------------------- Mise Configuration --------------------
   manu-first-run-mise
 
