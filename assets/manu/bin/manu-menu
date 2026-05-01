@@ -184,12 +184,11 @@ show_share_menu() {
 }
 
 show_toggle_menu() {
-  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󰵅  Power Profile\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling\n󰟵  Sudo Passwordless") in
+  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling\n󰟵  Sudo Passwordless") in
   *Screensaver*) manu-toggle-screensaver ;;
   *Nightlight*) manu-toggle-night ;;
   *Idle*) manu-toggle-idle ;;
   *Bar*) manu-toggle-waybar ;;
-  *"Power Profile"*) show_power_profile_menu ;;
   *Layout*) manu-hyprland-workspace-layout-toggle ;;
   *Ratio*) manu-hyprland-window-single-square-aspect-toggle ;;
   *Gaps*) manu-hyprland-window-gaps-toggle ;;
@@ -203,7 +202,7 @@ show_power_profile_menu() {
   local profile
   profile=$(menu "Power Profile" "$(manu-powerprofiles-list)")
   if [[ -z "$profile" ]]; then
-    back_to show_toggle_menu
+    back_to show_setup_menu
   else
     manu-powerprofiles-set "$profile"
   fi
@@ -238,16 +237,13 @@ show_background_menu() {
 }
 
 show_install_menu() {
-  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰊢  Git Configuration\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style\n  Chromium") in
+  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
-  *Git*) present_terminal manu-install-git-configuration ;; # Nuovo comando
-  *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
-   *TUI*) present_terminal manu-tui-install ;;
+  *TUI*) present_terminal manu-tui-install ;;
   *Development*) show_install_development_menu ;;
   *Style*) show_install_style_menu ;;
-  *Chromium*) present_terminal manu-install-chromium-google-account ;;
   *) show_main_menu ;;
   esac
 }
@@ -388,14 +384,6 @@ show_update_menu() {
   esac
 }
 
-show_restart_menu() {
-  case $(menu "Restart" "󰄄  Apps\n󰘓  Hardware") in
-  *Apps*) show_restart_apps_menu ;;
-  *Hardware*) show_restart_hardware_menu ;;
-  *) show_main_menu ;;
-  esac
-}
-
 show_restart_apps_menu() {
   case $(menu "Restart Apps" "󰡗  Sudo\n󱓞  Walker\n  Waybar\n  Swayosd\n󱫖  Hypridle\n  Hyprsunset\n󰞅  XCompose") in
   *Sudo*) present_terminal manu-reset-sudo ;;
@@ -405,20 +393,41 @@ show_restart_apps_menu() {
   *Hypridle*) manu-restart-hypridle ;;
   *Hyprsunset*) manu-restart-hyprsunset ;;
   *XCompose*) manu-restart-xcompose ;;
-  *) show_restart_menu ;;
+  *) show_setup_restart_menu ;;
   esac
 }
 
 show_restart_hardware_menu() {
-  case $(menu "Restart Hardware" "    Audio\n  󱚾  Wi-Fi\n  󰂯  Bluetooth") in
+  case $(menu "Restart Hardware" "   Audio\n  󱚾  Wi-Fi\n  󰂯  Bluetooth") in
   *Audio*) present_terminal manu-restart-pipewire ;;
   *Wi-Fi*) present_terminal manu-restart-wifi ;;
   *Bluetooth*) present_terminal manu-restart-bluetooth ;;
-  *) show_restart_menu ;;
+  *) show_setup_restart_menu ;;
   esac
 }
 
-show_tools_menu() {
+show_setup_menu() {
+  case $(menu "Setup" "󰵅  Power Profile\n󰊢  Git Configuration\n  Chromium\n󰣇  Pacman\n󰁯  Tools\n󰄄  Restart") in
+  *"Power Profile"*) show_power_profile_menu ;;
+  *Git*) present_terminal manu-install-git-configuration ;;
+  *Chromium*) present_terminal manu-install-chromium-google-account ;;
+  *Pacman*) show_setup_pacman_menu ;;
+  *Tools*) show_setup_tools_menu ;;
+  *Restart*) show_setup_restart_menu ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_setup_pacman_menu() {
+  case $(menu "Pacman" "🟢  Stable\n🟡  RC\n🟠  Edge") in
+  *Stable*) present_terminal "manu-refresh-pacman stable" ;;
+  *RC*) present_terminal "manu-refresh-pacman rc" ;;
+  *Edge*) present_terminal "manu-refresh-pacman edge" ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_setup_tools_menu() {
   case $(menu "Tools" "󰁯  Snapper Backup\n󰏔  Pkg History\n󰦗  Media Downloader\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
   *"Snapper Backup"*) present_terminal manu-snapper-backup ;;
   *"Pkg History"*) present_terminal manu-pkg-history ;;
@@ -426,7 +435,15 @@ show_tools_menu() {
   *"ISO to USB"*) present_terminal manu-write-iso ;;
   *"Image Converter"*) present_terminal manu-transcode-image ;;
   *"Video Converter"*) present_terminal manu-transcode-video ;;
-  *) show_main_menu ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_setup_restart_menu() {
+  case $(menu "Restart" "󰡗  Apps\n󰛧  Hardware") in
+  *Apps*) show_restart_apps_menu ;;
+  *Hardware*) show_restart_hardware_menu ;;
+  *) show_setup_menu ;;
   esac
 }
 
@@ -445,7 +462,7 @@ show_about() {
 }
 
 show_main_menu() {
-  go_to_menu "$(menu "󰕰  Go" "󰵆  App\n  Learn\n  Trigger\n  Style\n  Install\n  Remove\n󰚰  Update\n  Restart\n  Tools\n󰋽  About\n  System")"
+  go_to_menu "$(menu "󰕰  Go" "󰵆  App\n  Learn\n  Trigger\n  Style\n  Install\n  Remove\n󰚰  Update\n  Setup\n󰋽  About\n  System")"
 }
 
 go_to_menu() {
@@ -465,8 +482,7 @@ go_to_menu() {
   *install*) show_install_menu ;;
   *remove*) show_remove_menu ;;
   *update*) show_update_menu ;;
-  *restart*) show_restart_menu ;;
-  *tools*) show_tools_menu ;;
+  *setup*) show_setup_menu ;;
   *about*) show_about ;;
   *system*) show_system_menu ;;
   esac
