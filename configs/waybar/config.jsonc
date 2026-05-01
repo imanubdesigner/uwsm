@@ -247,7 +247,7 @@
 /*------------Screen Indicator--------------------*/
 
 "custom/screenrecording-indicator": {
-    "on-click": "manu-capture-screenrecord",
+    "on-click": "manu-capture-screenrecording",
     "exec": "manu-screen-recording",
     "signal": 8,
     "return-type": "json"
