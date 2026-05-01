@@ -45,8 +45,8 @@ end
 function GetEntries()
 	local entries = {}
 	local user_theme_dir = os.getenv("HOME") .. "/.config/manu/themes"
-	local omarchy_path = os.getenv("MANU_PATH") or ""
-	local default_theme_dir = omarchy_path .. "/themes"
+	local manu_path = os.getenv("MANU_PATH") or ""
+	local default_theme_dir = manu_path .. "/themes"
 
 	local seen_themes = {}
 
