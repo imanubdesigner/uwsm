@@ -3,6 +3,16 @@
 # Overwrite the package configuration for /etc/pacman with the Omarchy default of using its dedicated mirrors and repositories, then update all packages.
 # This is used after switching between Omarchy release channels to ensure the right packages for the right channel are available.
 
+channel="${1:-stable}"
+
+gum style \
+    --border normal \
+    --border-foreground 6 \
+    --padding "1 2" \
+    --margin "1" \
+"Refresh Pacman
+Update config and sync packages for channel: $channel"
+
 # Take backup of existing files
 sudo cp -f /etc/pacman.conf /etc/pacman.conf.bak
 sudo cp -f /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak

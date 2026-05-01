@@ -42,6 +42,10 @@ check_sudo() {
   done 2>/dev/null &
 }
 
+# Cleanup background jobs on exit
+cleanup() { kill $(jobs -p) 2>/dev/null; }
+trap cleanup EXIT
+
 # ──────────────────────────────────────────────────────────────────────────────
 # 󰣖 Display Header
 # ──────────────────────────────────────────────────────────────────────────────
@@ -108,7 +112,7 @@ clean_pacman() {
     gum spin --title "󰮯  Cleaning pacman cache (keep last version)..." -- sudo paccache -rk1
     success=$?
     ;;
-  "Remove all cached packages")
+   "Remove all cached packages")
     if gum confirm --default=false "󰗡  Remove ALL cached pacman packages?"; then
       local pkg_count=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
 
@@ -118,8 +122,8 @@ clean_pacman() {
       fi
 
       gum style "󰮯  Removing all cached packages..."
-      yes y | sudo pacman -Scc >/tmp/pacman_clean.log 2>&1
-      success=${PIPESTATUS[1]}
+      sudo pacman -Scc --noconfirm >/tmp/pacman_clean.log 2>&1
+      success=$?
 
       sudo find /var/cache/pacman/pkg -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
 
@@ -163,21 +167,21 @@ clean_yay() {
   local success=0
 
   case $option in
-  "Remove uninstalled packages")
+   "Remove uninstalled packages")
     if gum confirm --default=false "󰗡  Remove uninstalled AUR packages cache?"; then
       gum style "󰚰  Removing uninstalled packages cache..."
-      yes | yay -Sc 2>&1 | tee /tmp/yay_clean.log
-      success=${PIPESTATUS[1]}
+      yay -Sc --noconfirm 2>&1 | tee /tmp/yay_clean.log
+      success=$?
     else
       gum style "   ↳  Skipped"
       return
     fi
     ;;
-  "Remove all cached packages")
+   "Remove all cached packages")
     if gum confirm --default=false "󰗡  Remove ALL AUR package cache?"; then
       gum style "󰚰  Removing all packages cache..."
-      yes | yay -Scc >/tmp/yay_clean.log 2>&1
-      success=${PIPESTATUS[1]}
+      yay -Scc --noconfirm >/tmp/yay_clean.log 2>&1
+      success=$?
 
       if [ -d "$HOME/.cache/yay" ]; then
         find "$HOME/.cache/yay" -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
@@ -257,7 +261,6 @@ main() {
       ;;
     "Exit")
       gum style "󰅖  Goodbye!"
-      kill $(jobs -p) 2>/dev/null
       exit 0
       ;;
     esac
@@ -269,7 +272,6 @@ main() {
   done
 
   gum style --bold "󰄛  All done! Stay frosty ❄️"
-  kill $(jobs -p) 2>/dev/null
 }
 
 main
