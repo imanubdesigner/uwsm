@@ -18,7 +18,5 @@ echo "Setting channel to $channel"
 echo
 
 sudo cp -f "$MANU_PATH/default/pacman/pacman-$channel.conf" /etc/pacman.conf
-sudo cp -f "$MANU_PATH/default/pacman/mirrorlist-$channel" /etc/pacman.d/mirrorlist
-
 # Reset all package DBs and then update
 sudo pacman -Syyuu --noconfirm
