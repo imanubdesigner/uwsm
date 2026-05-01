@@ -3,9 +3,6 @@
 # manu:summary=Snapper backup
 # manu:group=
 # manu:name=snapper backup
-# manu:summary=Snapper backup
-# manu:group=
-# manu:name=snapper backup
 
 CONFIGS=("root" "home")
 

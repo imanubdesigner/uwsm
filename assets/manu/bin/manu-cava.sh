@@ -3,9 +3,6 @@
 # manu:summary=Cava.sh
 # manu:group=
 # manu:name=cava.sh
-# manu:summary=Cava.sh
-# manu:group=
-# manu:name=cava.sh
 
 is_cava_ServerExist=$(ps -ef | grep -m 1 cava | grep -v "grep" | wc -l)
 if [ "$is_cava_ServerExist" = "0" ]; then

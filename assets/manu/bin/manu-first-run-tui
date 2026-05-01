@@ -3,9 +3,6 @@
 # manu:summary=First run tui
 # manu:group=
 # manu:name=first run tui
-# manu:summary=First run tui
-# manu:group=
-# manu:name=first run tui
 
 LOG="$HOME/.local/share/manu/first-run.log"
 ICON_DIR="$HOME/.local/share/applications/icons"

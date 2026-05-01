@@ -3,9 +3,6 @@
 # manu:summary=First run limine snapper
 # manu:group=
 # manu:name=first run limine snapper
-# manu:summary=First run limine snapper
-# manu:group=
-# manu:name=first run limine snapper
 
 LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Starting Limine/Snapper configuration..."

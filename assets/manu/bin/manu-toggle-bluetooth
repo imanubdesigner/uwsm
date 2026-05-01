@@ -3,9 +3,6 @@
 # manu:summary=Toggle bluetooth
 # manu:group=
 # manu:name=toggle bluetooth
-# manu:summary=Toggle bluetooth
-# manu:group=
-# manu:name=toggle bluetooth
 
 if rfkill list bluetooth | grep -q "yes"; then
   rfkill unblock bluetooth

@@ -3,9 +3,6 @@
 # manu:summary=Songs details
 # manu:group=
 # manu:name=songs details
-# manu:summary=Songs details
-# manu:group=
-# manu:name=songs details
 
 if [[ $(playerctl -p spotify status 2>/dev/null) == "Playing" ]]; then
   status='  '

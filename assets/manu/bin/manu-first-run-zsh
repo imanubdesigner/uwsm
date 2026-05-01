@@ -3,9 +3,6 @@
 # manu:summary=First run zsh
 # manu:group=
 # manu:name=first run zsh
-# manu:summary=First run zsh
-# manu:group=
-# manu:name=first run zsh
 
 LOG="$HOME/.local/share/manu/first-run.log"
 SOURCE_DIR="/mnt/Dati/Dati/MSI-Z790/LinuxWorld/MY-HYPRLAND/zsh-Modular"

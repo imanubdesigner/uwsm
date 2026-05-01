@@ -3,9 +3,6 @@
 # manu:summary=Packages cleaning
 # manu:group=
 # manu:name=packages cleaning
-# manu:summary=Packages cleaning
-# manu:group=
-# manu:name=packages cleaning
 
 if ! command -v gum &>/dev/null; then
   echo "󰅖  Error: gum is required. Please install it (e.g., yay -S gum)."

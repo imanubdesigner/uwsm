@@ -3,9 +3,6 @@
 # manu:summary=First run firewall
 # manu:group=
 # manu:name=first run firewall
-# manu:summary=First run firewall
-# manu:group=
-# manu:name=first run firewall
 
 LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Starting firewall configuration..."

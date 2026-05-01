@@ -3,9 +3,6 @@
 # manu:summary=Cmd reboot
 # manu:group=
 # manu:name=cmd reboot
-# manu:summary=Cmd reboot
-# manu:group=
-# manu:name=cmd reboot
 
 manu-state clear re*-required
 

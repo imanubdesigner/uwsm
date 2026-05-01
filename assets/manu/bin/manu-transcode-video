@@ -3,9 +3,6 @@
 # manu:summary=Transcode video
 # manu:group=
 # manu:name=transcode video
-# manu:summary=Transcode video
-# manu:group=
-# manu:name=transcode video
 
 source "$MANU_PATH/bin/manu-helper"
 set -e

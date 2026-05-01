@@ -3,9 +3,6 @@
 # manu:summary=Pkg history
 # manu:group=
 # manu:name=pkg history
-# manu:summary=Pkg history
-# manu:group=
-# manu:name=pkg history
 
 fetch_events() {
     local limit=$1

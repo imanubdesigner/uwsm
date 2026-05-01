@@ -3,9 +3,6 @@
 # manu:summary=Write iso
 # manu:group=
 # manu:name=write iso
-# manu:summary=Write iso
-# manu:group=
-# manu:name=write iso
 
 source "$MANU_PATH/bin/manu-helper"
 set -e

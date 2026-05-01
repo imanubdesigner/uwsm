@@ -3,9 +3,6 @@
 # manu:summary=Random wallpapers
 # manu:group=
 # manu:name=random wallpapers
-# manu:summary=Random wallpapers
-# manu:group=
-# manu:name=random wallpapers
 
 DIR=$HOME/Pictures/wallpapers/
 PICS=($(ls ${DIR}))

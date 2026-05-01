@@ -3,9 +3,6 @@
 # manu:summary=Hyprland monitor internal toggle
 # manu:group=
 # manu:name=hyprland monitor internal toggle
-# manu:summary=Hyprland monitor internal toggle
-# manu:group=
-# manu:name=hyprland monitor internal toggle
 
 if manu-hyprland-toggle-disabled internal-monitor-disable; then
   ACTIVE_COUNT=$(hyprctl monitors -j | jq 'length')

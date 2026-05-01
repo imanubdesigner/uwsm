@@ -3,9 +3,6 @@
 # manu:summary=Install git configuration
 # manu:group=
 # manu:name=install git configuration
-# manu:summary=Install git configuration
-# manu:group=
-# manu:name=install git configuration
 
 if ! command -v gum &>/dev/null; then
   echo "Gum is not installed. Please install it to use this configuration tool."

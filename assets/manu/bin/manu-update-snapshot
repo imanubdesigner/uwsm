@@ -3,9 +3,6 @@
 # manu:summary=Update snapshot
 # manu:group=
 # manu:name=update snapshot
-# manu:summary=Update snapshot
-# manu:group=
-# manu:name=update snapshot
 
 if ! command -v snapper &>/dev/null; then
   echo "󰒤 snapper not found, skipping snapshot."

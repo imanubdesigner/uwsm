@@ -3,9 +3,6 @@
 # manu:summary=First run gnome theme
 # manu:group=
 # manu:name=first run gnome theme
-# manu:summary=First run gnome theme
-# manu:group=
-# manu:name=first run gnome theme
 
 LOG_DIR="$HOME/.local/share/manu"
 LOG="$LOG_DIR/first-run.log"

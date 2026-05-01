@@ -3,9 +3,6 @@
 # manu:summary=Reload nvim
 # manu:group=
 # manu:name=reload nvim
-# manu:summary=Reload nvim
-# manu:group=
-# manu:name=reload nvim
 
 MATUGEN_LUA="$HOME/.config/nvim/generated.lua"
 

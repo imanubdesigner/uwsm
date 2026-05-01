@@ -3,9 +3,6 @@
 # manu:summary=Transcode image
 # manu:group=
 # manu:name=transcode image
-# manu:summary=Transcode image
-# manu:group=
-# manu:name=transcode image
 
 source "$MANU_PATH/bin/manu-helper"
 set -e

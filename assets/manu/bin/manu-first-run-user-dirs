@@ -3,9 +3,6 @@
 # manu:summary=First run user dirs
 # manu:group=
 # manu:name=first run user dirs
-# manu:summary=First run user dirs
-# manu:group=
-# manu:name=first run user dirs
 
 LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Starting User-Dirs configuration..."

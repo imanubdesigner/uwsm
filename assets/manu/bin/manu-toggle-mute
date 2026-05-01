@@ -3,9 +3,6 @@
 # manu:summary=Toggle mute
 # manu:group=
 # manu:name=toggle mute
-# manu:summary=Toggle mute
-# manu:group=
-# manu:name=toggle mute
 
 pamixer -t
 

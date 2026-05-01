@@ -3,9 +3,6 @@
 # manu:summary=Install webapp
 # manu:group=
 # manu:name=install webapp
-# manu:summary=Install webapp
-# manu:group=
-# manu:name=install webapp
 
 set -e
 if [ "$#" -lt 3 ]; then

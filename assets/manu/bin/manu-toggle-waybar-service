@@ -3,9 +3,6 @@
 # manu:summary=Toggle waybar service
 # manu:group=
 # manu:name=toggle waybar service
-# manu:summary=Toggle waybar service
-# manu:group=
-# manu:name=toggle waybar service
 
 set -euo pipefail
 

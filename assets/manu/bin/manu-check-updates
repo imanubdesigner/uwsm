@@ -3,9 +3,6 @@
 # manu:summary=Check updates
 # manu:group=
 # manu:name=check updates
-# manu:summary=Check updates
-# manu:group=
-# manu:name=check updates
 
 count_updates() {
 

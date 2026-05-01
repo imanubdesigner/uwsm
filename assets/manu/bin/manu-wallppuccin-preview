@@ -3,9 +3,6 @@
 # manu:summary=Wallppuccin preview
 # manu:group=
 # manu:name=wallppuccin preview
-# manu:summary=Wallppuccin preview
-# manu:group=
-# manu:name=wallppuccin preview
 
 WALLPAPER_DIR="$HOME/wallppuccin/wallpapers"
 PREVIEW_DIR="$HOME/wallppuccin/previews"

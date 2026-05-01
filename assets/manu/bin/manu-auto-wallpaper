@@ -3,9 +3,6 @@
 # manu:summary=Auto wallpaper
 # manu:group=
 # manu:name=auto wallpaper
-# manu:summary=Auto wallpaper
-# manu:group=
-# manu:name=auto wallpaper
 
 focused_monitor=$(hyprctl monitors | awk '/^Monitor/{name=$2} /focused: yes/{print name}')
 if [[ $# -lt 1 ]] || [[ ! -d $1 ]]; then

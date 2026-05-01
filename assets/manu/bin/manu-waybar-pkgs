@@ -3,9 +3,6 @@
 # manu:summary=Waybar pkgs
 # manu:group=
 # manu:name=waybar pkgs
-# manu:summary=Waybar pkgs
-# manu:group=
-# manu:name=waybar pkgs
 
 until ping -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; do
 

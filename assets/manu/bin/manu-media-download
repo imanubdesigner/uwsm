@@ -3,9 +3,6 @@
 # manu:summary=Media download
 # manu:group=
 # manu:name=media download
-# manu:summary=Media download
-# manu:group=
-# manu:name=media download
 
 source "$MANU_PATH/bin/manu-helper"
 clear

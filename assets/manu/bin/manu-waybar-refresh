@@ -3,9 +3,6 @@
 # manu:summary=Waybar refresh
 # manu:group=
 # manu:name=waybar refresh
-# manu:summary=Waybar refresh
-# manu:group=
-# manu:name=waybar refresh
 
 set -euo pipefail
 

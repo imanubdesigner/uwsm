@@ -3,9 +3,6 @@
 # manu:summary=Weather.py
 # manu:group=
 # manu:name=weather.py
-# manu:summary=Weather.py
-# manu:group=
-# manu:name=weather.py
 
 import time
 import requests

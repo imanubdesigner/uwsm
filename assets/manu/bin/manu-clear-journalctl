@@ -3,9 +3,6 @@
 # manu:summary=Clear journalctl
 # manu:group=
 # manu:name=clear journalctl
-# manu:summary=Clear journalctl
-# manu:group=
-# manu:name=clear journalctl
 
 set -euo pipefail
 

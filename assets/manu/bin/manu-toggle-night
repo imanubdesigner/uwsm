@@ -3,9 +3,6 @@
 # manu:summary=Toggle night
 # manu:group=
 # manu:name=toggle night
-# manu:summary=Toggle night
-# manu:group=
-# manu:name=toggle night
 
 ON_TEMP=3300
 OFF_TEMP=6000

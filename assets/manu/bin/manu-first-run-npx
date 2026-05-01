@@ -3,9 +3,6 @@
 # manu:summary=First run npx
 # manu:group=
 # manu:name=first run npx
-# manu:summary=First run npx
-# manu:group=
-# manu:name=first run npx
 
 LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Starting NPX wrapper installation..."

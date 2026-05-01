@@ -3,9 +3,6 @@
 # manu:summary=Waybar notification silencing
 # manu:group=
 # manu:name=waybar notification silencing
-# manu:summary=Waybar notification silencing
-# manu:group=
-# manu:name=waybar notification silencing
 
 if makoctl mode | grep -q 'do-not-disturb'; then
   echo '{"text": "󰂛", "tooltip": "Notifications silenced", "class": "active"}'

@@ -3,9 +3,6 @@
 # manu:summary=Reset sudo
 # manu:group=
 # manu:name=reset sudo
-# manu:summary=Reset sudo
-# manu:group=
-# manu:name=reset sudo
 
 echo ""
 echo "This will reset the sudo lockout (faillock) for user $USER."

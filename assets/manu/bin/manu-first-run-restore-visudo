@@ -3,9 +3,6 @@
 # manu:summary=First run restore visudo
 # manu:group=
 # manu:name=first run restore visudo
-# manu:summary=First run restore visudo
-# manu:group=
-# manu:name=first run restore visudo
 
 LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Restoring sudoers to restricted permissions..."

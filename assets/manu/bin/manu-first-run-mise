@@ -3,9 +3,6 @@
 # manu:summary=First run mise
 # manu:group=
 # manu:name=first run mise
-# manu:summary=First run mise
-# manu:group=
-# manu:name=first run mise
 
 LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Starting MISE configuration..."

@@ -3,9 +3,6 @@
 # manu:summary=Lock screen
 # manu:group=
 # manu:name=lock screen
-# manu:summary=Lock screen
-# manu:group=
-# manu:name=lock screen
 
 pidof hyprlock || hyprlock &
 
