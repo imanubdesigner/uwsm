@@ -29,6 +29,9 @@ mkdir -p "$(dirname "$LOG")"
   # -------------------- Mise Configuration --------------------
   manu-first-run-mise
 
+  # -------------------- NPX Wrapper Scripts --------------------
+  manu-first-run-npx
+
   # -------------------- ZSH Configuration --------------------
   manu-first-run-zsh
 

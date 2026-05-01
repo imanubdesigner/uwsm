@@ -55,11 +55,6 @@ run_command "pacman -S --needed --noconfirm adw-gtk-theme alacritty alsa-utils b
 # -------------------- Configuration Files --------------------
 run_command "cp -r $BASE_DIR/configs/* /home/$SUDO_USER/.config/ && chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config" "Copy all config folders" "no" "no"
 
-# -------------------- NPM Wrapper Scripts (npx/mise) --------------------
-run_command "mkdir -p /home/$SUDO_USER/.local/bin" "Create .local/bin directory" "no" "no"
-run_command "cp $BASE_DIR/assets/bin/* /home/$SUDO_USER/.local/bin/" "Copy npm wrapper scripts (opencode, codex, copilot, etc.)" "no" "no"
-run_command "chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.local/bin" "Set ownership for npm wrappers" "no" "no"
-
 # -------------------- Yazi: plugin "bat" --------------------
 run_command "mkdir -p /home/$SUDO_USER/.config/yazi/plugins" \
   "Create Yazi plugins dir" "yes" "no"
