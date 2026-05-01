@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# manu:summary=Prompt for required reboot or service restarts after updates
+
 echo
 
 # Check if the running kernel's modules directory no longer exists,

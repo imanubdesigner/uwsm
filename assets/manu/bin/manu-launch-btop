@@ -1,8 +1,10 @@
 #!/bin/bash
 
-#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┓      
-#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣┓╋┏┓┏┓
-#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┗┗┛┣┛
-#                ┛ 
+# manu:summary=Launch btop
+# manu:group=
+# manu:name=launch btop
+# manu:summary=Launch btop
+# manu:group=
+# manu:name=launch btop
 
 manu-launch-or-focus-tui btop

@@ -1,13 +1,7 @@
 #!/bin/bash
 
-#    ┏┓┏┓┳┓┏┓┏┓┳┓┏┓┏┓┓┏┏┓┳┓
-#    ┗┓┃ ┣┫┣ ┣ ┃┃┗┓┣┫┃┃┣ ┣┫
-#    ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛┗┛┛┗
-#    Thanks to DHH/Omarchy
+# manu:summary=Launch the Omarchy screensaver in the default terminal on the system with the correct font configuration.
 
-# Launch the Omarchy screensaver in the default terminal on the system with the correct font configuration.
-
-# Exit early if we don't have the tte show
 if ! command -v tte &>/dev/null; then
   exit 1
 fi
@@ -22,13 +16,10 @@ fi
 
 # Silently quit Walker on overlay
 walker -q
-
 focused=$(manu-hyprland-monitor-focused)
 terminal=$(xdg-terminal-exec --print-id)
-
 for m in $(hyprctl monitors -j | jq -r '.[] | .name'); do
   hyprctl dispatch focusmonitor $m
-
   case $terminal in
   *Alacritty*)
     hyprctl dispatch exec -- \
@@ -55,5 +46,4 @@ for m in $(hyprctl monitors -j | jq -r '.[] | .name'); do
     ;;
   esac
 done
-
 hyprctl dispatch focusmonitor $focused

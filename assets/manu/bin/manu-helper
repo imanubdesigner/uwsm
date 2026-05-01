@@ -1,16 +1,12 @@
 #!/bin/bash
 
-#    ┓┏┏┓┓ ┏┓┏┓┳┓
-#    ┣┫┣ ┃ ┃┃┣ ┣┫
-#    ┛┗┗┛┗┛┣┛┗┛┛┗
-#         
+# manu:summary=Helper
+# manu:group=
+# manu:name=helper
+# manu:summary=Helper
+# manu:group=
+# manu:name=helper
 
-# ============================================
-# Script Helper (Neutral Edition)
-# Provides styled logging utilities for shell scripts without forced colors.
-# ============================================
-
-# --- ANSI colors removed (using terminal default)
 _NC='\033[0m'
 
 # --- Nerd Font icons (minimal, no emoji)
@@ -25,11 +21,9 @@ _ICON_SPIN=""
 _has_gum() {
   command -v gum &>/dev/null
 }
-
 is_installed() {
   pacman -Q "$1" &>/dev/null
 }
-
 ensure_gum() {
   if ! is_installed "gum"; then
     echo "Installing gum for better UI..."
@@ -155,11 +149,9 @@ detect_hardware_type() {
     echo "desktop"
   fi
 }
-
 has_nvidia_gpu() {
   lspci | grep -i nvidia &>/dev/null
 }
-
 remove_path() {
   local target="$1"
   if [ -L "$target" ] && [ ! -e "$target" ]; then

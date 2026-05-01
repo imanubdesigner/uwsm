@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┓┏┓┏┏┓┳┓┏┓┳┳┳┓┏┓┏┓┏┳┓
-#    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┣┫┗┫┃┃┣┫┗┓┃┃┃┃┗┓┣  ┃
-#    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┛┗┗┛┣┛┛┗┗┛┗┛┛┗┗┛┗┛ ┻
-#                                    
+# manu:summary=Restart the hyprsunset service (used for blue light filtering/night light).
 
 manu-restart-app hyprsunset

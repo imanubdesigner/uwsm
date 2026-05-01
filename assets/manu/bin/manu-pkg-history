@@ -1,9 +1,11 @@
 #!/bin/zsh
 
-#      ┓     ┓┏┳┏┓┏┳┓┏┓┳┓┓┏
-#    ┏┓┃┏┏┓  ┣┫┃┗┓ ┃ ┃┃┣┫┗┫
-#    ┣┛┛┗┗┫  ┛┗┻┗┛ ┻ ┗┛┛┗┗┛
-#    ┛    ┛         
+# manu:summary=Pkg history
+# manu:group=
+# manu:name=pkg history
+# manu:summary=Pkg history
+# manu:group=
+# manu:name=pkg history
 
 fetch_events() {
     local limit=$1
@@ -12,7 +14,6 @@ fetch_events() {
         date_time=$(echo "$line" | awk '{print $1, $2}' | tr -d '[]')
         action=$(echo "$line" | awk '{print $3}')
         package=$(echo "$line" | cut -d' ' -f4-)
-
         case "$action" in
             installed)
                 icon=""
@@ -54,7 +55,6 @@ choice=$(gum choose \
   "󰈚  Show last 20 events" \
   "󰆍  Show last 50 events" \
   "  Exit")
-
 case "$choice" in
     "󰈙  Show last 10 events") limit=10 ;;
     "󰈚  Show last 20 events") limit=20 ;;

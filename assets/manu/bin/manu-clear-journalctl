@@ -1,9 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-#    ┏┓┓        ┏┳┏┓┳┳┳┓┳┓┏┓┓ ┏┓┏┳┓┓   ┓
-#    ┃ ┃┏┓┏┓┏┓   ┃┃┃┃┃┣┫┃┃┣┫┃ ┃  ┃ ┃   ┃ ┏┓┏┓
-#    ┗┛┗┗ ┗┻┛   ┗┛┗┛┗┛┛┗┛┗┛┗┗┛┗┛ ┻ ┗┛  ┗┛┗┛┗┫
-#                                   by Manu ┛
+# manu:summary=Clear journalctl
+# manu:group=
+# manu:name=clear journalctl
+# manu:summary=Clear journalctl
+# manu:group=
+# manu:name=clear journalctl
 
 set -euo pipefail
 
@@ -20,10 +22,8 @@ if command -v gum >/dev/null; then
     "" \
     "Cleaning system and user journals safely"
 fi
-
 echo "󰑓  Rotating journals..."
 sudo journalctl --rotate
-
 echo "󰃢  Vacuuming archived journals..."
 sudo journalctl --vacuum-time=1s
 sudo journalctl --user --vacuum-time=1s
@@ -33,7 +33,6 @@ sudo journalctl --user --vacuum-time=1s
 # ─────────────────────────────────────────────
 if [ -d /var/log/journal ]; then
   echo "󰋊  Removing persistent journals..."
-
   sudo systemctl stop systemd-journald
   sudo rm -rf /var/log/journal/*
   sudo systemctl start systemd-journald
@@ -44,7 +43,6 @@ fi
 # ─────────────────────────────────────────────
 if [ -d /run/log/journal ]; then
   echo "󰉁  Cleaning runtime journals..."
-
   sudo rm -rf /run/log/journal/*
   sudo systemctl restart systemd-journald
 fi
@@ -53,7 +51,6 @@ fi
 # Clean temporary directories
 # ─────────────────────────────────────────────
 echo "󰩺  Cleaning temporary files..."
-
 sudo rm -rf /tmp/*
 sudo rm -rf /var/tmp/*
 

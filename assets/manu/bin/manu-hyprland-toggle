@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Toggle permanent Hyprland flags by copying them into a directory that's sourced entirely.
+# manu:summary=Toggle permanent Hyprland flags by copying them into a directory that's sourced entirely.
+# manu:args=[--enabled-notification <text>] [--disabled-notification <text>] <flag-name>
 
 ENABLED_NOTIFICATION=""
 DISABLED_NOTIFICATION=""
-
 while [[ $# -gt 1 ]]; do
   case $1 in
   --enabled-notification)
@@ -18,11 +18,9 @@ while [[ $# -gt 1 ]]; do
   *) break ;;
   esac
 done
-
 FLAG_NAME="$1"
 FLAG="$HOME/.local/state/manu/toggles/hypr/$FLAG_NAME.conf"
 FLAG_SOURCE="$HOME/.config/hypr/toggles/$FLAG_NAME.conf"
-
 if [[ -f $FLAG ]]; then
   rm $FLAG
   [[ -n $DISABLED_NOTIFICATION ]] && notify-send -u low "$DISABLED_NOTIFICATION"
@@ -33,5 +31,4 @@ else
   echo "Flag not found: $FLAG_NAME"
   exit 1
 fi
-
 hyprctl reload

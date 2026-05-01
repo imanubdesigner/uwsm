@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#    ┓ ┏┓┳┳┳┓┏┓┓┏  ┏┓   ┓•  
-#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┣┫┓┏┏┫┓┏┓
-#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┛┗┗┻┗┻┗┗┛
-#                    
+# manu:summary=Launch the Omarchy audio controls TUI (provided by wiremix).
 
 manu-launch-or-focus-tui wiremix

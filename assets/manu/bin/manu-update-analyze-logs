@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# manu:summary=Check the update log for known failure conditions
+
 update_log="/tmp/manu-update.log"
 
 # Skip analysis if the log file does not exist

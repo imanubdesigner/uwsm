@@ -1,19 +1,19 @@
 #!/bin/bash
 
-#    ┳┳┓┏┓┳┓┳┏┓  ┳┓┏┓┓ ┏┳┓┓ ┏┓┏┓┳┓┏┓┳┓
-#    ┃┃┃┣ ┃┃┃┣┫  ┃┃┃┃┃┃┃┃┃┃ ┃┃┣┫┃┃┣ ┣┫
-#    ┛ ┗┗┛┻┛┻┛┗  ┻┛┗┛┗┻┛┛┗┗┛┗┛┛┗┻┛┗┛┛┗
-#                              
+# manu:summary=Media download
+# manu:group=
+# manu:name=media download
+# manu:summary=Media download
+# manu:group=
+# manu:name=media download
 
 source "$MANU_PATH/bin/manu-helper"
-
 clear
 log_header "Media Downloader"
 
 # Ask URL
 log_step "Enter the media URL"
 url=$(gum input --prompt "Media URL: " --placeholder "YouTube, Reddit, Instagram...")
-
 if [[ -z "$url" ]]; then
   log_info "Cancelled"
   exit 0
@@ -33,11 +33,9 @@ type=$(gum choose --header "Select download type" "Video" "Audio")
 
 # Default directory
 download_dir="$HOME/Downloads"
-
 if [[ "$type" == "Video" ]]; then
   quality=$(gum choose --header "Select video quality" "Best Quality" "1080p" "720p" "480p" "360p")
   [ -z "$quality" ] && log_info "Cancelled" && exit 0
-
   case "$quality" in
   "Best Quality") format_spec="bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" ;;
   "1080p") format_spec="bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080]" ;;
@@ -45,7 +43,6 @@ if [[ "$type" == "Video" ]]; then
   "480p") format_spec="bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480]" ;;
   "360p") format_spec="bestvideo[height<=360][ext=mp4]+bestaudio[ext=m4a]/best[height<=360]" ;;
   esac
-
   log_step "Downloading video ($quality)..."
   if spinner "Downloading..." yt-dlp -f "$format_spec" --quiet --no-warnings -o "$download_dir/%(title)s.%(ext)s" "$url"; then
     log_success "Video saved to $download_dir"
@@ -53,13 +50,10 @@ if [[ "$type" == "Video" ]]; then
     log_error "Download failed"
     exit 1
   fi
-
 elif [[ "$type" == "Audio" ]]; then
   audio_format=$(gum choose --header "Select audio format" "MP3" "M4A" "Opus" "FLAC")
   [ -z "$audio_format" ] && log_info "Cancelled" && exit 0
-
   audio_format=$(echo "$audio_format" | tr '[:upper:]' '[:lower:]')
-
   log_step "Downloading audio ($audio_format)..."
   if spinner "Downloading..." yt-dlp -x --audio-format "$audio_format" --quiet --no-warnings -o "$download_dir/%(title)s.%(ext)s" "$url"; then
     log_success "Audio saved to $download_dir"
@@ -68,5 +62,4 @@ elif [[ "$type" == "Audio" ]]; then
     exit 1
   fi
 fi
-
 log_success "All done!"

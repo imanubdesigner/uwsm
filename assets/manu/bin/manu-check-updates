@@ -1,15 +1,14 @@
 #!/bin/bash
 
-#    ┏┓┓┏┏┓┏┓┓┏┓  ┳┳┏┓┳┓┏┓┏┳┓┏┓
-#    ┃ ┣┫┣ ┃ ┃┫   ┃┃┃┃┃┃┣┫ ┃ ┣
-#    ┗┛┛┗┗┛┗┛┛┗┛  ┗┛┣┛┻┛┛┗ ┻ ┗┛
-#            ┏┓┏┓┳┓┳┏┓┏┳┓
-#            ┗┓┃ ┣┫┃┃┃ ┃
-#            ┗┛┗┛┛┗┻┣┛ ┻
-#                       
+# manu:summary=Check updates
+# manu:group=
+# manu:name=check updates
+# manu:summary=Check updates
+# manu:group=
+# manu:name=check updates
 
-# Function to count updates with error handling
 count_updates() {
+
   # Try checkupdates first
   if command -v checkupdates >/dev/null 2>&1; then
     updates=$(checkupdates 2>/dev/null | wc -l)

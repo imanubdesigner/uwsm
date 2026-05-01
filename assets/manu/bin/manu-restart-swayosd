@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┏┓┓ ┏┏┓┓┏┏┓┏┓┳┓
-#    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┗┓┃┃┃┣┫┗┫┃┃┗┓┃┃
-#    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┗┛┗┻┛┛┗┗┛┗┛┗┛┻┛
-#                              
+# manu:summary=Restart the SwayOSD server
 
 manu-restart-app swayosd-server

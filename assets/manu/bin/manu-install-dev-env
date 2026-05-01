@@ -1,12 +1,15 @@
 #!/bin/bash
 
-# Install one of the supported development environments. Usually called via Install > Development > * in the Manu Walker Menu.
+# manu:summary=Install a supported development environment
+# manu:name=dev-env
+# manu:args=<ruby|node|bun|deno|go|laravel|symfony|php|python|elixir|phoenix|rust|java|zig|ocaml|dotnet|clojure|scala>
+# manu:examples=manu install dev-env ruby | manu install dev-env node
+# manu:requires-sudo=true
 
 if [[ -z $1 ]]; then
   echo "Usage: manu-install-dev-env <ruby|node|bun|deno|go|laravel|symfony|php|python|elixir|phoenix|rust|java|zig|ocaml|dotnet|clojure|scala>" >&2
   exit 1
 fi
-
 install_php() {
   manu-pkg-add php composer php-sqlite xdebug
 
@@ -35,17 +38,14 @@ install_php() {
     -e 's/^;zend_extension=xdebug.so/zend_extension=xdebug.so/' \
     -e 's/^;xdebug.mode=debug/xdebug.mode=debug/' \
     /etc/php/conf.d/xdebug.ini
-
   for ext in "${extensions_to_enable[@]}"; do
     sudo sed -i "s/^;extension=${ext}/extension=${ext}/" "$php_ini_path"
   done
 }
-
 install_node() {
   echo -e "Installing Node.js...\n"
   mise use --global node
 }
-
 case "$1" in
 ruby)
   echo -e "Installing Ruby on Rails...\n"
@@ -103,12 +103,15 @@ elixir)
   ;;
 phoenix)
   echo -e "Installing Phoenix Framework...\n"
+
   # Ensure Erlang/Elixir first
   mise use --global erlang@latest
   mise use --global elixir@latest
+
   # Hex & Rebar
   mise x elixir -- mix local.hex --force
   mise x elixir -- mix local.rebar --force
+
   # Phoenix project (phx_new)
   mise x elixir -- mix archive.install hex phx_new --force
   echo -e "\nYou can now run: mix phx.new my_app"

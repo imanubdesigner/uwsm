@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#    ┏┓┏┓┳┓┏┳┓  ┏┓
-#    ┣ ┃┃┃┃ ┃   ┃ ┓┏┏┓┏┓┏┓┏┓╋
-#    ┻ ┗┛┛┗ ┻   ┗┛┗┻┛ ┛ ┗ ┛┗┗
-#                     
+# manu:summary=Show current monospace font
+# manu:examples=manu font current
 
 grep -oP 'font-family:\s*["'\'']?\K[^;"'\'']+' ~/.config/waybar/style.css | head -n1

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
-#    ┓ ┏┏┓┏┓┏┳┓┓┏┏┓┳┓ ┏┓┓┏
-#    ┃┃┃┣ ┣┫ ┃ ┣┫┣ ┣┫ ┃┃┗┫
-#    ┗┻┛┗┛┛┗ ┻ ┛┗┗┛┛┗•┣┛┗┛
-#
+# manu:summary=Weather.py
+# manu:group=
+# manu:name=weather.py
+# manu:summary=Weather.py
+# manu:group=
+# manu:name=weather.py
 
 import time
 import requests
@@ -50,7 +52,6 @@ try:
     resp = requests.get(url, timeout=10, headers={"User-Agent": "curl"})
     data = resp.json()
     alerts = data.get("alerts", [])
-
     current = data["current_condition"][0]
     weather = data["weather"]  # 3-day forecast
 
@@ -84,11 +85,9 @@ try:
 
     # Filter significant rain
     significant_rain = [(h, p) for h, p in rain_hours if p >= 20]
-
     if rain_hours:
         max_chance = max(p for _, p in rain_hours)
         avg_chance = sum(p for _, p in rain_hours) / len(rain_hours)
-
         if max_chance <= 10:
             trend = "mostly dry"
         elif max_chance <= 30:
@@ -141,14 +140,12 @@ try:
         f"<tt>  Hum  {humidity}%</tt>",
         f"<tt>  Vis  {visibility} km</tt>",
     ]
-
     if pressure:
         lines.append(f"<tt>  Press {pressure} hPa</tt>")
     if dew_point:
         lines.append(f"<tt>  Dew {dew_point}°C</tt>")
     if uv_index:
         lines.append(f"<tt>  UV  {uv_index}</tt>")
-
     lines.append(f"<tt>  {sunrise}    {sunset}</tt>")
     lines.append(f"<tt>{moon_icon}  {moon_phase}</tt>")
 
@@ -180,7 +177,6 @@ try:
         for hour, pct in significant_rain[:8]:
             bar = "▇" * (pct // 10) + "░" * (10 - pct // 10)
             lines.append(f"  {hour:>5}  {bar} {pct}%")
-
     tooltip = "\n".join(lines)
 
     # Output for Waybar
@@ -191,9 +187,7 @@ try:
         "class": desc.lower().replace(" ", "-"),
     }
     print(json.dumps(out))
-
 except RuntimeError:
     print('{"text": "", "tooltip": "Network unavailable"}')
-
 except Exception as e:
     print(f'{{"text": "", "tooltip": "Weather error: {str(e)}"}}')

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# manu:summary=Run the full Omarchy update pipeline
+# manu:requires-sudo=true
+
 set -e
 
 # Ensure screensaver/sleep doesn't set in during updates
@@ -9,10 +12,8 @@ hyprctl dispatch tagwindow +noidle &>/dev/null || true
 manu-update-system-pkgs
 manu-update-aur-pkgs
 manu-update-orphan-pkgs
-
 manu-update-analyze-logs
 manu-update-available-reset
-
 manu-update-restart
 
 # Re-enable screensaver/sleep after updates

@@ -1,42 +1,43 @@
 #!/bin/bash
 
-#    ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┏┓┳┓┏┓┏┓┏┓┓┏┏┓┏┳┓
-#    ┃┃┃┃┃┃┣┫ ┃ ┣   ┗┓┃┃┣┫┃┃┗┓┣┫┃┃ ┃
-#    ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┗┛┛┗┛┗┣┛┗┛┛┗┗┛ ┻
+# manu:summary=Update snapshot
+# manu:group=
+# manu:name=update snapshot
+# manu:summary=Update snapshot
+# manu:group=
+# manu:name=update snapshot
 
-# snapper must be available
 if ! command -v snapper &>/dev/null; then
   echo "󰒤 snapper not found, skipping snapshot."
   exit 0
 fi
-
 echo ""
 echo "󰚰 Create a snapshot before updating?"
-
 if ! gum confirm ""; then
   echo "󰒤 Skipping snapshot."
   echo ""
   exit 0
 fi
-
 echo "󰚰 Creating snapshot..."
+
 # Ask for optional custom name to differentiate snapshots
 if gum confirm "Add a custom name to the snapshot?"; then
   CUSTOM_NAME=$(gum input --placeholder "Enter snapshot name (e.g. before-kernel-update)")
   if [ -n "$CUSTOM_NAME" ]; then
     DESC="pre-update: ${CUSTOM_NAME}"
   else
+
     # Empty custom name, fall back to date-based
     DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
   fi
 else
+
   # No custom name, use date-based description for clarity
   DESC="pre-update $(date +%Y-%m-%d\ %H:%M)"
 fi
 
-# Iterate all snapper configs, like omarchy does
+# Iterate all snapper configs, like manu does
 mapfile -t CONFIGS < <(sudo snapper --csvout list-configs | awk -F, 'NR>1 {print $1}')
-
 for config in "${CONFIGS[@]}"; do
   sudo snapper -c "$config" create -c number -d "$DESC"
   sudo snapper -c "$config" cleanup number
@@ -45,7 +46,6 @@ done
 # Sync snapshots to Limine bootloader
 echo "󰚰 Syncing snapshots to Limine..."
 sudo limine-snapper-sync
-
 echo "󰄬 Snapshot created: \"${DESC}\""
 notify-send "󰚰  Snapshot" "Snapshot '${DESC}' created before update." -a "Update Script"
 echo ""

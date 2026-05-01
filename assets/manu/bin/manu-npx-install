@@ -1,36 +1,26 @@
 #!/bin/bash
 
-# Install an npx wrapper for a given npm package.
-# Usage: manu-npx-install <package> [command-name]
-#
-# If command-name is omitted, it defaults to the package name.
-# Example: manu-npx-install opencode-ai opencode
+# manu:summary=Install an npx wrapper for a given npm package.
+# manu:args=<package> [command-name]
 
 if [[ -z $1 ]]; then
   echo "Usage: manu-npx-install <package> [command-name]"
   exit 1
 fi
-
 package=$1
 command=${2:-$1}
-
 mkdir -p "$HOME/.local/bin"
-
 cat >"$HOME/.local/bin/$command" <<EOF
-#!/bin/bash
 package="$package"
 command="$command"
-
 if ! node_root="\$(mise where node@latest 2>/dev/null)"; then
   mise use -g node@latest >/dev/null
   node_root="\$(mise where node@latest)"
 fi
-
 node_bin="\$node_root/bin/node"
 npx_bin="\$node_root/bin/npx"
 
 # Use a single npx call to avoid stale cache path issues (e.g. opencode-ai)
 PATH="\$node_root/bin:\$PATH" exec "\$npx_bin" --yes --prefer-online --package "\$package" -- "\$command" "\$@"
 EOF
-
 chmod +x "$HOME/.local/bin/$command"

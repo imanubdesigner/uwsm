@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┓┏┓┏┏┓┳┓┳┳┓┓ ┏┓
-#    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃   ┣┫┗┫┃┃┣┫┃┃┃┃ ┣
-#    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻   ┛┗┗┛┣┛┛┗┻┻┛┗┛┗┛
-#                              
+# manu:summary=Restart the hypridle service (used for idle detection and auto-lock).
 
 manu-restart-app hypridle

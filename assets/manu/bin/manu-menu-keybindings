@@ -1,16 +1,14 @@
 #!/bin/bash
-# Display Hyprland keybindings using walker for an interactive search menu.
-# Uses hyprctl to read bindings directly from Hyprland at runtime.
+
+# manu:summary=Display Hyprland keybindings defined in your configuration using walker for an interactive search menu.
 
 declare -A KEYCODE_SYM_MAP
-
 build_keymap_cache() {
   local keymap
   keymap="$(xkbcli compile-keymap)" || {
     echo "Failed to compile keymap" >&2
     return 1
   }
-
   while IFS=, read -r code sym; do
     [[ -z $code || -z $sym ]] && continue
     KEYCODE_SYM_MAP["$code"]="$sym"
@@ -35,11 +33,9 @@ build_keymap_cache() {
     ' <<<"$keymap"
   )
 }
-
 lookup_keycode_cached() {
   printf '%s\n' "${KEYCODE_SYM_MAP[$1]}"
 }
-
 parse_keycodes() {
   while IFS= read -r line; do
     if [[ $line =~ code:([0-9]+) ]]; then
@@ -60,7 +56,6 @@ parse_keycodes() {
     fi
   done
 }
-
 dynamic_bindings() {
   hyprctl -j binds |
     jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
@@ -88,16 +83,13 @@ dynamic_bindings() {
       -e 's/^76,/SUPER CTRL ALT,/' \
       -e 's/^77,/SUPER SHIFT CTRL ALT,/'
 }
-
 parse_bindings() {
   awk -F, '
 {
     key_combo = $1 " + " $2;
     gsub(/^[ \t]*\+?[ \t]*/, "", key_combo);
     gsub(/[ \t]+$/, "", key_combo);
-
     action = $3;
-
     if (action == "") {
         for (i = 4; i <= NF; i++) {
             action = action $i (i < NF ? "," : "");
@@ -112,13 +104,11 @@ parse_bindings() {
         gsub(/"/, "\\&quot;", action);
         gsub(/'"'"'/, "\\&apos;", action);
     }
-
     if (action != "") {
         printf "%-35s → %s\n", key_combo, action;
     }
 }'
 }
-
 prioritize_entries() {
   awk '
   {
@@ -167,7 +157,6 @@ prioritize_entries() {
   sort -k1,1n -k2,2 |
   cut -f2-
 }
-
 output_keybindings() {
   build_keymap_cache
   dynamic_bindings |
@@ -176,13 +165,11 @@ output_keybindings() {
     parse_bindings |
     prioritize_entries
 }
-
 if [[ $1 == "--print" || $1 == "-p" ]]; then
   output_keybindings
 else
   monitor_height=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .height')
   menu_height=$((monitor_height * 40 / 100))
-
   output_keybindings |
     manu-launch-walker --dmenu -p 'Keybindings…' --width 800 --height "$menu_height"
 fi

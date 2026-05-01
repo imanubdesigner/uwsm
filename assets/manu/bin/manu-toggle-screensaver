@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# manu:summary=Toggle screensaver availability
+
 manu-toggle \
   --enabled-notification "󱄄   Screensaver disabled" \
   --disabled-notification "󱄄   Screensaver enabled" \

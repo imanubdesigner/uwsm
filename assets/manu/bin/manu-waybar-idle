@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# manu:summary=Waybar idle
+# manu:group=
+# manu:name=waybar idle
+# manu:summary=Waybar idle
+# manu:group=
+# manu:name=waybar idle
+
 if pgrep -x hypridle >/dev/null; then
   echo '{"text": ""}'
 else

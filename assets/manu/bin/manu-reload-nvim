@@ -1,5 +1,11 @@
 #!/bin/bash
-# Matugen Dashboard reload
+
+# manu:summary=Reload nvim
+# manu:group=
+# manu:name=reload nvim
+# manu:summary=Reload nvim
+# manu:group=
+# manu:name=reload nvim
 
 MATUGEN_LUA="$HOME/.config/nvim/generated.lua"
 
@@ -12,5 +18,4 @@ for socket in /run/user/$(id -u)/nvim.*.0 /tmp/nvim*/0 ~/.cache/nvim/server.pipe
     "<cmd>lua dofile('$MATUGEN_LUA'); require('lualine').setup({}); require('snacks').dashboard.update(); vim.cmd('redraw!')<CR>" \
     2>/dev/null || true
 done
-
 touch "$MATUGEN_LUA"

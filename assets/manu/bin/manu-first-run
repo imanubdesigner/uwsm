@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Finish the installation of Hypruccin with items that can only be done after logging in.
+# manu:summary=Finish the installation of Omarchy with items that can only be done after logging in.
+# manu:requires-sudo=true
 
 FLAG="$HOME/.local/share/manu/.first-run-done"
 LOG="$HOME/.local/share/manu/first-run.log"
 
 # Already ran — exit immediately
 [[ -f "$FLAG" ]] && exit 0
-
 mkdir -p "$(dirname "$LOG")"
 
 # Silent execution, all output to log file

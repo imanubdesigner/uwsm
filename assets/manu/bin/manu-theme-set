@@ -1,17 +1,18 @@
 #!/bin/bash
 
+# manu:summary=Apply an Omarchy theme
+# manu:args=<theme-name>
+# manu:examples=manu theme list | manu theme set "Tokyo Night"
+
 if [[ -z $1 ]]; then
   echo "Usage: manu-theme-set <theme-name>"
   exit 1
 fi
-
 CURRENT_THEME_PATH="$HOME/.config/manu/current/theme"
 NEXT_THEME_PATH="$HOME/.config/manu/current/next-theme"
 USER_THEMES_PATH="$HOME/.config/manu/themes"
 MANU_THEMES_PATH="$MANU_PATH/themes"
-
 THEME_NAME=$(echo "$1" | sed -E 's/<[^>]+>//g' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
-
 if [[ ! -d $MANU_THEMES_PATH/$THEME_NAME ]] && [[ ! -d $USER_THEMES_PATH/$THEME_NAME ]]; then
   echo "Theme '$THEME_NAME' does not exist"
   exit 1

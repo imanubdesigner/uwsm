@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Toggle features between enabled and disabled
+# manu:summary=Toggle Omarchy features between enabled and disabled
+# manu:args=[--enabled-notification <text>] [--disabled-notification <text>] <flag-name>
 
 ENABLED_NOTIFICATION=""
 DISABLED_NOTIFICATION=""
-
 while [[ $# -gt 1 ]]; do
   case $1 in
     --enabled-notification) ENABLED_NOTIFICATION="$2"; shift 2 ;;
@@ -12,10 +12,8 @@ while [[ $# -gt 1 ]]; do
     *) break ;;
   esac
 done
-
 FLAG_NAME="$1"
 FLAG="$HOME/.local/state/manu/toggles/$FLAG_NAME"
-
 if [[ -f $FLAG ]]; then
   rm $FLAG
   [[ -n $DISABLED_NOTIFICATION ]] && notify-send -u low "$DISABLED_NOTIFICATION"

@@ -1,20 +1,13 @@
 #!/bin/bash
 
-#    ┓ ┏┓┳┳┳┓┏┓┓┏        ┏┓┏┓┏┓┳┳┏┓
-#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┏┓┏┓  ┣ ┃┃┃ ┃┃┗┓
-#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┛   ┻ ┗┛┗┛┗┛┗┛
-#              ┓ ┏  ┓ ┏┓
-#              ┃┃┃┏┓┣┓┣┫┏┓┏┓
-#              ┗┻┛┗ ┗┛┛┗┣┛┣┛
-#                       ┛ ┛ 
+# manu:summary=Launch or focus on a given web app identified by the window-pattern.
+# manu:args=<window-pattern> <url-and-flags...>
 
 if (($# == 0)); then
   echo "Usage: manu-launch-or-focus-webapp [window-pattern] [url-and-flags...]"
   exit 1
 fi
-
 WINDOW_PATTERN="$1"
 shift
 LAUNCH_COMMAND="manu-launch-webapp $@"
-
 exec manu-launch-or-focus "$WINDOW_PATTERN" "$LAUNCH_COMMAND"

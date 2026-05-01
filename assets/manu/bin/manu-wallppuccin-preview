@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# Define paths using the $HOME variable for Arch Linux compatibility
+# manu:summary=Wallppuccin preview
+# manu:group=
+# manu:name=wallppuccin preview
+# manu:summary=Wallppuccin preview
+# manu:group=
+# manu:name=wallppuccin preview
+
 WALLPAPER_DIR="$HOME/wallppuccin/wallpapers"
 PREVIEW_DIR="$HOME/wallppuccin/previews"
 
@@ -15,7 +21,6 @@ if [ ! -d "$PREVIEW_DIR" ]; then
   echo "Preview directory not found. Creating it at $PREVIEW_DIR..."
   mkdir -p "$PREVIEW_DIR"
 fi
-
 echo "Starting image resizing (Standardizing to 800x450)..."
 
 # Enter the wallpaper directory
@@ -24,11 +29,11 @@ cd "$WALLPAPER_DIR" || exit
 # Process JPG, JPEG, and PNG files
 for img in *; do
   if [[ "$img" =~ \.(jpg|jpeg|png)$ ]]; then
+
     # Resize to 800x450 and strip metadata for web optimization
     # This standardizes 4K, 2K, and 1080p images for the README table
     magick "$img" -resize 800x450 -strip "$PREVIEW_DIR/$img"
     echo "  Preview created for: $img"
   fi
 done
-
 echo "Process finished! All previews are updated in $PREVIEW_DIR."

@@ -1,18 +1,13 @@
 #!/bin/bash
 
-#    ┓ ┏┏┓┓ ┓┏┓┏┓┳┓  ┳┳┓┏┓┳┓┳┳
-#    ┃┃┃┣┫┃ ┃┫ ┣ ┣┫  ┃┃┃┣ ┃┃┃┃
-#    ┗┻┛┛┗┗┛┛┗┛┗┛┛┗  ┛ ┗┗┛┛┗┗┛
-#
+# manu:summary=Launch the Omarchy Menu or takes a parameter to jump straight to a submenu.
 
 export PATH="$HOME/.local/share/manu/bin:$PATH"
 
 # Set to true when going directly to a submenu, so we can exit directly
 BACK_TO_EXIT=false
-
 back_to() {
   local parent_menu="$1"
-
   if [[ "$BACK_TO_EXIT" == "true" ]]; then
     exit 0
   elif [[ -n "$parent_menu" ]]; then
@@ -21,22 +16,18 @@ back_to() {
     show_main_menu
   fi
 }
-
 toggle_existing_menu() {
   if pgrep -f "walker.*--dmenu" >/dev/null; then
     walker --close >/dev/null 2>&1
     exit 0
   fi
 }
-
 menu() {
   local prompt="$1"
   local options="$2"
   local extra="$3"
   local preselect="$4"
-
   read -r -a args <<<"$extra"
-
   if [[ -n "$preselect" ]]; then
     local index
     index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
@@ -44,44 +35,34 @@ menu() {
       args+=("-c" "$index")
     fi
   fi
-
   echo -e "$options" |
     manu-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null
 }
-
 terminal() {
   xdg-terminal-exec --app-id=org.manu.terminal "$@"
 }
-
 present_terminal() {
   manu-launch-floating-terminal-with-presentation $1
 }
-
 install() {
   present_terminal "echo 'Installing $1...'; manu-pkg-add $2"
 }
-
 install_and_launch() {
   present_terminal "echo 'Installing $1...'; manu-pkg-add $2 && setsid gtk-launch $3"
 }
-
 install_font() {
   present_terminal "echo 'Installing $1...'; manu-pkg-add $2 && sleep 2 && manu-font-set '$3'"
 }
-
 aur_install() {
   present_terminal "echo 'Installing $1 from AUR...'; manu-pkg-aur-add $2"
 }
-
 open_in_editor() {
   notify-send "Editing config file" "$1"
   manu-launch-editor "$1"
 }
-
 aur_install_and_launch() {
   present_terminal "echo 'Installing $1 from AUR...'; manu-pkg-aur-add $2 && setsid gtk-launch $3"
 }
-
 get_webcam_list() {
   v4l2-ctl --list-devices 2>/dev/null | while IFS= read -r line; do
     if [[ $line != $'\t'* && -n $line ]]; then
@@ -92,23 +73,19 @@ get_webcam_list() {
     fi
   done
 }
-
 show_webcam_select_menu() {
   local devices=$(get_webcam_list)
   local count=$(echo "$devices" | grep -c . 2>/dev/null || echo 0)
-
   if [[ -z $devices ]] || ((count == 0)); then
     notify-send "No webcam devices found" -u critical -t 3000
     return 1
   fi
-
   if ((count == 1)); then
     echo "$devices" | awk '{print $1}'
   else
     menu "Select Webcam" "$devices" | awk '{print $1}'
   fi
 }
-
 show_capture_menu() {
   case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color") in
   *Screenshot*)
@@ -125,10 +102,8 @@ show_capture_menu() {
     ;;
   esac
 }
-
 show_screenrecord_menu() {
   manu-capture-screenrecording --stop-recording && exit 0
-
   case $(menu "Screenrecord" "  With no audio\n  With desktop audio\n  With desktop + microphone audio\n  With desktop + microphone audio + webcam") in
   *"With no audio")
     manu-capture-screenrecording
@@ -151,7 +126,6 @@ show_screenrecord_menu() {
     ;;
   esac
 }
-
 show_learn_menu() {
   case $(menu "Learn" "  Hyprland\n  Arch\n  Neovim\n  Bash\n󱣻  Gowall\n󰇥  Yazi\n󰌌  Keybindings") in
   *Hyprland*) manu-launch-webapp "https://wiki.hypr.land/" ;;
@@ -164,7 +138,6 @@ show_learn_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_trigger_menu() {
   case $(menu "Trigger" "  Capture\n  Share\n󰨚  Toggle") in
   *Capture*) show_capture_menu ;;
@@ -173,7 +146,6 @@ show_trigger_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_share_menu() {
   case $(menu "Share" "  Clipboard\n  File \n  Folder") in
   *Clipboard*) terminal bash -c "manu-menu-share clipboard" ;;
@@ -182,7 +154,6 @@ show_share_menu() {
   *) back_to show_trigger_menu ;;
   esac
 }
-
 show_toggle_menu() {
   case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling\n󰟵  Sudo Passwordless") in
   *Screensaver*) manu-toggle-screensaver ;;
@@ -197,7 +168,6 @@ show_toggle_menu() {
   *) show_trigger_menu ;;
   esac
 }
-
 show_power_profile_menu() {
   local profile
   profile=$(menu "Power Profile" "$(manu-powerprofiles-list)")
@@ -207,7 +177,6 @@ show_power_profile_menu() {
     manu-powerprofiles-set "$profile"
   fi
 }
-
 show_style_menu() {
   case $(menu "Style" "󰸌  Theme\n󰉔  Background\n  Font\n  Hyprland\n󱄄  Screensaver") in
   *Theme*) show_theme_menu ;;
@@ -218,11 +187,9 @@ show_style_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_theme_menu() {
   manu-launch-walker -m menus:manuthemes --width 800 --minheight 400
 }
-
 show_font_menu() {
   theme=$(menu "Font" "$(manu-font-list)" "--width 350" "$(manu-font-current)")
   if [[ "$theme" == "CNCLD" || -z "$theme" ]]; then
@@ -231,11 +198,9 @@ show_font_menu() {
     manu-font-set "$theme"
   fi
 }
-
 show_background_menu() {
   manu-launch-walker -m menus:manuBackgroundSelector --width 800 --minheight 400
 }
-
 show_install_menu() {
   case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style") in
   *Package*) terminal manu-pkg-install ;;
@@ -247,7 +212,6 @@ show_install_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_install_development_menu() {
   case $(menu "Install" "󰫏  Ruby on Rails\n  Docker DB\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
   *Rails*) present_terminal "manu-install-dev-env ruby" ;;
@@ -267,7 +231,6 @@ show_install_development_menu() {
   *) show_install_menu ;;
   esac
 }
-
 show_install_javascript_menu() {
   case $(menu "Install" "  Node.js\n  Bun\n  Deno") in
   *Node*) present_terminal "manu-install-dev-env node" ;;
@@ -276,7 +239,6 @@ show_install_javascript_menu() {
   *) show_install_development_menu ;;
   esac
 }
-
 show_install_php_menu() {
   case $(menu "Install" "  PHP\n  Laravel\n  Symfony") in
   *PHP*) present_terminal "manu-install-dev-env php" ;;
@@ -285,7 +247,6 @@ show_install_php_menu() {
   *) show_install_development_menu ;;
   esac
 }
-
 show_install_elixir_menu() {
   case $(menu "Install" "  Elixir\n  Phoenix") in
   *Elixir*) present_terminal "manu-install-dev-env elixir" ;;
@@ -293,7 +254,6 @@ show_install_elixir_menu() {
   *) show_install_development_menu ;;
   esac
 }
-
 show_install_style_menu() {
   case $(menu "Install" "󰸌  Theme\n  Background\n  Font") in
   *Theme*) present_terminal manu-theme-install ;;
@@ -302,7 +262,6 @@ show_install_style_menu() {
   *) show_install_menu ;;
   esac
 }
-
 show_install_font_menu() {
   case $(menu "Install" "  Cascadia Mono\n  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono\n  Iosevka" "--width 350") in
   *Cascadia*) install_font "Cascadia Mono" "ttf-cascadia-mono-nerd" "CaskaydiaMono Nerd Font" ;;
@@ -314,7 +273,6 @@ show_install_font_menu() {
   *) show_install_menu ;;
   esac
 }
-
 show_remove_menu() {
   case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰵮  Development\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
   *Cache*) present_terminal manu-packages-cleaning ;;
@@ -327,7 +285,6 @@ show_remove_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_remove_development_menu() {
   case $(menu "Remove" "󰫏  Ruby on Rails\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
   *Rails*) present_terminal "manu-remove-dev-env ruby" ;;
@@ -346,7 +303,6 @@ show_remove_development_menu() {
   *) show_remove_menu ;;
   esac
 }
-
 show_remove_javascript_menu() {
   case $(menu "Remove" "  Node.js\n  Bun\n  Deno") in
   *Node*) present_terminal "manu-remove-dev-env node" ;;
@@ -355,7 +311,6 @@ show_remove_javascript_menu() {
   *) show_remove_development_menu ;;
   esac
 }
-
 show_remove_php_menu() {
   case $(menu "Remove" "  PHP\n  Laravel\n  Symfony") in
   *PHP*) present_terminal "manu-remove-dev-env php" ;;
@@ -364,7 +319,6 @@ show_remove_php_menu() {
   *) show_remove_development_menu ;;
   esac
 }
-
 show_remove_elixir_menu() {
   case $(menu "Remove" "  Elixir\n  Phoenix") in
   *Elixir*) present_terminal "manu-remove-dev-env elixir" ;;
@@ -372,7 +326,6 @@ show_remove_elixir_menu() {
   *) show_remove_development_menu ;;
   esac
 }
-
 show_update_menu() {
   case $(menu "Update" "󰣇  Pacman\n  Firmware\n󰸌  Extra Themes\n  Timezone\n  Time") in
   *Pacman*) present_terminal manu-update ;;
@@ -383,7 +336,6 @@ show_update_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_restart_apps_menu() {
   case $(menu "Restart Apps" "󰡗  Sudo\n󱓞  Walker\n  Waybar\n  Swayosd\n󱫖  Hypridle\n  Hyprsunset\n󰞅  XCompose") in
   *Sudo*) present_terminal manu-reset-sudo ;;
@@ -396,7 +348,6 @@ show_restart_apps_menu() {
   *) show_setup_restart_menu ;;
   esac
 }
-
 show_restart_hardware_menu() {
   case $(menu "Restart Hardware" "   Audio\n  󱚾  Wi-Fi\n  󰂯  Bluetooth") in
   *Audio*) present_terminal manu-restart-pipewire ;;
@@ -405,7 +356,6 @@ show_restart_hardware_menu() {
   *) show_setup_restart_menu ;;
   esac
 }
-
 show_setup_menu() {
   case $(menu "Setup" "󰵅  Power Profile\n󰊢  Git Configuration\n  Chromium\n󰣇  Pacman\n󰁯  Tools\n󰄄  Restart") in
   *"Power Profile"*) show_power_profile_menu ;;
@@ -417,7 +367,6 @@ show_setup_menu() {
   *) show_main_menu ;;
   esac
 }
-
 show_setup_pacman_menu() {
   case $(menu "Pacman" "🟢  Stable\n🟡  RC\n🟠  Edge") in
   *Stable*) present_terminal "manu-refresh-pacman stable" ;;
@@ -426,7 +375,6 @@ show_setup_pacman_menu() {
   *) show_setup_menu ;;
   esac
 }
-
 show_setup_tools_menu() {
   case $(menu "Tools" "󰁯  Snapper Backup\n󰏔  Pkg History\n󰦗  Media Downloader\n󱊞  ISO to USB\n󰣌  Image Converter\n  Video Converter") in
   *"Snapper Backup"*) present_terminal manu-snapper-backup ;;
@@ -438,7 +386,6 @@ show_setup_tools_menu() {
   *) show_setup_menu ;;
   esac
 }
-
 show_setup_restart_menu() {
   case $(menu "Restart" "󰡗  Apps\n󰛧  Hardware") in
   *Apps*) show_restart_apps_menu ;;
@@ -446,7 +393,6 @@ show_setup_restart_menu() {
   *) show_setup_menu ;;
   esac
 }
-
 show_system_menu() {
   case $(menu "System" "󰌾  Lock\n󱄄  Screensaver\n󰜉  Restart\n  Shutdown") in
   *Lock*) manu-lock-screen ;;
@@ -456,15 +402,12 @@ show_system_menu() {
   *) back_to show_main_menu ;;
   esac
 }
-
 show_about() {
   manu-launch-about
 }
-
 show_main_menu() {
   go_to_menu "$(menu "󰕰  Go" "󰵆  App\n  Learn\n  Trigger\n  Style\n  Install\n  Remove\n󰚰  Update\n  Setup\n󰋽  About\n  System")"
 }
-
 go_to_menu() {
   case "${1,,}" in
   *app*) walker -p "Launch…" ;;
@@ -487,7 +430,6 @@ go_to_menu() {
   *system*) show_system_menu ;;
   esac
 }
-
 if [[ -n "$1" ]]; then
   BACK_TO_EXIT=true
   go_to_menu "$1"

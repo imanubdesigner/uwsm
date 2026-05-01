@@ -1,11 +1,8 @@
 #!/bin/bash
 
-#    ┓ ┏┓┳┳┳┓┏┓┓┏        ┏┓┏┓┏┓┳┳┏┓  ┏┳┓┳┳┳
-#    ┃ ┣┫┃┃┃┃┃ ┣┫  ┏┓┏┓  ┣ ┃┃┃ ┃┃┗┓   ┃ ┃┃┃
-#    ┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛┛   ┻ ┗┛┗┛┗┛┗┛   ┻ ┗┛┻
-#                                   
+# manu:summary=Launch a TUI or focus an existing terminal window for it
+# manu:args=<command> [args...]
 
 APP_ID="org.manu.$(basename $1)"
 LAUNCH_COMMAND="manu-launch-tui $@"
-
 exec manu-launch-or-focus "$APP_ID" "$LAUNCH_COMMAND"

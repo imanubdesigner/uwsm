@@ -1,4 +1,6 @@
 #!/bin/bash
 
-# Check if a toggle is enabled (flag file exists)
+# manu:summary=Check if a toggle is enabled (flag file exists)
+# manu:args=<flag-name>
+
 [[ -f "$HOME/.local/state/manu/toggles/$1" ]]

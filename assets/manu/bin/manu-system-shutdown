@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#         ┓  ┏┓┓┏┳┳┏┳┓┳┓┏┓┓ ┏┳┓
-#    ┏┏┳┓┏┫  ┗┓┣┫┃┃ ┃ ┃┃┃┃┃┃┃┃┃
-#    ┗┛┗┗┗┻  ┗┛┛┗┗┛ ┻ ┻┛┗┛┗┻┛┛┗
-#                       
+# manu:summary=Shut down after closing application windows
+# manu:examples=manu shutdown | manu system shutdown
+# manu:aliases=manu shutdown
 
 manu-state clear re*-required
 

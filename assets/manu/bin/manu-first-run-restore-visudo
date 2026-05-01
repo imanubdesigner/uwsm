@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# Define the log path
-LOG="$HOME/.local/share/manu/first-run.log"
+# manu:summary=First run restore visudo
+# manu:group=
+# manu:name=first run restore visudo
+# manu:summary=First run restore visudo
+# manu:group=
+# manu:name=first run restore visudo
 
+LOG="$HOME/.local/share/manu/first-run.log"
 echo "$(date): Restoring sudoers to restricted permissions..."
 
 # We use 'manu-first-run' to overwrite the temporary global permissions

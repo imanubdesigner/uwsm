@@ -1,18 +1,13 @@
 #!/bin/bash
 
-#    ┳┓┏┓┏┓┏┳┓┏┓┳┓┏┳┓  ┏┳┓┏┓┳┓┳┳┓┳┳┓┏┓┓
-#    ┣┫┣ ┗┓ ┃ ┣┫┣┫ ┃    ┃ ┣ ┣┫┃┃┃┃┃┃┣┫┃
-#    ┛┗┗┛┗┛ ┻ ┛┗┛┗ ┻    ┻ ┗┛┛┗┛ ┗┻┛┗┛┗┗┛
-#                                
+# manu:summary=Reload supported terminal emulators after config changes
 
 if [[ -f ~/.config/alacritty/alacritty.toml ]]; then
   touch ~/.config/alacritty/alacritty.toml
 fi
-
 if pgrep -x kitty; then
   killall -SIGUSR1 kitty
 fi
-
 if pgrep -x ghostty; then
   killall -SIGUSR2 ghostty
 fi

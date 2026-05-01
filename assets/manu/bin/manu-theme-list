@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# manu:summary=List available themes
+# manu:examples=manu theme list | manu theme set "Tokyo Night"
+
 {
   find ~/.config/manu/themes/ -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -printf '%f\n'
   find "$MANU_PATH/themes/" -mindepth 1 -maxdepth 1 -type d -printf '%f\n'

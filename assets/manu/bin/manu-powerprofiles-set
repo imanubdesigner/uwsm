@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Set the power profile to the requested level, falling back to balanced
-# if the requested profile isn't available on this machine.
-#
-# Usage: manu-powerprofiles-set <ac|battery|profile_name>
+# manu:summary=Set the power profile to the requested level, falling back to balanced
+# manu:args=<ac|battery>
 
 notify() {
   local icon="$1"
@@ -11,9 +9,7 @@ notify() {
   notify-send -h string:x-canonical-private-synchronous:powerprofile \
     "$icon  Power Profile" "$message"
 }
-
 mapfile -t profiles < <(powerprofilesctl list | awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }')
-
 case "$1" in
 ac)
   if [[ " ${profiles[*]} " == *" performance "* ]]; then
@@ -31,7 +27,6 @@ battery)
 *)
   if [[ -n "$1" ]]; then
     sudo powerprofilesctl set "$1"
-
     case "$1" in
     performance)
       notify "󱐋" "Performance mode enabled"

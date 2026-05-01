@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# Reload mako configuration (used by the Manu theme switching).
+# manu:summary=Reload mako configuration (used by the Omarchy theme switching).
 
 makoctl reload

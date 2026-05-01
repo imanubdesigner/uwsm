@@ -1,11 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-#    ┏┓┳┓┏┓┏┓┏┓┏┓┳┓  ┳┓┏┓┏┓┓┏┓┳┳┏┓
-#    ┗┓┃┃┣┫┃┃┃┃┣ ┣┫  ┣┫┣┫┃ ┃┫ ┃┃┃┃
-#    ┗┛┛┗┛┗┣┛┣┛┗┛┛┗  ┻┛┛┗┗┛┛┗┛┗┛┣┛
-#                          
+# manu:summary=Snapper backup
+# manu:group=
+# manu:name=snapper backup
+# manu:summary=Snapper backup
+# manu:group=
+# manu:name=snapper backup
 
-# Configurations to manage
 CONFIGS=("root" "home")
 
 # Titolo dello script con bordo neutro
@@ -18,7 +19,6 @@ gum style \
 SNAP_NAME=$(gum input \
   --placeholder "e.g. 󰏗 pre-upgrade | 󰍛 before-nvidia" \
   --prompt "󰘧 ")
-
 if [[ -z "$SNAP_NAME" ]]; then
   gum style "󰅙 Snapshot cancelled"
   exit 1
@@ -31,17 +31,17 @@ for CONF in "${CONFIGS[@]}"; do
   NEW_ID=$(sudo snapper -c "$CONF" list | awk 'NR>3 {print $1}' | tail -n 1)
   gum style "󰄬 $CONF created (ID $NEW_ID)"
 done
-
 echo
+
 # 3. Single confirmation for cleanup
 if gum confirm "󰆴 Delete ALL previous snapshots for Root & Home?"; then
-
   for CONF in "${CONFIGS[@]}"; do
+
     # Get the ID we just created to exclude it
     CURRENT_ID=$(sudo snapper -c "$CONF" list | awk 'NR>3 {print $1}' | tail -n 1)
+
     # Get all other IDs
     OLD_IDS=$(sudo snapper -c "$CONF" list | awk 'NR>3 {print $1}' | grep -v "^$CURRENT_ID$")
-
     if [[ -n "$OLD_IDS" ]]; then
       gum style "󰆴 Cleaning $CONF snapshots..."
       for id in $OLD_IDS; do
@@ -53,6 +53,5 @@ if gum confirm "󰆴 Delete ALL previous snapshots for Root & Home?"; then
 else
   gum style "󰆒 All snapshots kept"
 fi
-
 echo
 gum style "󰄬 Operation completed"

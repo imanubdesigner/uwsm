@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#         ┓  ┳┓┏┓┳┓┏┓┏┓┏┳┓
-#    ┏┏┳┓┏┫  ┣┫┣ ┣┫┃┃┃┃ ┃
-#    ┗┛┗┗┗┻  ┛┗┗┛┻┛┗┛┗┛ ┻
-#                  
+# manu:summary=Reboot after closing application windows
+# manu:examples=manu reboot | manu system reboot
+# manu:aliases=manu reboot
 
 manu-state clear re*-required
 

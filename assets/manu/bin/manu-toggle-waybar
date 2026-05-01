@@ -1,7 +1,9 @@
 #!/bin/bash
 
-manu-toggle waybar-off
+# manu:summary=Toggle Waybar visibility
+# manu:examples=manu toggle waybar
 
+manu-toggle waybar-off
 if pgrep -x waybar >/dev/null; then
   pkill -x waybar
 else

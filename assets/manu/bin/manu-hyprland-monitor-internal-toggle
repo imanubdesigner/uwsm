@@ -1,6 +1,11 @@
 #!/bin/bash
 
-# Toggle the internal laptop display on/off.
+# manu:summary=Hyprland monitor internal toggle
+# manu:group=
+# manu:name=hyprland monitor internal toggle
+# manu:summary=Hyprland monitor internal toggle
+# manu:group=
+# manu:name=hyprland monitor internal toggle
 
 if manu-hyprland-toggle-disabled internal-monitor-disable; then
   ACTIVE_COUNT=$(hyprctl monitors -j | jq 'length')
@@ -9,7 +14,6 @@ if manu-hyprland-toggle-disabled internal-monitor-disable; then
     exit 1
   fi
 fi
-
 manu-hyprland-toggle \
   --enabled-notification "󰍹    Internal display off" \
   --disabled-notification "󰍹    Internal display on" \

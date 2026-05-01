@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# manu:summary=Walker background
+# manu:group=
+# manu:name=walker background
+# manu:summary=Walker background
+# manu:group=
+# manu:name=walker background
+
 WALL="$1"
-
 [ -z "$WALL" ] && exit 1
-
 cp "$WALL" ~/.local/share/manu/current_wallpaper
-
 matugen image "$WALL" --mode dark --source-color-index 0 --resize-filter lanczos3 --lightness-dark -0.04 --contrast 0.4

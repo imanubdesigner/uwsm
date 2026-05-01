@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# Check if gum is installed
+# manu:summary=Install git configuration
+# manu:group=
+# manu:name=install git configuration
+# manu:summary=Install git configuration
+# manu:group=
+# manu:name=install git configuration
+
 if ! command -v gum &>/dev/null; then
   echo "Gum is not installed. Please install it to use this configuration tool."
   exit 1
@@ -12,7 +18,6 @@ gum style --border normal --border-foreground 6 --padding "1 2" \
   "" \
   "• Sets your Git username and email globally" \
   "• Optionally configures credential helper with GitHub token"
-
 echo
 
 # Prompt for username (required for credential string)
@@ -33,19 +38,19 @@ fi
 
 # Configure credential helper and token
 if gum confirm "Do you want to enable the credential helper and store your token?"; then
+
   # Enable credential store in ~/.gitconfig
   git config --global credential.helper store
 
   # Prompt for GitHub PAT
   TOKEN=$(gum input --password --placeholder "Paste your GitHub Personal Access Token")
-
   if [ -n "$TOKEN" ]; then
+
     # Create or overwrite .git-credentials with correct format
     echo "https://${USER_NAME}:${TOKEN}@github.com" >~/.git-credentials
 
     # Set permissions to read/write only for user (security)
     chmod 600 ~/.git-credentials
-
     echo "✓ Credential helper enabled and ~/.git-credentials created!"
   else
     echo "⚠ Helper enabled but no token provided. You will be prompted on next git action."

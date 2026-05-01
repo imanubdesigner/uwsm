@@ -1,11 +1,12 @@
 #!/bin/bash
 
-#    ┓ ┏┓┏┓┓┏┓  ┏┓┏┓┳┓┏┓┏┓┳┓
-#    ┃ ┃┃┃ ┃┫   ┗┓┃ ┣┫┣ ┣ ┃┃
-#    ┗┛┗┛┗┛┛┗┛  ┗┛┗┛┛┗┗┛┗┛┛┗
-#                    
+# manu:summary=Lock screen
+# manu:group=
+# manu:name=lock screen
+# manu:summary=Lock screen
+# manu:group=
+# manu:name=lock screen
 
-# Lock the screen
 pidof hyprlock || hyprlock &
 
 # Set keyboard layout to default (first layout)
@@ -15,5 +16,6 @@ hyprctl switchxkblayout all 0 >/dev/null 2>&1
 if pgrep -x "1password" >/dev/null; then
   1password --lock &
 fi
+
 # Avoid running screensaver when locked
 pkill -f org.manu.screensaver

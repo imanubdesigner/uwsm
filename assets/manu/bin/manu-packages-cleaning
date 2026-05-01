@@ -1,18 +1,12 @@
 #!/bin/bash
 
-#    ┏┓┏┓┏┓┓┏┓┏┓┏┓┏┓┏┓  ┏┓┓ ┏┓┏┓┳┓┏┓┳┓
-#    ┃┃┣┫┃ ┃┫ ┣┫┃┓┣ ┗┓  ┃ ┃ ┣ ┣┫┃┃┣ ┣┫
-#    ┣┛┛┗┗┛┛┗┛┛┗┗┛┗┛┗┛  ┗┛┗┛┗┛┛┗┛┗┗┛┛┗
-#                              
+# manu:summary=Packages cleaning
+# manu:group=
+# manu:name=packages cleaning
+# manu:summary=Packages cleaning
+# manu:group=
+# manu:name=packages cleaning
 
-# ============================================================================
-#  󰣇 Pacman & Yay Cache Cleaner
-#  Interactive cache cleaner
-# ============================================================================
-
-# ──────────────────────────────────────────────────────────────────────────────
-# 󰣜  Check for gum
-# ──────────────────────────────────────────────────────────────────────────────
 if ! command -v gum &>/dev/null; then
   echo "󰅖  Error: gum is required. Please install it (e.g., yay -S gum)."
   exit 1
@@ -66,7 +60,6 @@ get_cache_size_bytes() {
   local path=$1
   [ -d "$path" ] && du -sb "$path" 2>/dev/null | cut -f1 || echo "0"
 }
-
 bytes_to_human() {
   local bytes=$1
   if [ "$bytes" -eq 0 ]; then
@@ -75,12 +68,10 @@ bytes_to_human() {
     numfmt --to=iec-i --suffix=B "$bytes" 2>/dev/null || echo "${bytes} B"
   fi
 }
-
 check_cache_size() {
   local pacman_cache=$(du -sh /var/cache/pacman/pkg 2>/dev/null | cut -f1)
   local yay_cache=""
   [ -d "$HOME/.cache/yay" ] && yay_cache=$(du -sh "$HOME/.cache/yay" 2>/dev/null | cut -f1)
-
   gum style \
     --margin="1 0" \
     "󰏔  Current cache sizes:" \
@@ -102,7 +93,6 @@ clean_pacman() {
     sudo rm /var/lib/pacman/db.lck
     gum style "󰎺  Lock file removed. Continuing cleanup."
   fi
-
   case $option in
   "Keep last 3 versions")
     gum spin --title "󰮯  Cleaning pacman cache (keep last 3 versions)..." -- sudo paccache -r
@@ -115,18 +105,14 @@ clean_pacman() {
    "Remove all cached packages")
     if gum confirm --default=false "󰗡  Remove ALL cached pacman packages?"; then
       local pkg_count=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
-
       if [ "$pkg_count" -eq 0 ]; then
         gum style "   ↳  Cache already empty, nothing to remove"
         return
       fi
-
       gum style "󰮯  Removing all cached packages..."
       sudo pacman -Scc --noconfirm >/tmp/pacman_clean.log 2>&1
       success=$?
-
       sudo find /var/cache/pacman/pkg -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
-
       local pkg_count_after=$(find /var/cache/pacman/pkg -name "*.pkg.tar*" 2>/dev/null | wc -l)
       if [ "$pkg_count_after" -eq 0 ]; then
         success=0
@@ -140,7 +126,6 @@ clean_pacman() {
     fi
     ;;
   esac
-
   if [ "$success" -eq 0 ]; then
     local size_after=$(get_cache_size_bytes "/var/cache/pacman/pkg")
     local freed=$((size_before - size_after))
@@ -161,11 +146,9 @@ clean_yay() {
     gum style "󰚌  Yay not installed. Skipping..."
     return
   fi
-
   local option=$1
   local size_before=$(get_cache_size_bytes "$HOME/.cache/yay")
   local success=0
-
   case $option in
    "Remove uninstalled packages")
     if gum confirm --default=false "󰗡  Remove uninstalled AUR packages cache?"; then
@@ -182,16 +165,13 @@ clean_yay() {
       gum style "󰚰  Removing all packages cache..."
       yay -Scc --noconfirm >/tmp/yay_clean.log 2>&1
       success=$?
-
       if [ -d "$HOME/.cache/yay" ]; then
         find "$HOME/.cache/yay" -type d -name "download-*" -exec rm -rf {} + 2>/dev/null
       fi
-
       local remaining_pkgs=0
       if [ -d "$HOME/.cache/yay" ]; then
         remaining_pkgs=$(find "$HOME/.cache/yay" -name "*.pkg.tar*" 2>/dev/null | wc -l)
       fi
-
       if [ "$remaining_pkgs" -eq 0 ]; then
         success=0
         gum style "󰚰  All cached packages removed successfully"
@@ -204,7 +184,6 @@ clean_yay() {
     fi
     ;;
   esac
-
   if [ "$success" -eq 0 ]; then
     local size_after=$(get_cache_size_bytes "$HOME/.cache/yay")
     local freed=$((size_before - size_after))
@@ -224,14 +203,12 @@ main() {
   check_sudo
   show_header
   check_cache_size
-
   while true; do
     CLEAN_CHOICE=$(gum choose --header="󰣇  What would you like to clean?" \
       "Pacman cache" \
       "Yay cache" \
       "Both" \
       "Exit")
-
     case $CLEAN_CHOICE in
     "Pacman cache")
       PACMAN_OPTION=$(gum choose --header="󰮯  Select cleaning method:" \
@@ -252,7 +229,6 @@ main() {
         "Keep last version only" \
         "Remove all cached packages")
       clean_pacman "$PACMAN_OPTION"
-
       echo ""
       YAY_OPTION=$(gum choose --header="󰚰  Yay cleaning method:" \
         "Remove uninstalled packages" \
@@ -264,14 +240,10 @@ main() {
       exit 0
       ;;
     esac
-
     check_cache_size
     echo ""
-
     gum confirm "󰄬  Clean something else?" || break
   done
-
   gum style --bold "󰄛  All done! Stay frosty ❄️"
 }
-
 main

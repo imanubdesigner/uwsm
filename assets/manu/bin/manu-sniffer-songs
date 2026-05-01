@@ -1,17 +1,15 @@
 #!/bin/bash
 
-#    ┏┓┳┓┳┏┓┏┓┏┓┳┓  ┏┓┏┓┳┓┏┓
-#    ┗┓┃┃┃┣ ┣ ┣ ┣┫  ┗┓┃┃┃┃┃┓
-#    ┗┛┛┗┻┻ ┻ ┗┛┛┗  ┗┛┗┛┛┗┗┛
-#          ┏┓┏┓┳┓┳┏┓┏┳┓
-#          ┗┓┃ ┣┫┃┃┃ ┃
-#          ┗┛┗┛┛┗┻┣┛ ┻
-#                    
+# manu:summary=Sniffer songs
+# manu:group=
+# manu:name=sniffer songs
+# manu:summary=Sniffer songs
+# manu:group=
+# manu:name=sniffer songs
 
-# Get the first available player
 player=$(playerctl -l 2>/dev/null | head -n1)
-
 if [[ -n "$player" ]]; then
+
   # Check if any player is currently playing
   if [[ $(playerctl status 2>/dev/null) == "Playing" ]]; then
     status='  '

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Toggle single-window square aspect ratio.
+# manu:summary=Toggle single-window square aspect ratio.
 
 manu-hyprland-toggle \
   --enabled-notification "      Enable single-window square aspect ratio" \

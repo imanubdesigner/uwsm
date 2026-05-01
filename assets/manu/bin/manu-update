@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#    ┳┳┏┓┳┓┏┓┏┳┓┏┓
-#    ┃┃┃┃┃┃┣┫ ┃ ┣
-#    ┗┛┣┛┻┛┛┗ ┻ ┗┛
-#
+# manu:summary=Update Omarchy and system packages
+# manu:args=[-y]
+# manu:examples=manu update | manu update -y
+# manu:requires-sudo=true
 
 set -e
 
@@ -14,7 +14,6 @@ if [[ -z $MANU_UPDATE_LOGGED ]]; then
   script_command=$(printf '%q ' "$0" "$@")
   exec env MANU_UPDATE_LOGGED=1 script -qefc "$script_command" "/tmp/manu-update.log"
 fi
-
 trap 'echo ""; echo -e "\033[0;31m󰅚 Something went wrong during the update!\n\nPlease review the output above carefully and correct the error.\033[0m"' ERR
 
 # ────────────────────────────────────────────────

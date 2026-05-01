@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# manu-theme-install: Install a new theme from a git repo for Manu
-# Usage: manu-theme-install <git-repo-url>
+# manu:summary=Install a theme from a git repository
+# manu:args=[git-repo-url]
+# manu:examples=manu theme install https://github.com/example/manu-example-theme.git
 
 if [[ -z $1 ]]; then
   echo -e "\e[32m󰸌 Install a new theme from a git repo\n\e[0m"
@@ -9,13 +10,11 @@ if [[ -z $1 ]]; then
 else
   REPO_URL="$1"
 fi
-
 if [[ -z $REPO_URL ]]; then
   exit 1
 fi
-
 THEMES_DIR="$HOME/.config/manu/themes"
-THEME_NAME=$(basename "$REPO_URL" .git | sed -E 's/^omarchy-//; s/-theme$//' | tr '[:upper:]' '[:lower:]')
+THEME_NAME=$(basename "$REPO_URL" .git | sed -E 's/^manu-//; s/-theme$//' | tr '[:upper:]' '[:lower:]')
 THEME_PATH="$THEMES_DIR/$THEME_NAME"
 
 # Remove existing theme if present

@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# Sets the specified image as the current background
+# manu:summary=Set the current background image
+# manu:args=<path-to-image>
+# manu:examples=manu theme bg set ~/Pictures/wallpaper.png
 
 if [[ -z $1 ]]; then
   echo "Usage: manu-theme-bg-set <path-to-image>" >&2
   exit 1
 fi
-
 BACKGROUND="$1"
 CURRENT_BACKGROUND_LINK="$HOME/.config/manu/current/background"
 

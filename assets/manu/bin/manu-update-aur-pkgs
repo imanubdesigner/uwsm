@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Update AUR packages if any are installed
+# manu:summary=Update AUR packages if any are installed
+
 if pacman -Qem >/dev/null; then
   if manu-pkg-aur-accessible; then
     echo -e "\e[32m\nUpdate AUR packages\e[0m"
@@ -13,7 +14,6 @@ if pacman -Qem >/dev/null; then
     else
       echo -e "\e[31mNo AUR helper found (paru/yay). Skipping AUR update.\e[0m"
     fi
-
     echo
   else
     echo -e "\e[31m\nAUR is unavailable (so skipping updates)\e[0m"
