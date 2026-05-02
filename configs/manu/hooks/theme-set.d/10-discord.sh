@@ -20,9 +20,9 @@ cat > "$output_file" << EOF
     * @author @bypass_
     * @version 0.1.0
     * @description Match your current system theme.
-    * @source https://github.com/imanubdesigner/base16-Discord
+    * @source https://github.com/imbypass/base16-Discord
     **/
-    @import url("https://imanubdesigner.github.io/base16-discord/manu-discord.theme.css");
+    @import url("https://imbypass.github.io/base16-discord/manu-discord.theme.css");
 
     :root {
         --color00: #${primary_background};

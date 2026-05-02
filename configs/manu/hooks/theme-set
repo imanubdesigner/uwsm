@@ -1,26 +1,9 @@
 #!/bin/bash
 
-# Manu 3.3+ uses colors.toml as the source of truth for theme colors.
+# Omarchy 3.3+ uses colors.toml as the source of truth for theme colors.
 # Previously we read from alacritty.toml, but that file is now generated
 # from templates and may contain unrendered {{ placeholders }}.
 input_file="$HOME/.config/manu/current/theme/colors.toml"
-
-if [[ ! -f "$input_file" ]]; then
-    error "colors.toml not found at $input_file. Ensure your theme is compatible with Manu 3.3+ and includes colors.toml."
-fi
-
-# Extract color value from colors.toml (flat key=value format)
-extract_color() {
-    local color_name="$1"
-    awk -v color="$color_name" '
-        $1 == color && /=/ {
-            if (match($0, /#([0-9a-fA-F]{6})/)) {
-                print substr($0, RSTART + 1, 6)
-                exit
-            }
-        }
-    ' "$input_file"
-}
 
 success() {
     echo -e "\e[32m[SUCCESS]\e[0m $1"
@@ -41,6 +24,23 @@ error() {
 }
 
 export -f success warning error skipped
+
+if [[ ! -f "$input_file" ]]; then
+    error "colors.toml not found at $input_file. Ensure your theme is compatible with Omarchy 3.3+ and includes colors.toml."
+fi
+
+# Extract color value from colors.toml (flat key=value format)
+extract_color() {
+    local color_name="$1"
+    awk -v color="$color_name" '
+        $1 == color && /=/ {
+            if (match($0, /#([0-9a-fA-F]{6})/)) {
+                print substr($0, RSTART + 1, 6)
+                exit
+            }
+        }
+    ' "$input_file"
+}
 
 hex2rgb() {
     hex_input=$1
@@ -81,7 +81,7 @@ require_restart() {
 
 export -f rgb2hex hex2rgb change_shade require_restart
 
-# Extract colors from colors.toml (Manu 3.3+ format)
+# Extract colors from colors.toml (Omarchy 3.3+ format)
 primary_foreground=$(extract_color "foreground")
 primary_background=$(extract_color "background")
 cursor_color=$(extract_color "cursor")
@@ -156,7 +156,7 @@ if [[ -d ~/.config/manu/hooks/theme-set.d ]]; then
             for app in "${running[@]}"; do
                 apps+="- $app"$'\n'
             done
-            notify-send "Hypruccin Theme Hook" "The following apps require a restart to apply theme:\n\n$apps"
+            notify-send "Theme Hook Plugin Manager" "The following apps require a restart to apply theme:\n\n$apps"
         fi
     fi
 fi

@@ -14,7 +14,7 @@ if [[ ! -f "$output_file" ]]; then
     cat > "$output_file" << EOF
 {
     "\$schema": "vscode://schemas/color-theme",
-    "name": "Manu",
+    "name": "Omarchy",
     "type": "",
     "colors": {
     // Base colors
@@ -1274,9 +1274,9 @@ find_extension_dir() {
 }
 
 modify_extension_manifest() {
-    manu_entry=$(cat $install_path/package.json | jq 'first(.contributes.themes[] | select(.label == "Manu"))')
+    manu_entry=$(cat $install_path/package.json | jq 'first(.contributes.themes[] | select(.label == "Omarchy"))')
     if [[ -z "$manu_entry" ]]; then
-        manu_entry='{"label": "Manu", "uiTheme": "vs-dark", "path": "./themes/base16/manu.json"}'
+        manu_entry='{"label": "Omarchy", "uiTheme": "vs-dark", "path": "./themes/base16/manu.json"}'
         new_manifest=$(cat "${install_path}/package.json" | jq --argjson theme "$manu_entry" '.contributes.themes += [$theme]')
         echo "$new_manifest" > "${install_path}/package.json"
     fi

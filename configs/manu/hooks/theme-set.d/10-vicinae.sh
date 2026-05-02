@@ -10,8 +10,8 @@ if [ ! -f "$output_file" ]; then
 cat > "$output_file" << EOF
 [meta]
 version = 1
-name = "Manu"
-description = "Follow your Manu system theme."
+name = "Omarchy"
+description = "Follow your Omarchy system theme."
 variant = "dark"
 inherits = "vicinae-dark"
 icon = "$HOME/.local/share/manu/icon.png"

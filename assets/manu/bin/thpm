@@ -21,11 +21,13 @@ dot() {
             ;;
     esac
 }
+
 open_hooks_dir() {
     if [[ -d ~/.config/manu/hooks/theme-set.d ]]; then
         xdg-open ~/.config/manu/hooks/theme-set.d & disown
     fi
 }
+
 get_hook_list() {
     enabled_hooks=()
     disabled_hooks=()
@@ -40,26 +42,32 @@ get_hook_list() {
             fi
         done
     fi
-    echo -e "\nEnabled Hooklettes:"
+
+    echo -e "\nEnabled Plugins:"
     for hook in "${enabled_hooks[@]}"; do
         echo -e " $(dot "green")$hook"
     done
-    echo -e "\nDisabled Hooklettes:"
+
+    echo -e "\nDisabled Plugins:"
     for hook in "${disabled_hooks[@]}"; do
         echo -e " $(dot "red")$hook"
     done
 }
+
 enable_hooks() {
     hooks="$@"
     IFS=' ' read -ra hooks_array <<< "$hooks"
     hooks_array=("${hooks_array[@]:1}")
     for new_hook in "${hooks_array[@]}"; do
+        found=0
         if [[ -d ~/.config/manu/hooks/theme-set.d ]]; then
             for old_hook in ~/.config/manu/hooks/theme-set.d/*.sh; do
+                [[ -f "$old_hook" ]] || continue
                 hook_name=$(basename "$old_hook" .sh)
                 hook_name=${hook_name#*-}
                 if [[ "$hook_name" == "$new_hook" ]]; then
-                    echo -e "$(dot "green")Hooklette Enabled: $hook_name \033[90m($old_hook)\033[0m"
+                    found=1
+                    echo -e "$(dot "green")Plugin Enabled: $hook_name \033[90m($old_hook)\033[0m"
                     if [[ ! -x "$old_hook" ]]; then
                         chmod +x "$old_hook"
                     fi
@@ -68,19 +76,26 @@ enable_hooks() {
                 fi
             done
         fi
+        if [[ "$found" -eq 0 ]]; then
+            echo -e "$(dot "yellow")Plugin not found: $new_hook"
+        fi
     done
 }
+
 disable_hooks() {
     hooks="$@"
     IFS=' ' read -ra hooks_array <<< "$hooks"
     hooks_array=("${hooks_array[@]:1}")
     for new_hook in "${hooks_array[@]}"; do
+        found=0
         if [[ -d ~/.config/manu/hooks/theme-set.d ]]; then
             for old_hook in ~/.config/manu/hooks/theme-set.d/*.sh; do
+                [[ -f "$old_hook" ]] || continue
                 hook_name=$(basename "$old_hook" .sh)
                 hook_name=${hook_name#*-}
                 if [[ "$hook_name" == "$new_hook" ]]; then
-                    echo -e "$(dot "red")Hooklette Disabled: $hook_name \033[90m($old_hook)\033[0m"
+                    found=1
+                    echo -e "$(dot "red")Plugin Disabled: $hook_name \033[90m($old_hook)\033[0m"
                     if [[ -x "$old_hook" ]]; then
                         chmod -x "$old_hook"
                     fi
@@ -89,8 +104,12 @@ disable_hooks() {
                 fi
             done
         fi
+        if [[ "$found" -eq 0 ]]; then
+            echo -e "$(dot "yellow")Plugin not found: $new_hook"
+        fi
     done
 }
+
 post_enable() {
     case $1 in
         "discord")
@@ -131,6 +150,7 @@ post_enable() {
         *) return 0 ;;
     esac
 }
+
 post_disable() {
     case $1 in
         "discord")
@@ -168,47 +188,61 @@ post_disable() {
         *) return 0 ;;
     esac
 }
+
 th_run() {
     manu-hook "theme-set"
 }
+
 th_install() {
-    curl -fsSL https://imanubdesigner.github.io/hypruccin-theme-hook/install.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/OldJobobo/theme-hook-plugin-manager/thpm/install.sh | bash
 }
+
 th_uninstall() {
-    curl -fsSL https://imanubdesigner.github.io/hypruccin-theme-hook/uninstall.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/OldJobobo/theme-hook-plugin-manager/thpm/uninstall.sh | bash
 }
+
 th_help() {
-    echo -e "Usage: thctl [command] [theme]"
+    echo -e "Usage: thpm [command] [plugin]"
     echo
     echo -e "Commands:"
     echo -e "$(dot "muted")  help       Show this help message"
-    echo -e "$(dot "muted")  enable     Enable a hooklette"
-    echo -e "$(dot "muted")  disable    Disable a hooklette"
-    echo -e "$(dot "muted")  list       List all available hooklettes"
-    echo -e "$(dot "muted")  open       Open the hooklettes directory"
-    echo -e "$(dot "muted")  run        Run/execute the theme hook"
-    echo -e "$(dot "muted")  update     Update the theme hook"
-    echo -e "$(dot "muted")  uninstall  Uninstall the theme hook"
+    echo -e "$(dot "muted")  enable     Enable a plugin"
+    echo -e "$(dot "muted")  disable    Disable a plugin"
+    echo -e "$(dot "muted")  list       List all available plugins"
+    echo -e "$(dot "muted")  open       Open the plugins directory"
+    echo -e "$(dot "muted")  run        Run/execute the theme-set hook"
+    echo -e "$(dot "muted")  update     Update thpm"
+    echo -e "$(dot "muted")  uninstall  Uninstall thpm"
+
 }
+
 case $1 in
     open) open_hooks_dir ;;
     dir) open_hooks_dir ;;
     o) open_hooks_dir ;;
+
     list) get_hook_list ;;
     ls) get_hook_list ;;
     l) get_hook_list ;;
+
     enable) enable_hooks "$@" ;;
     on) enable_hooks "$@" ;;
     e) enable_hooks "$@" ;;
+
     disable) disable_hooks "$@" ;;
     off) disable_hooks "$@" ;;
     d) disable_hooks "$@" ;;
+
     update) th_install ;;
     up) th_install ;;
+
+    uninstall) th_uninstall ;;
     remove) th_uninstall ;;
     rm) th_uninstall ;;
+
     run) th_run ;;
     r) th_run ;;
+
     help) th_help ;;
     *) th_help; exit 0 ;;
 esac
