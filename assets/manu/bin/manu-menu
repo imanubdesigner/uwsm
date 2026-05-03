@@ -87,19 +87,12 @@ show_webcam_select_menu() {
   fi
 }
 show_capture_menu() {
-  case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color") in
-  *Screenshot*)
-    manu-capture-screenshot
-    ;;
-  *Screenrecord*)
-    show_screenrecord_menu
-    ;;
-  *Color*)
-    pkill hyprpicker || hyprpicker -a
-    ;;
-  *)
-    back_to show_trigger_menu
-    ;;
+  case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰴑  Text Extraction\n󰃉  Color") in
+  *Screenshot*) manu-capture-screenshot ;;
+  *Screenrecord*) show_screenrecord_menu ;;
+  *Text*) manu-capture-text-extraction ;;
+  *Color*) pkill hyprpicker || hyprpicker -a ;;
+  *) back_to show_trigger_menu ;;
   esac
 }
 show_screenrecord_menu() {
@@ -155,10 +148,11 @@ show_share_menu() {
   esac
 }
 show_toggle_menu() {
-  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰖯  Top Bar\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling\n󰟵  Sudo Passwordless") in
+  case $(menu "Toggle" "󱄄  Screensaver\n  Nightlight\n󱫖  Idle Lock\n󰂛  Notifications\n󰖯  Top Bar\n󱂬  Workspace Layout\n  Window Gaps\n  1-Window Ratio\n󰍹  Display Scaling\n󰟵  Sudo Passwordless") in
   *Screensaver*) manu-toggle-screensaver ;;
   *Nightlight*) manu-toggle-night ;;
   *Idle*) manu-toggle-idle ;;
+  *Notifications*) manu-toggle-notification-silencing ;;
   *Bar*) manu-toggle-waybar ;;
   *Layout*) manu-hyprland-workspace-layout-toggle ;;
   *Ratio*) manu-hyprland-window-single-square-aspect-toggle ;;
@@ -202,13 +196,14 @@ show_background_menu() {
   manu-launch-walker -m menus:manuBackgroundSelector --width 800 --minheight 400
 }
 show_install_menu() {
-  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style") in
+  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style\n  Gaming") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
   *TUI*) present_terminal manu-tui-install ;;
   *Development*) show_install_development_menu ;;
   *Style*) show_install_style_menu ;;
+  *Gaming*) show_install_gaming_menu ;;
   *) show_main_menu ;;
   esac
 }
@@ -273,6 +268,18 @@ show_install_font_menu() {
   *) show_install_menu ;;
   esac
 }
+
+show_install_gaming_menu() {
+  case $(menu "Install" "  Steam\n󰢹  NVIDIA GeForce NOW\n  RetroArch [AUR]\n󰍳  Minecraft\n󰖺  Xbox Controller [AUR]") in
+  *Steam*) present_terminal manu-install-steam ;;
+  *GeForce*) present_terminal manu-install-geforce-now ;;
+  *RetroArch*) aur_install_and_launch "RetroArch" "retroarch retroarch-assets libretro libretro-fbneo" "com.libretro.RetroArch.desktop" ;;
+  *Minecraft*) install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
+  *Xbox*) present_terminal manu-install-xbox-controllers ;;
+  *) show_install_menu ;;
+  esac
+}
+
 show_remove_menu() {
   case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰵮  Development\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
   *Cache*) present_terminal manu-packages-cleaning ;;
@@ -357,11 +364,12 @@ show_restart_hardware_menu() {
   esac
 }
 show_setup_menu() {
-  case $(menu "Setup" "󰵅  Power Profile\n󰊢  Git Configuration\n  Chromium\n󰣇  Pacman\n󰁯  Tools\n󰄄  Restart") in
+  case $(menu "Setup" "󰵅  Power Profile\n󰊢  Git Configuration\n  Chromium\n󰣇  Pacman\n󰱔  DNS\n󰁯  Tools\n󰄄  Restart") in
   *"Power Profile"*) show_power_profile_menu ;;
   *Git*) present_terminal manu-install-git-configuration ;;
   *Chromium*) present_terminal manu-install-chromium-google-account ;;
   *Pacman*) show_setup_pacman_menu ;;
+  *DNS*) present_terminal manu-setup-dns ;;
   *Tools*) show_setup_tools_menu ;;
   *Restart*) show_setup_restart_menu ;;
   *) show_main_menu ;;

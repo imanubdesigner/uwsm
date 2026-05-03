@@ -22,7 +22,7 @@ rmdir ~/Templates ~/Public ~/Desktop 2>/dev/null || true
 # Update GTK bookmarks for file managers
 # This ensures easy access to the main folders in the sidebar
 touch ~/.config/gtk-3.0/bookmarks
-for dir in Downloads Pictures Videos; do
+for dir in Downloads Projects Pictures Videos; do
   printf 'file://%s/%s %s\n' "$HOME" "$dir" "$dir" >>~/.config/gtk-3.0/bookmarks
 done
 echo "$(date): User-Dirs configuration finished."

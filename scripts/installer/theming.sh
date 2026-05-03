@@ -61,6 +61,13 @@ run_command "cp $BASE_DIR/assets/systemd/faster-shutdown.conf /etc/systemd/syste
 run_command "cp $BASE_DIR/assets/systemd/user@.service.d/faster-shutdown.conf /etc/systemd/system/user@.service.d/faster-shutdown.conf" "Copy user-level faster-shutdown configuration" "no"
 run_command "systemctl daemon-reload" "Reload systemd daemon" "no"
 
+# -------------------- Raise File Descriptor Limit --------------------
+# Raise soft file descriptor limit from systemd's default of 1024 to 65536
+# so dev tools (VS Code, Docker, dev servers, databases) get the headroom they need
+run_command "mkdir -p /etc/systemd/system.conf.d /etc/systemd/user.conf.d" "Create systemd config directories" "no"
+run_command "printf '[Manager]\nDefaultLimitNOFILESoft=65536\n' > /etc/systemd/system.conf.d/99-manu-nofile.conf" "Set soft file descriptor limit to 65536" "no"
+run_command "cp /etc/systemd/system.conf.d/99-manu-nofile.conf /etc/systemd/user.conf.d/99-manu-nofile.conf" "Copy nofile config to user.conf.d" "no"
+
 # -------------------- Power Management --------------------
 run_command "systemctl enable thermald.service" "Enable thermald" "no"
 run_command "systemctl enable power-profiles-daemon.service" "Enable power-profiles-daemon" "no"
