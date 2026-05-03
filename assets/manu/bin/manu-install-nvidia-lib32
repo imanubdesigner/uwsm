@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# manu:summary=Install the lib32 NVIDIA driver matching the detected GPU generation (no-op if no NVIDIA).
+# manu:requires-sudo=true
+
+set -e
+
+if manu-hw-nvidia-gsp; then
+  manu-pkg-add lib32-nvidia-utils
+elif manu-hw-nvidia-without-gsp; then
+  manu-pkg-add lib32-nvidia-580xx-utils
+fi
