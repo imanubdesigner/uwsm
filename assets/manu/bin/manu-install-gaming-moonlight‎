@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# manu:summary=Install Moonlight (NVIDIA GameStream / Sunshine client) for streaming games to this PC.
+# manu:requires-sudo=true
+
+set -e
+
+manu-pkg-add moonlight-qt
+
+setsid gtk-launch com.moonlight_stream.Moonlight.desktop >/dev/null 2>&1 &
