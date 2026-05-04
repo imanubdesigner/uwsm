@@ -4,6 +4,7 @@
 
 set -e
 
+echo "Installing GeForce NOW..."
 manu-pkg-add flatpak
 cd /tmp
 

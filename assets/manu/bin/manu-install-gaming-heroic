@@ -5,6 +5,8 @@
 
 set -e
 
+echo "Installing Heroic Games Launcher..."
+
 manu-pkg-add heroic-games-launcher-bin
 manu-install-gaming-gpu-lib32
 
