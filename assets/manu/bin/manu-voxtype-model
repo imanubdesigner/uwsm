@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# manu:summary=Open Voxtype AI model setup
+
+set -e
+
+manu-launch-floating-terminal-with-presentation "voxtype setup model"
+manu-restart-waybar

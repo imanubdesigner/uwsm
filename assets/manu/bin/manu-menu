@@ -196,17 +196,48 @@ show_background_menu() {
   manu-launch-walker -m menus:manuBackgroundSelector --width 800 --minheight 400
 }
 show_install_menu() {
-  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Style\n  Gaming") in
+  case $(menu "Install" "󰣇  Package\n󰂓  AUR\n󰖟  Web App\n󰞷  TUI\n󰵮  Development\n  Editor\n󱚤  AI\n  Style\n  Gaming") in
   *Package*) terminal manu-pkg-install ;;
   *AUR*) terminal manu-pkg-aur-install ;;
   *Web*) present_terminal manu-install-webapp ;;
   *TUI*) present_terminal manu-tui-install ;;
   *Development*) show_install_development_menu ;;
+  *Editor*) show_install_editor_menu ;;
+  *AI*) show_install_ai_menu ;;
   *Style*) show_install_style_menu ;;
   *Gaming*) show_install_gaming_menu ;;
   *) show_main_menu ;;
   esac
 }
+
+show_install_editor_menu() {
+  case $(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Sublime Text\n  Helix\n  Emacs") in
+  *VSCode*) present_terminal manu-install-vscode ;;
+  *Cursor*) install_and_launch "Cursor" "cursor-bin" "cursor" ;;
+  *Zed*) install_and_launch "Zed" "zed" "dev.zed.Zed" ;;
+  *Sublime*) install_and_launch "Sublime Text" "sublime-text-4" "sublime_text" ;;
+  *Helix*) present_terminal manu-install-helix ;;
+  *Emacs*) install "Emacs" "emacs-wayland" && systemctl --user enable --now emacs.service ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_ai_menu() {
+  ollama_pkg=$(
+    (manu-cmd-present nvidia-smi && echo ollama-cuda) ||
+      (manu-cmd-present rocminfo && echo ollama-rocm) ||
+      echo ollama
+  )
+
+  case $(menu "Install" "  Dictation\n󱚤  LM Studio\n󱚤  Ollama\n󱚤  Crush") in
+  *Dictation*) present_terminal manu-voxtype-install ;;
+  *Studio*) install "LM Studio" "lmstudio-bin" ;;
+  *Ollama*) install "Ollama" $ollama_pkg ;;
+  *Crush*) install "Crush" "crush-bin" ;;
+  *) show_install_menu ;;
+  esac
+}
+
 show_install_development_menu() {
   case $(menu "Install" "󰫏  Ruby on Rails\n  Docker DB\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
   *Rails*) present_terminal "manu-install-dev-env ruby" ;;
