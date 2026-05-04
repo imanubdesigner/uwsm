@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# manu:summary=Launch the Omarchy Menu or takes a parameter to jump straight to a submenu.
+# manu:summary=Launch the manu Menu or takes a parameter to jump straight to a submenu.
 
 export PATH="$HOME/.local/share/manu/bin:$PATH"
 
@@ -270,17 +270,18 @@ show_install_font_menu() {
 }
 
 show_install_gaming_menu() {
-  case $(menu "Install" "  Steam\n  RetroArch\n󰍳  Minecraft\n  Battle.net\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller (󰂯)") in
+  case $(menu "Install" "  Steam\n  RetroArch\n󰍳  Minecraft\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller (󰂯)\n  Lutris (Battle.net)\n󱓟  Heroic (Epic Games)") in
   *Steam*) present_terminal manu-install-gaming-steam ;;
   *RetroArch*) present_terminal manu-install-gaming-retroarch ;;
   *Minecraft*) install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
-  *Battle.net*) present_terminal manu-install-gaming-battlenet ;;
   *GeForce*) present_terminal manu-install-gaming-geforce-now ;;
   *"Xbox Cloud"*) present_terminal manu-install-gaming-xbox-cloud ;;
   *Xbox*) present_terminal manu-install-gaming-xbox-controllers ;;
-  *) show_install_menu ;; esac
+  *Lutris*) present_terminal manu-install-gaming-lutris ;;
+  *Heroic*) present_terminal manu-install-gaming-heroic ;;
+  *) show_install_menu ;;
+  esac
 }
-
 show_remove_menu() {
   case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰵮  Development\n  Gaming\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
   *Cache*) present_terminal manu-packages-cleaning ;;
@@ -296,14 +297,15 @@ show_remove_menu() {
 }
 
 show_remove_gaming_menu() {
-  case $(menu "Remove" "  Steam\n  RetroArch\n󰍳  Minecraft\n  Battle.net\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller") in
+  case $(menu "Remove" "  Steam\n  RetroArch\n󰍳  Minecraft\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller (󰂯)\n  Lutris (Battle.net)\n󱓟  Heroic (Epic Games)") in
   *Steam*) present_terminal manu-remove-gaming-steam ;;
   *RetroArch*) present_terminal manu-remove-gaming-retroarch ;;
   *Minecraft*) present_terminal manu-remove-gaming-minecraft ;;
-  *Battle.net*) present_terminal manu-remove-gaming-battlenet ;;
   *GeForce*) present_terminal manu-remove-gaming-geforce-now ;;
   *"Xbox Cloud"*) present_terminal manu-remove-gaming-xbox-cloud ;;
   *Xbox*) present_terminal manu-remove-gaming-xbox-controllers ;;
+  *Lutris*) present_terminal manu-remove-gaming-lutris ;;
+  *Heroic*) present_terminal manu-remove-gaming-heroic ;;
   *) show_remove_menu ;;
   esac
 }

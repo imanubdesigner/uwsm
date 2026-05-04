@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# manu:summary=Install Heroic Games Launcher (Epic, GOG, Amazon Prime Gaming) with graphics drivers.
+# manu:requires-sudo=true
+
+set -e
+
+manu-pkg-add heroic-games-launcher-bin
+manu-install-gaming-gpu-lib32
+
+setsid gtk-launch heroic >/dev/null 2>&1 &
