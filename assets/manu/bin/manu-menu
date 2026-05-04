@@ -270,28 +270,44 @@ show_install_font_menu() {
 }
 
 show_install_gaming_menu() {
-  case $(menu "Install" "  Steam\n  RetroArch\n󰍳  Minecraft\n  Battle.net\n󰢹  NVIDIA GeForce NOW\n󰖺  Xbox Controller [AUR]") in
-  *Steam*) present_terminal manu-install-steam ;;
-  *RetroArch*) present_terminal manu-install-retroarch ;;
+  case $(menu "Install" "  Steam\n  RetroArch\n󰍳  Minecraft\n  Battle.net\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller (󰂯)") in
+  *Steam*) present_terminal manu-install-gaming-steam ;;
+  *RetroArch*) present_terminal manu-install-gaming-retroarch ;;
   *Minecraft*) install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
-  *Battle.net*) present_terminal manu-install-battlenet ;;
-  *GeForce*) present_terminal manu-install-geforce-now ;;
-  *Xbox*) present_terminal manu-install-xbox-controllers ;;
+  *Battle.net*) present_terminal manu-install-gaming-battlenet ;;
+  *GeForce*) present_terminal manu-install-gaming-geforce-now ;;
+  *"Xbox Cloud"*) present_terminal manu-install-gaming-xbox-cloud ;;
+  *Xbox*) present_terminal manu-install-gaming-xbox-controllers ;;
   *) show_install_menu ;; esac
 }
 
 show_remove_menu() {
-  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰵮  Development\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
+  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰵮  Development\n  Gaming\n󰮯  Cache Packages\n  Clear Logs\n󰸌  Theme") in
   *Cache*) present_terminal manu-packages-cleaning ;;
   *Package*) terminal manu-pkg-remove ;;
   *Web*) present_terminal manu-webapp-remove ;;
   *TUI*) present_terminal manu-tui-remove ;;
   *Development*) show_remove_development_menu ;;
+  *Gaming*) show_remove_gaming_menu ;;
   *"Clear Logs"*) present_terminal manu-clear-journalctl ;;
   *Theme*) present_terminal manu-theme-remove ;;
   *) show_main_menu ;;
   esac
 }
+
+show_remove_gaming_menu() {
+  case $(menu "Remove" "  Steam\n  RetroArch\n󰍳  Minecraft\n  Battle.net\n󰢹  NVIDIA GeForce NOW\n  Xbox Cloud Gaming\n󰖺  Xbox Controller") in
+  *Steam*) present_terminal manu-remove-gaming-steam ;;
+  *RetroArch*) present_terminal manu-remove-gaming-retroarch ;;
+  *Minecraft*) present_terminal manu-remove-gaming-minecraft ;;
+  *Battle.net*) present_terminal manu-remove-gaming-battlenet ;;
+  *GeForce*) present_terminal manu-remove-gaming-geforce-now ;;
+  *"Xbox Cloud"*) present_terminal manu-remove-gaming-xbox-cloud ;;
+  *Xbox*) present_terminal manu-remove-gaming-xbox-controllers ;;
+  *) show_remove_menu ;;
+  esac
+}
+
 show_remove_development_menu() {
   case $(menu "Remove" "󰫏  Ruby on Rails\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
   *Rails*) present_terminal "manu-remove-dev-env ruby" ;;

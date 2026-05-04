@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# manu:summary=Install lib32 Vulkan drivers for any detected Intel/AMD GPUs (no-op otherwise).
+# manu:summary=Install lib32 graphics drivers (Vulkan + NVIDIA) for any detected GPUs.
 # manu:requires-sudo=true
 
 set -e
@@ -16,5 +16,11 @@ for vendor in "${!VULKAN_DRIVERS[@]}"; do
     PACKAGES+=("${VULKAN_DRIVERS[$vendor]}")
   fi
 done
+
+if manu-hw-nvidia-gsp; then
+  PACKAGES+=(lib32-nvidia-utils)
+elif manu-hw-nvidia-without-gsp; then
+  PACKAGES+=(lib32-nvidia-580xx-utils)
+fi
 
 [[ ${#PACKAGES[@]} -gt 0 ]] && manu-pkg-add "${PACKAGES[@]}"
