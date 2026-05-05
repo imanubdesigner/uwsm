@@ -177,13 +177,39 @@ show_style_menu() {
   *Background*) show_background_menu ;;
   *Font*) show_font_menu ;;
   *Hyprland*) open_in_editor ~/.config/hypr/modules/decorations.conf ;;
-  *Screensaver*) open_in_editor ~/.local/share/manu/screensaver.txt ;;
+  *Screensaver*) show_screensaver_menu ;;
   *) show_main_menu ;;
   esac
 }
+
+show_screensaver_menu() {
+  case $(menu "Screensaver" "  Set From Image\n  Restore Default\n  Edit Text\n󱄄  Preview") in
+  *Image*) set_screensaver_from_image ;;
+  *Default*) terminal bash -lc 'manu-screensaver-set-logo default; echo; read -n 1 -s -r -p "Press any key to close..."' ;;
+  *Text*) open_in_editor ~/.config/manu/branding/screensaver.txt ;;
+  *Preview*) manu-launch-screensaver force ;;
+  *) show_style_menu ;;
+  esac
+}
+
+set_screensaver_from_image() {
+  terminal bash -lc '
+    image=$(fd --type file --ignore-case --extension svg --extension png . "$HOME" 2>/dev/null | fzf --prompt "Logo image> ")
+    if [[ -n $image ]]; then
+      if manu-screensaver-set-logo "$image"; then
+        echo
+        echo "Preview with: manu-launch-screensaver force"
+      fi
+      echo
+      read -n 1 -s -r -p "Press any key to close..."
+    fi
+  '
+}
+
 show_theme_menu() {
   manu-launch-walker -m menus:manuthemes --width 800 --minheight 400
 }
+
 show_font_menu() {
   theme=$(menu "Font" "$(manu-font-list)" "--width 350" "$(manu-font-current)")
   if [[ "$theme" == "CNCLD" || -z "$theme" ]]; then
@@ -289,12 +315,12 @@ show_install_style_menu() {
   esac
 }
 show_install_font_menu() {
-  case $(menu "Install" "  Cascadia Mono\n  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono\n  Iosevka" "--width 350") in
+  case $(menu "Install" "  Cascadia Mono\n  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bitstream Vera Mono\n  Iosevka" "--width 350") in
   *Cascadia*) install_font "Cascadia Mono" "ttf-cascadia-mono-nerd" "CaskaydiaMono Nerd Font" ;;
   *Meslo*) install_font "Meslo LG Mono" "ttf-meslo-nerd" "MesloLGL Nerd Font" ;;
   *Fira*) install_font "Fira Code" "ttf-firacode-nerd" "FiraCode Nerd Font" ;;
   *Victor*) install_font "Victor Code" "ttf-victor-mono-nerd" "VictorMono Nerd Font" ;;
-  *Bistream*) install_font "Bistream Vera Code" "ttf-bitstream-vera-mono-nerd" "BitstromWera Nerd Font" ;;
+  *Bitstream*) install_font "Bitstream Vera Code" "ttf-bitstream-vera-mono-nerd" "BitstromWera Nerd Font" ;;
   *Iosevka*) install_font "Iosevka" "ttf-iosevka-nerd" "Iosevka Nerd Font Mono" ;;
   *) show_install_menu ;;
   esac
