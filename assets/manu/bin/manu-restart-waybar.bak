@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# manu:summary=Restart Waybar
+# manu:examples=manu restart waybar
+
+manu-restart-app waybar
